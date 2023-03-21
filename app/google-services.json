@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "743704305334",
+    "project_id": "room-rental-21m23",
+    "storage_bucket": "room-rental-21m23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743704305334:android:f139beffef7d3a04505017",
+        "android_client_info": {
+          "package_name": "com.living.roomrental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743704305334-p84ql9dartv9l86lm8qc7ha2q37re25s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYWAes2jsIpP0kT8NnHm8R4omvJYbUP-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743704305334-p84ql9dartv9l86lm8qc7ha2q37re25s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
