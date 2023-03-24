@@ -2,15 +2,41 @@
     <!-- Base application theme. -->
     <style name="Theme.RoomRental" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/indigo_600</item>
+        <item name="colorPrimaryVariant">@color/indigo_800</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/indigo_600</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="HintTextAppearance">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="fontFamily">@font/montserrat_medium</item>
+    </style>
+
+    <style name="InputTextAppearance">
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="fontFamily">@font/montserrat_medium</item>
+    </style>
+
+    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <item name="android:textColorHint">@color/black_text_disabled</item>
+        <item name="hintTextAppearance">@style/HintTextAppearance</item>
+
+        <item name="boxStrokeErrorColor">@color/error_color</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextColor">@color/error_color</item>
+        <item name="errorTextAppearance">@style/HintTextAppearance</item>
+
+        <item name="helperTextTextColor">@color/black_text_disabled</item>
+        <item name="helperTextTextAppearance">@style/HintTextAppearance</item>
+    </style>
+
+
 </resources>
