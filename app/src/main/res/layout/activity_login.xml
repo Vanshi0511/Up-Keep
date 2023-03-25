@@ -2,17 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayoutOfLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootLayoutOfRegister"
-    tools:context=".activity.register.RegisterActivity">
-
-    <include
-        android:id="@+id/header"
-        layout="@layout/header_toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".activity.login.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,26 +13,48 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/signInTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign In"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_20ssp"
+                android:textColor="@color/black_text_secondary"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal"/>
+
+            <TextView
+                android:id="@+id/toContinueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="to continue Room Rental"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/black_text_secondary"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/signInTextView"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailTextInputLayout"
                 style="@style/TextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
 
                 android:hint="Email"
 
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal">
+                app:layout_constraintTop_toBottomOf="@+id/toContinueTextView">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailEditText"
@@ -79,49 +94,68 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/confirmPasswordTextInputLayout"
-                style="@style/TextInputLayout"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/forgotPasswordTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-
-                android:hint="Confirm Password"
-
-
+                android:text="Forgot password?"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textColor="@color/black_text_secondary"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
-                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/confirmPasswordEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:inputType="textPassword"
-                    android:textAppearance="@style/InputTextAppearance"
-                    android:textColor="@color/black_text_secondary" />
-            </com.google.android.material.textfield.TextInputLayout>
-
+                app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/registerBtn"
+                android:id="@+id/loginBtn"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_52sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:text="Register"
+                android:text="Login"
                 android:textAllCaps="false"
 
                 android:textAppearance="@style/InputTextAppearance"
                 app:cornerRadius="@dimen/_24sdp"
-
-                app:rippleColor="@color/black"
+                android:textColor="@color/indigo_600"
+                android:backgroundTint="@color/white"
+                app:strokeColor="@color/indigo_600"
+                app:strokeWidth="@dimen/_1sdp"
+                app:rippleColor="@color/black_text_disabled"
 
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTextInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/forgotPasswordTextView" />
+
+            <TextView
+                android:id="@+id/ORTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/black_text_secondary"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/googleSignInBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_52sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Sign in with Google"
+                android:textAllCaps="false"
+
+                android:textAppearance="@style/InputTextAppearance"
+                app:cornerRadius="@dimen/_8sdp"
+                app:rippleColor="@color/black"
+                android:drawableLeft="@drawable/common_google_signin_btn_icon_light"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/ORTextView" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -131,27 +165,26 @@
                 app:layout_constraintBottom_toTopOf="@+id/guideline_bottom_horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/registerBtn">
+                app:layout_constraintTop_toBottomOf="@+id/googleSignInBtn">
 
                 <TextView
-                    android:id="@+id/alreadyHaveAccountTextView"
+                    android:id="@+id/notRegisteredTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Already have account?"
+                    android:text="Not Registered?"
                     android:textAppearance="@style/InputTextAppearance"
                     android:textColor="@color/black_text_secondary" />
 
                 <TextView
-                    android:id="@+id/loginTextView"
+                    android:id="@+id/registerTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Login"
+                    android:text=" Register"
                     android:textStyle="bold"
                     android:textAppearance="@style/InputTextAppearance"
                     android:textColor="@color/indigo_600" />
 
             </LinearLayout>
-
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_top_horizontal"
@@ -181,9 +214,9 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="@dimen/_8sdp" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

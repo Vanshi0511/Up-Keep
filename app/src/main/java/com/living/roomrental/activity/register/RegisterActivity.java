@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.snackbar.Snackbar;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
+import com.living.roomrental.activity.login.LoginActivity;
 import com.living.roomrental.databinding.ActivityRegisterBinding;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.Validation;
@@ -41,6 +42,9 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
+        progressDialog = AppBoiler.setProgressDialog(RegisterActivity.this);
+        binding.header.headerTitle.setText("Register");
+
         observeActivityComponents();
         initListeners();
     }
@@ -57,34 +61,51 @@ public class RegisterActivity extends AppCompatActivity {
         success.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                progressDialog.dismiss();
-                customDialog = AppBoiler.customDialogWithBtn(RegisterActivity.this, s, R.drawable.ic_done, new DialogListener() {
-                    @Override
-                    public void onClick() {
-                        customDialog.dismiss();
-                        onBackPressed();
-                    }
-                });
+
+               if(progressDialog!=null){
+                    progressDialog.dismiss();
+                    customDialog = AppBoiler.customDialogWithBtn(RegisterActivity.this, s, R.drawable.ic_done, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            customDialog.dismiss();
+                            onBackPressed();
+                        }
+                    });
+                }
             }
         });
 
         failure.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                progressDialog.dismiss();
-                customDialog = AppBoiler.customDialogWithBtn(RegisterActivity.this, s, R.drawable.ic_error, new DialogListener() {
-                    @Override
-                    public void onClick() {
-                        customDialog.dismiss();
-                        onBackPressed();
-                    }
-                });
+
+                if(progressDialog!=null){
+                    progressDialog.dismiss();
+                    customDialog = AppBoiler.customDialogWithBtn(RegisterActivity.this, s, R.drawable.ic_error, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            customDialog.dismiss();
+                        }
+                    });
+                }
             }
         });
     }
 
     private void initListeners() {
+        binding.header.backImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
+        binding.loginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         binding.emailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -204,14 +225,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
     private void createUser() {
         if (AppBoiler.isInternetConnected(this)) {
-            progressDialog = AppBoiler.setProgressDialog(RegisterActivity.this);
+            progressDialog.show();
             registerViewModel.registerUser(email, password);
         } else {
-            //todo snack bar
-            System.out.println("=========No internet found");
+            AppBoiler.showSnackBarForInternet(this,binding.rootLayoutOfRegister);
         }
 
 

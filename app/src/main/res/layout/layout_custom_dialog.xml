@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/_200sdp"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/_16sdp"
+    app:cardCornerRadius="@dimen/_12sdp"
     app:cardElevation="@dimen/_8sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

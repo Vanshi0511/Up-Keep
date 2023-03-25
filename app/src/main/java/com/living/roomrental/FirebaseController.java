@@ -1,4 +1,4 @@
-package com.living.roomrental.utilities.repository;
+package com.living.roomrental;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

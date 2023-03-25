@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/rootLayoutOfHeader"
     android:orientation="vertical"
     android:background="@color/indigo_600">
 
@@ -21,10 +22,10 @@
             android:id="@+id/headerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
+            android:text="Title"
             android:fontFamily="@font/montserrat_medium"
             android:layout_marginLeft="@dimen/_8sdp"
-            android:textSize="@dimen/_18sdp"
+            android:textSize="@dimen/_16sdp"
             android:textColor="@color/white"/>
 
     </LinearLayout>

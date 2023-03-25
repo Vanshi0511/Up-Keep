@@ -1,4 +1,4 @@
-package com.living.roomrental.activity.register;
+package com.living.roomrental.activity.login;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -11,15 +11,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.FirebaseController;
 
-public class RegisterViewModel extends ViewModel {
+public class LoginViewModel extends ViewModel {
 
     private FirebaseAuth auth;
-
+    private String  email , password;
     private MutableLiveData<String> success = new MutableLiveData<>();
 
     private MutableLiveData<String> failure = new MutableLiveData<>();
-    private String  email , password ,confirmPassword;
-
 
     public String getEmail() {
         return email;
@@ -36,15 +34,6 @@ public class RegisterViewModel extends ViewModel {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
     public LiveData<String> getSuccess() {
         return success;
     }
@@ -53,15 +42,13 @@ public class RegisterViewModel extends ViewModel {
         return failure;
     }
 
-
-    public void registerUser(String email , String password){
+    public void login(String email , String password){
         auth = FirebaseController.getInstance().getAuth();
 
-        auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        auth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-               success.setValue("Registered Successfully");
-               System.out.println("===================Auth Result : "+authResult.getUser().getUid());
+                success.setValue(authResult.getUser().getDisplayName());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -75,6 +62,6 @@ public class RegisterViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        System.out.println("======================Register view model destroyed");
+        System.out.println("======================= Login view model destroyed");
     }
 }
