@@ -12,11 +12,7 @@ import com.living.roomrental.FirebaseController;
 
 public class ForgotPasswordViewModel extends ViewModel {
 
-    private FirebaseAuth auth;
     private String email;
-    private MutableLiveData<String> success = new MutableLiveData<>();
-
-    private MutableLiveData<String> failure = new MutableLiveData<>();
 
     public String getEmail() {
         return email;
@@ -26,28 +22,9 @@ public class ForgotPasswordViewModel extends ViewModel {
         this.email = email;
     }
 
-    public LiveData<String> getSuccess() {
-        return success;
-    }
-
-    public LiveData<String> getFailure() {
-        return failure;
-    }
-
-    public void sendResetPasswordEmail(){
-        auth = FirebaseController.getInstance().getAuth();
-
-        auth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                success.setValue("Email sent to registered email id.");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                failure.setValue(e.getMessage());
-            }
-        });
+    public MutableLiveData<String> sendResetPasswordEmail(){
+        ForgotPasswordRepository repository = new ForgotPasswordRepository();
+        return repository.sendResetPasswordEmailLink(email);
     }
 
 }

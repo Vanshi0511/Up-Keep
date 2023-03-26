@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
+import com.living.roomrental.activity.general.UserChoiceBottomSheet;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.utilities.AppConstants;
@@ -89,7 +90,11 @@ public class GoogleLogin {
             @Override
             public void onSuccess(AuthResult authResult) {
                 ((LoginActivity)context).progressDialog.dismiss();
+
                 SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(context).getPreferences(),authResult.getUser().getUid());
+
+//                UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
+//                bottomSheet.show(getSupportFragmentManager(), "ChoiceBottomSheet");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -5,18 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.living.roomrental.R;
-import com.living.roomrental.activity.auth.login.LoginActivity;
 import com.living.roomrental.activity.profile.create.CreateProfileActivity;
 import com.living.roomrental.utilities.AppBoiler;
+import com.living.roomrental.utilities.AppConstants;
 
-public class BottomSheetChoiceFragment extends BottomSheetDialogFragment {
+public class UserChoiceBottomSheet extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
@@ -31,8 +30,8 @@ public class BottomSheetChoiceFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString("whoIsUser","Landlord");
-                bundle.putString("intentFor","createProfile");
+                bundle.putString(AppConstants.WHO_IS_USER,AppConstants.LANDLORD);
+                bundle.putString(AppConstants.INTENT_FOR,"create_profile");
                 AppBoiler.navigateToActivity(getContext(), CreateProfileActivity.class,bundle);
             }
         });
@@ -40,7 +39,10 @@ public class BottomSheetChoiceFragment extends BottomSheetDialogFragment {
         tenant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "tenant", Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString(AppConstants.WHO_IS_USER,AppConstants.TENANT);
+                bundle.putString(AppConstants.INTENT_FOR,"create_profile");
+                AppBoiler.navigateToActivity(getContext(), CreateProfileActivity.class,bundle);
             }
         });
        return view;

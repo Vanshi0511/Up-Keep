@@ -13,4 +13,14 @@ public class SharedPreferenceStorage {
     public static String getUidOfUser(SharedPreferences preferences){
         return preferences.getString("userId",null);
     }
+
+    public static void setProfileStatusOfUser(SharedPreferences preferences , String whoIsUser){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("whoIsUser",whoIsUser);
+        editor.apply();
+    }
+
+    public static String getWhoIsUser(SharedPreferences preferences){
+        return preferences.getString("whoIsUser",null);
+    }
 }

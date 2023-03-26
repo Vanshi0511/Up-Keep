@@ -10,16 +10,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.FirebaseController;
+import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.activity.profile.create.CreateProfileRepository;
+import com.living.roomrental.activity.profile.create.CreateProfileViewModel;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 
 public class LoginViewModel extends ViewModel {
 
-    private FirebaseAuth auth;
-    private String  email , password;
-    private MutableLiveData<String> success = new MutableLiveData<>();
 
-    private MutableLiveData<String> failure = new MutableLiveData<>();
+    private LoginRepository repository = new LoginRepository();
+    private String  email , password;
 
     public String getEmail() {
         return email;
@@ -36,29 +37,16 @@ public class LoginViewModel extends ViewModel {
     public void setPassword(String password) {
         this.password = password;
     }
-    public LiveData<String> getSuccess() {
-        return success;
+
+    public MutableLiveData<String> login(){
+        repository = new LoginRepository();
+       return repository.loginUser(email,password);
     }
 
-    public LiveData<String> getFailure() {
-        return failure;
-    }
-
-    public void login(String email , String password){
-        auth = FirebaseController.getInstance().getAuth();
-
-        auth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                success.setValue(authResult.getUser().getUid());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                failure.setValue(e.getMessage());
-                System.out.println("===================Exception while Registration : "+e.getMessage());
-            }
-        });
+    public LiveData<CreateProfileModel> getProfileDataFromServer(){
+       // repository = new LoginRepository();
+        CreateProfileRepository createProfileRepository = new CreateProfileRepository();
+        return createProfileRepository.getProfileDataFromServer();
     }
 
     @Override

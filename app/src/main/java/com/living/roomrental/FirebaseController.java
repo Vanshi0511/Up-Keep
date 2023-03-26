@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.living.roomrental.utilities.AppConstants;
 
 public class FirebaseController {
     private FirebaseAuth auth;
@@ -17,8 +18,8 @@ public class FirebaseController {
     private FirebaseController(){
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("RoomRental");
-        storageReference = FirebaseStorage.getInstance().getReference("RoomRental");
+        databaseReference = FirebaseDatabase.getInstance().getReference(AppConstants.ROOM_RENTAL);
+        storageReference = FirebaseStorage.getInstance().getReference(AppConstants.ROOM_RENTAL);
     }
     public static FirebaseController getInstance(){
         if(controller==null){

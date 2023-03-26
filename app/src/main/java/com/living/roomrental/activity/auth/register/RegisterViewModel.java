@@ -13,11 +13,7 @@ import com.living.roomrental.FirebaseController;
 
 public class RegisterViewModel extends ViewModel {
 
-    private FirebaseAuth auth;
 
-    private MutableLiveData<String> success = new MutableLiveData<>();
-
-    private MutableLiveData<String> failure = new MutableLiveData<>();
     private String  email , password ,confirmPassword;
 
 
@@ -45,31 +41,9 @@ public class RegisterViewModel extends ViewModel {
         this.confirmPassword = confirmPassword;
     }
 
-    public LiveData<String> getSuccess() {
-        return success;
-    }
-
-    public LiveData<String> getFailure() {
-        return failure;
-    }
-
-
-    public void registerUser(String email , String password){
-        auth = FirebaseController.getInstance().getAuth();
-
-        auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-               success.setValue("Registered Successfully");
-               System.out.println("===================Auth Result : "+authResult.getUser().getUid());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                failure.setValue(e.getMessage());
-                System.out.println("===================Exception while Registration : "+e.getMessage());
-            }
-        });
+    public MutableLiveData<String> register(){
+        RegisterRepository repository = new RegisterRepository();
+        return repository.registerUser(email,password);
     }
 
     @Override

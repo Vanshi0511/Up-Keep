@@ -15,10 +15,16 @@
         android:theme="@style/Theme.RoomRental"
         tools:targetApi="31">
         <activity
+            android:name=".tenant.activity.main.TenantMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".landlord.activity.main.LandlordMainActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.profile.create.CreateProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.general.SplashActivity"
+            android:name=".activity.general.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +43,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.auth.login.LoginActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

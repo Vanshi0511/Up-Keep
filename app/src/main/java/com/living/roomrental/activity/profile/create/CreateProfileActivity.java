@@ -24,7 +24,12 @@ import com.living.roomrental.DialogListener;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.databinding.ActivityCreateProfileBinding;
+import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
+import com.living.roomrental.repository.local.SharedPreferenceStorage;
+import com.living.roomrental.repository.local.SharedPreferencesController;
+import com.living.roomrental.tenant.activity.main.TenantMainActivity;
 import com.living.roomrental.utilities.AppBoiler;
+import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.ImplicitUtils;
 import com.living.roomrental.utilities.Validation;
 
@@ -36,7 +41,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     private Dialog progressDialog, responseDialog, imagePickerDialog;
     private ActivityResultLauncher<Intent> getImageLauncher;
     private Uri image;
-    private String name, email, contactNo, occupation, address, bio, whoIsUser;
+    private String name, email, contactNo, occupation, address, bio, whoIsUser , intentFor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,38 +55,32 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         getBundles();
         getDataFromViewModel();
+        initLauncherForImage();
         initListeners();
-        initLauncher();
+
     }
 
     private void getBundles() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.getString("intentFor").equals("createProfile")) {
-                whoIsUser = bundle.getString("whoIsUser");
+
+            if (bundle.getString(AppConstants.INTENT_FOR).equals("create_profile")) {
+
                 binding.header.headerTitle.setText("Create profile");
-            } else if(bundle.getString("intentFor").equals("editProfile")){
+
+            } else if(bundle.getString(AppConstants.INTENT_FOR).equals("edit_profile")){
+
+                binding.noteTextView.setVisibility(View.GONE);
                 binding.createOrEditProfileBtn.setText("Update");
                 binding.header.headerTitle.setText("Update profile");
             }
+            whoIsUser = bundle.getString(AppConstants.WHO_IS_USER);
+            intentFor = bundle.getString(AppConstants.INTENT_FOR);
         }
     }
 
-    private void initLauncher() {
-
-        getImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    image = result.getData().getData();
-                    binding.profileImageView.setImageURI(image);
-                    createProfileViewModel.setImageUri(image);
-                }
-            }
-        });
-    }
-
     private void getDataFromViewModel() {
+
         binding.nameEditText.setText(createProfileViewModel.getName());
         binding.contactNoEditText.setText(createProfileViewModel.getContactNo());
         binding.occupationEditText.setText(createProfileViewModel.getOccupation());
@@ -93,8 +92,31 @@ public class CreateProfileActivity extends AppCompatActivity {
             binding.profileImageView.setImageURI(imageUri);
     }
 
+    private void initLauncherForImage() {
+
+        getImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+
+                    assert result.getData() != null;
+                    image = result.getData().getData();
+                    binding.profileImageView.setImageURI(image);
+                    createProfileViewModel.setImageUri(image);
+                }
+            }
+        });
+    }
+
     private void initListeners() {
 
+        binding.header.backImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         binding.cameraImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,16 +234,21 @@ public class CreateProfileActivity extends AppCompatActivity {
         binding.createOrEditProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (binding.nameTextInputLayout.isErrorEnabled() || Validation.isStringEmpty(name)) {
                     binding.nameTextInputLayout.setError("Enter name");
+                    binding.nameEditText.requestFocus();
                 } else if (binding.contactNoTextInputLayout.isErrorEnabled()) {
                     binding.contactNoEditText.requestFocus();
                 } else if (Validation.isStringEmpty(contactNo)) {
                     binding.contactNoTextInputLayout.setError("Enter contact no");
+                    binding.contactNoEditText.requestFocus();
                 } else if (binding.occupationTextInputLayout.isErrorEnabled() || Validation.isStringEmpty(occupation)) {
                     binding.occupationTextInputLayout.setError("Enter occupation");
+                    binding.occupationEditText.requestFocus();
                 } else if (binding.addressTextInputLayout.isErrorEnabled() || Validation.isStringEmpty(address)) {
                     binding.addressTextInputLayout.setError("Enter address");
+                    binding.addressEditText.requestFocus();
                 } else {
 
                     createProfileViewModel.setWhoIsUser(whoIsUser);
@@ -246,18 +273,41 @@ public class CreateProfileActivity extends AppCompatActivity {
         response.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if (s.equals("success")) {
-                    progressDialog.dismiss();
+
+                progressDialog.dismiss();
+                if (s.equals(AppConstants.SUCCESS)) {
+
                     responseDialog = AppBoiler.customDialogWithBtn(CreateProfileActivity.this, "Profile updated successfully", R.drawable.ic_done, new DialogListener() {
                         @Override
                         public void onClick() {
                             responseDialog.dismiss();
-                            //todo main activity
+
+                            SharedPreferenceStorage.setProfileStatusOfUser(SharedPreferencesController.getInstance(CreateProfileActivity.this).getPreferences(),whoIsUser);
+
+                            if(whoIsUser.equals(AppConstants.LANDLORD)){
+
+                                if(intentFor.equals("create_profile")){
+                                    AppBoiler.navigateToActivityWithFinish(CreateProfileActivity.this, LandlordMainActivity.class,null);
+                                    finishAffinity();
+                                }else{
+                                    onBackPressed();
+                                }
+                            }
+                            else{
+
+                                if(intentFor.equals("create_profile")){
+                                    AppBoiler.navigateToActivityWithFinish(CreateProfileActivity.this, TenantMainActivity.class,null);
+                                    finishAffinity();
+                                }else{
+                                    onBackPressed();
+                                }
+                            }
                         }
                     });
 
-                } else {
-                    progressDialog.dismiss();
+                }
+                else {
+
                     responseDialog = AppBoiler.customDialogWithBtn(CreateProfileActivity.this, s, R.drawable.ic_error, new DialogListener() {
                         @Override
                         public void onClick() {
@@ -269,7 +319,8 @@ public class CreateProfileActivity extends AppCompatActivity {
         });
 
     }
-    private void observeResponseForgetTheData(){
+    private void observeResponseForGetTheData(){
+
         LiveData<CreateProfileModel> profileModelLiveData = createProfileViewModel.getProfileData();
 
         profileModelLiveData.observe(this, new Observer<CreateProfileModel>() {
@@ -287,9 +338,12 @@ public class CreateProfileActivity extends AppCompatActivity {
         binding.addressEditText.setText(model.getAddress());
         binding.bioEditText.setText(model.getBio());
 
-        Glide.with(this).load(model.getImageUrl()).into(binding.profileImageView);
-        createProfileViewModel.setImageUri(Uri.parse(model.getImageUrl()));
-        image = Uri.parse(model.getImageUrl());
+        if(!Validation.isStringEmpty(model.getImageUrl())) {
+
+            Glide.with(this).load(model.getImageUrl()).into(binding.profileImageView);
+            createProfileViewModel.setImageUri(Uri.parse(model.getImageUrl()));
+            image = Uri.parse(model.getImageUrl());
+        }
     }
 
     public void getImageFromLocalStorage() {

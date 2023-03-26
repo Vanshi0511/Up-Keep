@@ -15,6 +15,7 @@ import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.databinding.ActivityRegisterBinding;
 import com.living.roomrental.utilities.AppBoiler;
+import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.Validation;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -25,6 +26,8 @@ public class RegisterActivity extends AppCompatActivity {
     private String email = "", password = "", confirmPassword = "";
 
     private Dialog progressDialog , customDialog;
+
+    private LiveData<String> responseLiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,51 +40,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         binding.header.headerTitle.setText("Register");
 
-        observeActivityComponents();
+        getDataFromViewModel();
         initListeners();
     }
 
-    private void observeActivityComponents() {
+    private void getDataFromViewModel() {
 
         binding.emailEditText.setText(registerViewModel.getEmail());
         binding.passwordEditText.setText(registerViewModel.getPassword());
         binding.confirmPasswordEditText.setText(registerViewModel.getConfirmPassword());
 
-        LiveData<String> success = registerViewModel.getSuccess();
-        LiveData<String> failure = registerViewModel.getFailure();
-
-        success.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-               if(progressDialog!=null){
-                    progressDialog.dismiss();
-                    customDialog = AppBoiler.customDialogWithBtn(RegisterActivity.this, s, R.drawable.ic_done, new DialogListener() {
-                        @Override
-                        public void onClick() {
-                            customDialog.dismiss();
-                            onBackPressed();
-                        }
-                    });
-                }
-            }
-        });
-
-        failure.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-                if(progressDialog!=null){
-                    progressDialog.dismiss();
-                    customDialog = AppBoiler.customDialogWithBtn(RegisterActivity.this, s, R.drawable.ic_error, new DialogListener() {
-                        @Override
-                        public void onClick() {
-                            customDialog.dismiss();
-                        }
-                    });
-                }
-            }
-        });
     }
 
     private void initListeners() {
@@ -119,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                registerViewModel.setEmail(binding.emailEditText.getText().toString().trim());
+                registerViewModel.setEmail(editable.toString().trim());
             }
         });
 
@@ -156,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                registerViewModel.setPassword(binding.passwordEditText.getText().toString().trim());
+                registerViewModel.setPassword(editable.toString().trim());
             }
         });
 
@@ -188,7 +156,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                registerViewModel.setConfirmPassword(binding.confirmPasswordEditText.getText().toString().trim());
+                registerViewModel.setConfirmPassword(editable.toString().trim());
             }
         });
 
@@ -220,17 +188,41 @@ public class RegisterActivity extends AppCompatActivity {
     private void createUser() {
         if (AppBoiler.isInternetConnected(this)) {
             progressDialog = AppBoiler.setProgressDialog(RegisterActivity.this);
-            registerViewModel.registerUser(email, password);
+            observeResponseOfRegister();
         } else {
             AppBoiler.showSnackBarForInternet(this,binding.rootLayoutOfRegister);
         }
 
-
     }
 
+    private void observeResponseOfRegister() {
 
+        responseLiveData = registerViewModel.register();
+        responseLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                progressDialog.dismiss();
 
+                if(s.equals(AppConstants.SUCCESS)){
+                    customDialog = AppBoiler.customDialogWithBtn(RegisterActivity.this,"Registered Successfully", R.drawable.ic_done, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            customDialog.dismiss();
+                            onBackPressed();
+                        }
+                    });
+                }
+                else{
+                    customDialog = AppBoiler.customDialogWithBtn(RegisterActivity.this, s, R.drawable.ic_error, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            customDialog.dismiss();
+                        }
+                    });
 
-
+                }
+            }
+        });
+    }
 
 }

@@ -3,6 +3,7 @@ package com.living.roomrental.activity.auth.login;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -15,14 +16,19 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.DialogListener;
+import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.auth.forgotpassword.ForgotPasswordActivity;
 import com.living.roomrental.activity.auth.register.RegisterActivity;
-import com.living.roomrental.activity.general.BottomSheetChoiceFragment;
+import com.living.roomrental.activity.general.UserChoiceBottomSheet;
+import com.living.roomrental.activity.profile.create.CreateProfileModel;
 import com.living.roomrental.databinding.ActivityLoginBinding;
+import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
+import com.living.roomrental.tenant.activity.main.TenantMainActivity;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.Validation;
@@ -34,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleLogin googleLogin;
     private String email="" , password="" ;
     public Dialog progressDialog , customDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,50 +50,14 @@ public class LoginActivity extends AppCompatActivity {
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
-        observeActivityComponents();
+        getDataFromViewModel();
         initListeners();
     }
 
-    private void observeActivityComponents() {
+    private void getDataFromViewModel() {
         binding.emailEditText.setText(loginViewModel.getEmail());
         binding.passwordEditText.setText(loginViewModel.getPassword());
-
-        LiveData<String> success = loginViewModel.getSuccess();
-        LiveData<String> failure = loginViewModel.getFailure();
-
-        success.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String uid) {
-                if(progressDialog!=null){
-                    progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, "kkkkk", Toast.LENGTH_SHORT).show();
-                    SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(),uid);
-
-                    BottomSheetChoiceFragment bottomSheet = new BottomSheetChoiceFragment();
-                    bottomSheet.show(getSupportFragmentManager(),
-                            "ModalBottomSheet");
-                    //todo bottom sheet
-                }
-
-            }
-        });
-
-        failure.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                if(progressDialog!=null){
-                    progressDialog.dismiss();
-                    customDialog = AppBoiler.customDialogWithBtn(LoginActivity.this, s, R.drawable.ic_error, new DialogListener() {
-                        @Override
-                        public void onClick() {
-                            customDialog.dismiss();
-                        }
-                    });
-                }
-            }
-        });
     }
-
 
     private void initListeners(){
         binding.registerTextView.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                loginViewModel.setEmail(binding.emailEditText.getText().toString().trim());
+                loginViewModel.setEmail(editable.toString().trim());
             }
         });
 
@@ -160,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                loginViewModel.setPassword(binding.passwordEditText.getText().toString().trim());
+                loginViewModel.setPassword(editable.toString().trim());
             }
         });
 
@@ -185,10 +156,64 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser(){
         if (AppBoiler.isInternetConnected(this)) {
             progressDialog = AppBoiler.setProgressDialog(LoginActivity.this);
-            loginViewModel.login(email, password);
+            observeResponseOfLogin();
         } else {
             AppBoiler.showSnackBarForInternet(this,binding.rootLayoutOfLogin);
         }
+    }
+
+    private void observeResponseOfLogin() {
+
+        MutableLiveData<String> responseLiveData = loginViewModel.login();
+
+        responseLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+
+
+                if(s.equals(AppConstants.SUCCESS)){
+
+                    SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(), FirebaseAuth.getInstance().getUid());
+                    getUserProfile();
+//
+//
+//                    UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
+//                    bottomSheet.show(getSupportFragmentManager(), "ChoiceBottomSheet");
+                }
+                else{
+
+                    progressDialog.dismiss();
+                    customDialog = AppBoiler.customDialogWithBtn(LoginActivity.this, s, R.drawable.ic_error, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            customDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void getUserProfile(){
+        LiveData<CreateProfileModel> modelLiveData = loginViewModel.getProfileDataFromServer();
+
+        modelLiveData.observe(this, new Observer<CreateProfileModel>() {
+            @Override
+            public void onChanged(CreateProfileModel model) {
+                progressDialog.dismiss();
+                if(model!=null){
+                    SharedPreferenceStorage.setProfileStatusOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(), model.getWhoIsUser());
+                    if(model.getWhoIsUser().equals(AppConstants.LANDLORD))
+                         AppBoiler.navigateToActivityWithFinish(LoginActivity.this, LandlordMainActivity.class,null);
+                    else
+                        AppBoiler.navigateToActivityWithFinish(LoginActivity.this, TenantMainActivity.class,null);
+                }else{
+
+                    UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
+                    bottomSheet.show(getSupportFragmentManager(), "ChoiceBottomSheet");
+                }
+            }
+        });
     }
 
 

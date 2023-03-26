@@ -15,6 +15,7 @@ import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.databinding.ActivityForgotPasswordBinding;
 import com.living.roomrental.utilities.AppBoiler;
+import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.Validation;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -22,6 +23,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private ActivityForgotPasswordBinding binding;
     private ForgotPasswordViewModel forgotPasswordViewModel;
     private String email="";
+    private LiveData<String> responseLiveData ;
     private Dialog progressDialog , customDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,49 +36,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         binding.header.headerTitle.setText("Forgot Password");
 
-        observeActivityComponents();
+        getDataFromViewModel();
         initListeners();
     }
 
-    private void observeActivityComponents() {
-
+    private void getDataFromViewModel() {
         binding.emailEditText.setText(forgotPasswordViewModel.getEmail());
-
-        LiveData<String> success = forgotPasswordViewModel.getSuccess();
-        LiveData<String> failure = forgotPasswordViewModel.getFailure();
-
-        success.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-                if(progressDialog!=null){
-                    progressDialog.dismiss();
-                    customDialog = AppBoiler.customDialogWithBtn(ForgotPasswordActivity.this, s, R.drawable.ic_done, new DialogListener() {
-                        @Override
-                        public void onClick() {
-                            customDialog.dismiss();
-                            onBackPressed();
-                        }
-                    });
-                }
-            }
-        });
-
-        failure.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-                if(progressDialog!=null){
-                    progressDialog.dismiss();
-                    customDialog = AppBoiler.customDialogWithBtn(ForgotPasswordActivity.this, s, R.drawable.ic_error, new DialogListener() {
-                        @Override
-                        public void onClick() {
-                            customDialog.dismiss();
-                        }
-                    });
-                }
-            }
-        });
     }
     private void initListeners(){
 
@@ -130,9 +95,41 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void sendEmail(){
         if (AppBoiler.isInternetConnected(this)) {
             progressDialog = AppBoiler.setProgressDialog(ForgotPasswordActivity.this);
-            forgotPasswordViewModel.sendResetPasswordEmail();
+            observeResponseForResetPassword();
         } else {
             AppBoiler.showSnackBarForInternet(this,binding.rootLayoutOfForgotPassword);
         }
     }
+
+    private void observeResponseForResetPassword() {
+
+        responseLiveData = forgotPasswordViewModel.sendResetPasswordEmail();
+
+        responseLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+
+                progressDialog.dismiss();
+                if(s.equals(AppConstants.SUCCESS)){
+                    customDialog = AppBoiler.customDialogWithBtn(ForgotPasswordActivity.this, "Link has send to your email id.", R.drawable.ic_done, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            customDialog.dismiss();
+                            onBackPressed();
+                        }
+                    });
+                }
+                else{
+                    customDialog = AppBoiler.customDialogWithBtn(ForgotPasswordActivity.this, s, R.drawable.ic_error, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            customDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
 }

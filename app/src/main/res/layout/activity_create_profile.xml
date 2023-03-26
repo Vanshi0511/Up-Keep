@@ -26,6 +26,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/noteTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Create your profile for activating your services of Room Rental."
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal"/>
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImageView"
                 android:layout_width="@dimen/_100sdp"
@@ -33,9 +44,10 @@
                 android:src="@drawable/ic_person"
                 app:civ_border_color="@color/black_text_disabled"
                 app:civ_border_width="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal"/>
+                app:layout_constraintTop_toBottomOf="@+id/noteTextView"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/cameraImageView"
