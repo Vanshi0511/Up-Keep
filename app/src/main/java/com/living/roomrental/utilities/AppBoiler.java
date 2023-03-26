@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.living.roomrental.DialogListener;
+import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
 
 public class AppBoiler {
@@ -92,6 +93,41 @@ public class AppBoiler {
                .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
                .show();
        // snackbar.showAction -------> operations like undo
+    }
+
+    public static Dialog showImagePickerDialog(Context context , ImagePickerDialogListener listener){
+        Dialog dialog =new Dialog(context);
+        dialog.setContentView(R.layout.layout_image_picker_chooser_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        LinearLayout imageFromCameraLayout, imageFromGalleryLayout , removeImageLayout;
+        imageFromCameraLayout = dialog.findViewById(R.id.imageFromCameraLayout);
+        imageFromGalleryLayout = dialog.findViewById(R.id.imageFromGalleryLayout);
+        removeImageLayout = dialog.findViewById(R.id.removeImageLayout);
+
+        imageFromCameraLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickCamera();
+            }
+        });
+
+        imageFromGalleryLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickGallery();
+            }
+        });
+        removeImageLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickRemove();
+            }
+        });
+
+        dialog.show();
+        return dialog;
     }
 
 

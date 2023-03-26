@@ -209,7 +209,7 @@
                 android:layout_height="@dimen/_52sdp"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="Create Profile"
+                android:text="Create"
                 android:textAllCaps="false"
 
                 android:textAppearance="@style/InputTextAppearance"
