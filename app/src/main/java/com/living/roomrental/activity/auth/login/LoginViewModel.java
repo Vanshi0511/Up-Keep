@@ -1,4 +1,4 @@
-package com.living.roomrental.activity.login;
+package com.living.roomrental.activity.auth.login;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -10,6 +10,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.FirebaseController;
+import com.living.roomrental.repository.local.SharedPreferenceStorage;
+import com.living.roomrental.repository.local.SharedPreferencesController;
 
 public class LoginViewModel extends ViewModel {
 
@@ -48,7 +50,7 @@ public class LoginViewModel extends ViewModel {
         auth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                success.setValue(authResult.getUser().getDisplayName());
+                success.setValue(authResult.getUser().getUid());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -1,4 +1,4 @@
-package com.living.roomrental.activity.forgotpassword;
+package com.living.roomrental.activity.auth.forgotpassword;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
-import com.living.roomrental.activity.register.RegisterActivity;
 import com.living.roomrental.databinding.ActivityForgotPasswordBinding;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.Validation;
@@ -32,7 +31,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         forgotPasswordViewModel = ViewModelProviders.of(this).get(ForgotPasswordViewModel.class);
-        progressDialog = AppBoiler.setProgressDialog(ForgotPasswordActivity.this);
+
         binding.header.headerTitle.setText("Forgot Password");
 
         observeActivityComponents();
@@ -130,7 +129,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void sendEmail(){
         if (AppBoiler.isInternetConnected(this)) {
-            progressDialog.show();
+            progressDialog = AppBoiler.setProgressDialog(ForgotPasswordActivity.this);
             forgotPasswordViewModel.sendResetPasswordEmail();
         } else {
             AppBoiler.showSnackBarForInternet(this,binding.rootLayoutOfForgotPassword);

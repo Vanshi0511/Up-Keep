@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/iAmTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Hey, Room Rental "
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/montserrat_medium"
+        android:layout_margin="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <ImageView
+        android:id="@+id/landlordImageView"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iAmTextView"
+        android:src="@drawable/i_am_landlord_image" />
+
+    <ImageView
+        android:id="@+id/tenantImageView"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/landlordImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_middle_vertical"
+        app:layout_constraintTop_toTopOf="@+id/landlordImageView"
+        android:src="@drawable/i_am_tenant_image" />
+
+    <TextView
+        android:id="@+id/landlordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="I'Am a \nLandlord"
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/montserrat_semibold"
+        app:layout_constraintEnd_toEndOf="@+id/landlordImageView"
+        app:layout_constraintStart_toStartOf="@+id/landlordImageView"
+        app:layout_constraintTop_toBottomOf="@+id/landlordImageView"
+        app:layout_constraintBottom_toTopOf="@id/guideline_bottom_horizontal"/>
+
+    <TextView
+        android:id="@+id/tenantTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="I'Am a\nTenant"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/landlordTextView"
+        app:layout_constraintEnd_toEndOf="@+id/tenantImageView"
+        app:layout_constraintStart_toStartOf="@+id/tenantImageView"
+        app:layout_constraintTop_toTopOf="@+id/landlordTextView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/_16sdp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

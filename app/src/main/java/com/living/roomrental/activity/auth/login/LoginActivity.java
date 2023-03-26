@@ -1,6 +1,5 @@
-package com.living.roomrental.activity.login;
+package com.living.roomrental.activity.auth.login;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -16,14 +15,14 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.living.roomrental.DialogListener;
-import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
-import com.living.roomrental.activity.forgotpassword.ForgotPasswordActivity;
-import com.living.roomrental.activity.register.RegisterActivity;
+import com.living.roomrental.activity.auth.forgotpassword.ForgotPasswordActivity;
+import com.living.roomrental.activity.auth.register.RegisterActivity;
+import com.living.roomrental.activity.general.BottomSheetChoiceFragment;
 import com.living.roomrental.databinding.ActivityLoginBinding;
+import com.living.roomrental.repository.local.SharedPreferenceStorage;
+import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.Validation;
@@ -43,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        progressDialog = AppBoiler.setProgressDialog(LoginActivity.this);
 
         observeActivityComponents();
         initListeners();
@@ -58,10 +56,16 @@ public class LoginActivity extends AppCompatActivity {
 
         success.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(String s) {
+            public void onChanged(String uid) {
                 if(progressDialog!=null){
                     progressDialog.dismiss();
-                   //todo bottom sheet
+                    Toast.makeText(LoginActivity.this, "kkkkk", Toast.LENGTH_SHORT).show();
+                    SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(),uid);
+
+                    BottomSheetChoiceFragment bottomSheet = new BottomSheetChoiceFragment();
+                    bottomSheet.show(getSupportFragmentManager(),
+                            "ModalBottomSheet");
+                    //todo bottom sheet
                 }
 
             }
@@ -180,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser(){
         if (AppBoiler.isInternetConnected(this)) {
-            progressDialog.show();
+            progressDialog = AppBoiler.setProgressDialog(LoginActivity.this);
             loginViewModel.login(email, password);
         } else {
             AppBoiler.showSnackBarForInternet(this,binding.rootLayoutOfLogin);
@@ -193,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode== AppConstants.GOOGLE_REQ_CODE){
-            progressDialog.show();
+            progressDialog = AppBoiler.setProgressDialog(LoginActivity.this);
             googleLogin.activityResult(requestCode,resultCode,data , Activity.RESULT_OK);}
     }
 }

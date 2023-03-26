@@ -15,16 +15,10 @@
         android:theme="@style/Theme.RoomRental"
         tools:targetApi="31">
         <activity
-            android:name=".activity.forgotpassword.ForgotPasswordActivity"
+            android:name=".activity.profile.create.CreateProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.register.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.login.LoginActivity"
+            android:name=".activity.general.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +26,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.auth.forgotpassword.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.auth.register.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.auth.login.LoginActivity"
+            android:exported="false"></activity>
     </application>
 
 </manifest>

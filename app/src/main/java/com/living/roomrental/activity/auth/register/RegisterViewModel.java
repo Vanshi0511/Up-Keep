@@ -1,4 +1,4 @@
-package com.living.roomrental.activity.register;
+package com.living.roomrental.activity.auth.register;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

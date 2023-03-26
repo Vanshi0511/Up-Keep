@@ -35,6 +35,7 @@ public class AppBoiler {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
         return dialog;
     }
 

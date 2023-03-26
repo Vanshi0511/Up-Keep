@@ -63,8 +63,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:20.0.1'
     //cloud-messaging
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
-
+    //google authentication
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
-
+    
+    // circular image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

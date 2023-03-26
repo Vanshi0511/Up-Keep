@@ -1,4 +1,4 @@
-package com.living.roomrental.activity.forgotpassword;
+package com.living.roomrental.activity.auth.forgotpassword;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

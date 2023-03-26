@@ -1,29 +1,21 @@
-package com.living.roomrental.activity.register;
+package com.living.roomrental.activity.auth.register;
 
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
-import com.living.roomrental.activity.login.LoginActivity;
 import com.living.roomrental.databinding.ActivityRegisterBinding;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.Validation;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -42,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
-        progressDialog = AppBoiler.setProgressDialog(RegisterActivity.this);
+
         binding.header.headerTitle.setText("Register");
 
         observeActivityComponents();
@@ -227,7 +219,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void createUser() {
         if (AppBoiler.isInternetConnected(this)) {
-            progressDialog.show();
+            progressDialog = AppBoiler.setProgressDialog(RegisterActivity.this);
             registerViewModel.registerUser(email, password);
         } else {
             AppBoiler.showSnackBarForInternet(this,binding.rootLayoutOfRegister);
