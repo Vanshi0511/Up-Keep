@@ -1,39 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/rootLayoutOfHeader"
-    android:orientation="vertical"
-    android:background="@color/indigo_600">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical|bottom">
 
         <ImageView
             android:id="@+id/backImageView"
             android:layout_width="@dimen/_24sdp"
             android:layout_height="@dimen/_24sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/ic_arrow_back"
-            android:layout_margin="@dimen/_8sdp"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/headerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/montserrat_semibold"
             android:text="Title"
-            android:fontFamily="@font/montserrat_medium"
-            android:layout_marginLeft="@dimen/_8sdp"
+            android:textColor="@color/black_text_secondary"
             android:textSize="@dimen/_16sdp"
-            android:textColor="@color/white"/>
+            app:layout_constraintBottom_toBottomOf="@+id/backImageView"
+            app:layout_constraintStart_toEndOf="@+id/backImageView"
+            app:layout_constraintTop_toTopOf="@+id/backImageView" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_18sdp"
-        android:background="@drawable/design_right_top_corner"/>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/_18sdp"-->
+<!--        android:background="@drawable/design_right_top_corner"/>-->
 
 
 </LinearLayout>

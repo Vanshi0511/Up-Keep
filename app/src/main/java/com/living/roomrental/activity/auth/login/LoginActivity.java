@@ -175,10 +175,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(), FirebaseAuth.getInstance().getUid());
                     getUserProfile();
-//
-//
-//                    UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
-//                    bottomSheet.show(getSupportFragmentManager(), "ChoiceBottomSheet");
+
                 }
                 else{
 
@@ -202,7 +199,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onChanged(CreateProfileModel model) {
                 progressDialog.dismiss();
                 if(model!=null){
+
                     SharedPreferenceStorage.setProfileStatusOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(), model.getWhoIsUser());
+
                     if(model.getWhoIsUser().equals(AppConstants.LANDLORD))
                          AppBoiler.navigateToActivityWithFinish(LoginActivity.this, LandlordMainActivity.class,null);
                     else

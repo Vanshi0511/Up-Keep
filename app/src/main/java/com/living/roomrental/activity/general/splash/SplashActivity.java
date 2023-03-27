@@ -23,7 +23,6 @@ import com.living.roomrental.utilities.Validation;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private String whoIsUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,42 +37,20 @@ public class SplashActivity extends AppCompatActivity {
                 String whoIsUser = SharedPreferenceStorage.getWhoIsUser(preferences);
 
                 if(Validation.isStringEmpty(SharedPreferenceStorage.getUidOfUser(preferences)) || Validation.isStringEmpty(whoIsUser)){
+
                     AppBoiler.navigateToActivityWithFinish(SplashActivity.this, LoginActivity.class,null);
                 }else if(whoIsUser.equals(AppConstants.LANDLORD)){
-                    AppBoiler.navigateToActivityWithFinish(SplashActivity.this, TenantMainActivity.class,null);
-                }else if(whoIsUser.equals(AppConstants.TENANT)){
+
                     AppBoiler.navigateToActivityWithFinish(SplashActivity.this, LandlordMainActivity.class,null);
+                }else if(whoIsUser.equals(AppConstants.TENANT)){
+
+                    AppBoiler.navigateToActivityWithFinish(SplashActivity.this, TenantMainActivity.class,null);
                 }
             }
         },2000);
 
     }
 
-    private void initRepository() {
-        SplashRepository repository = new SplashRepository();
-
-        System.out.println("==============3");
-        LiveData<CreateProfileModel> profileModelLiveData = repository.getUserData();
-        profileModelLiveData.observe(this, new Observer<CreateProfileModel>() {
-            @Override
-            public void onChanged(CreateProfileModel model) {
-                whoIsUser = model.getWhoIsUser();
-                nextActivity();
-            }
-        });
-    }
-
-    private void nextActivity(){
-
-                System.out.println("==============5 "+whoIsUser);
-                if( FirebaseController.getInstance().getAuth().getCurrentUser()==null || whoIsUser==null ){
-                    AppBoiler.navigateToActivityWithFinish(SplashActivity.this, LoginActivity.class,null);
-                }else if(whoIsUser.equals(AppConstants.TENANT)){
-                    AppBoiler.navigateToActivityWithFinish(SplashActivity.this, TenantMainActivity.class,null);
-                }else if(whoIsUser.equals(AppConstants.LANDLORD)){
-                    AppBoiler.navigateToActivityWithFinish(SplashActivity.this, LandlordMainActivity.class,null);
-                }
-    }
 }
 
 //========= WhoIsUser is to check from database that the user is tenant or landlord or not defined yet==========

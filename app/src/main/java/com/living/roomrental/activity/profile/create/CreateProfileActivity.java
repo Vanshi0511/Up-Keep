@@ -290,6 +290,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                                     AppBoiler.navigateToActivityWithFinish(CreateProfileActivity.this, LandlordMainActivity.class,null);
                                     finishAffinity();
                                 }else{
+                                    // for edit profile
                                     onBackPressed();
                                 }
                             }
@@ -299,6 +300,8 @@ public class CreateProfileActivity extends AppCompatActivity {
                                     AppBoiler.navigateToActivityWithFinish(CreateProfileActivity.this, TenantMainActivity.class,null);
                                     finishAffinity();
                                 }else{
+
+                                    // for edit profile
                                     onBackPressed();
                                 }
                             }

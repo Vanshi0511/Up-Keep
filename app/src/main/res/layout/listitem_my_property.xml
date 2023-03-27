@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_100sdp"
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="@dimen/_8sdp"
+    android:layout_margin="@dimen/_4sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/propertyImageView"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/home_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/propertyName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Surdas complex"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textSize="@dimen/_16ssp"
+            android:maxLines="1"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_end_vertical"
+            app:layout_constraintStart_toEndOf="@+id/propertyImageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/propertyAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Gayatri colony , kukshi dist - dhar[M.P]"
+            android:textSize="@dimen/_12ssp"
+            android:maxLines="2"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/montserrat_medium"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_end_vertical"
+            app:layout_constraintStart_toStartOf="@+id/propertyName"
+            app:layout_constraintTop_toBottomOf="@+id/propertyName" />
+
+        <TextView
+            android:id="@+id/propertyType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 BHK"
+            android:maxLines="1"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_marginTop="@dimen/_4sdp"
+            app:layout_constraintStart_toStartOf="@+id/propertyAddress"
+            app:layout_constraintTop_toBottomOf="@+id/propertyAddress" />
+
+        <TextView
+            android:id="@+id/propertyRent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="7500/month"
+            android:maxLines="1"
+            android:textSize="@dimen/_14ssp"
+            android:drawableLeft="@drawable/ic_currency"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_medium"
+            app:layout_constraintBottom_toBottomOf="@+id/propertyType"
+            app:layout_constraintStart_toEndOf="@+id/propertyType"
+            app:layout_constraintTop_toTopOf="@+id/propertyType" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/_8sdp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
