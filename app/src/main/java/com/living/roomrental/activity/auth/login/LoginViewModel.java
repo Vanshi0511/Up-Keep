@@ -13,6 +13,7 @@ import com.living.roomrental.FirebaseController;
 import com.living.roomrental.activity.profile.create.CreateProfileModel;
 import com.living.roomrental.activity.profile.create.CreateProfileRepository;
 import com.living.roomrental.activity.profile.create.CreateProfileViewModel;
+import com.living.roomrental.activity.profile.edit.EditProfileRepository;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 
@@ -45,8 +46,8 @@ public class LoginViewModel extends ViewModel {
 
     public LiveData<CreateProfileModel> getProfileDataFromServer(){
        // repository = new LoginRepository();
-        CreateProfileRepository createProfileRepository = new CreateProfileRepository();
-        return createProfileRepository.getProfileDataFromServer();
+        EditProfileRepository createProfileRepository = new EditProfileRepository();
+        return createProfileRepository.getDataFromServer();
     }
 
     @Override

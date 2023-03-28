@@ -1,13 +1,4 @@
-package com.living.roomrental.activity.profile.create;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+package com.living.roomrental.activity.profile.edit;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -19,75 +10,65 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.bumptech.glide.Glide;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
-import com.living.roomrental.databinding.ActivityCreateProfileBinding;
-import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
-import com.living.roomrental.repository.local.SharedPreferenceStorage;
-import com.living.roomrental.repository.local.SharedPreferencesController;
-import com.living.roomrental.tenant.activity.main.TenantMainActivity;
+import com.living.roomrental.activity.auth.register.RegisterActivity;
+import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.databinding.ActivityEditProfileBinding;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.ImplicitUtils;
 import com.living.roomrental.utilities.Validation;
 
+public class EditProfileActivity extends AppCompatActivity {
 
-public class CreateProfileActivity extends AppCompatActivity {
+    private ActivityEditProfileBinding binding;
 
-    private ActivityCreateProfileBinding binding;
-    private CreateProfileViewModel createProfileViewModel;
+    private EditProfileViewModel editProfileViewModel;
     private Dialog progressDialog, responseDialog, imagePickerDialog;
     private ActivityResultLauncher<Intent> getImageLauncher;
     private Uri image;
-    private String name, email, contactNo, occupation, address, bio, whoIsUser;
+    private String name, email, contactNo, occupation, address, bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityCreateProfileBinding.inflate(getLayoutInflater());
+        binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        createProfileViewModel = ViewModelProviders.of(this).get(CreateProfileViewModel.class);
-
-        getBundles();
-        getDataFromViewModel();
-        initLauncherForImage();
-        initListeners();
-
-    }
-
-    private void getBundles() {
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-
-            whoIsUser = bundle.getString(AppConstants.WHO_IS_USER);
-//            if (bundle.getString(AppConstants.INTENT_FOR).equals("create_profile")) {
-//
-//                binding.header.headerTitle.setText("Create profile");
-//
-//            } else if(bundle.getString(AppConstants.INTENT_FOR).equals("edit_profile")){
-//
-//                binding.noteTextView.setVisibility(View.GONE);
-//                binding.createOrEditProfileBtn.setText("Update");
-//                binding.header.headerTitle.setText("Update profile");
-//            }
-
+        if(editProfileViewModel==null){
+            editProfileViewModel = ViewModelProviders.of(this).get(EditProfileViewModel.class);
+            observeResponseForGetTheData();
         }
+        else
+          getDataFromViewModel();
+
+        initListeners();
+        initLauncherForImage();
     }
 
     private void getDataFromViewModel() {
 
-        binding.nameEditText.setText(createProfileViewModel.getName());
-        binding.contactNoEditText.setText(createProfileViewModel.getContactNo());
-        binding.occupationEditText.setText(createProfileViewModel.getOccupation());
-        binding.addressEditText.setText(createProfileViewModel.getAddress());
-        binding.bioEditText.setText(createProfileViewModel.getBio());
-        binding.emailEditText.setText(createProfileViewModel.getEmail());
+        binding.nameEditText.setText(editProfileViewModel.getName());
+        binding.contactNoEditText.setText(editProfileViewModel.getContactNo());
+        binding.occupationEditText.setText(editProfileViewModel.getOccupation());
+        binding.addressEditText.setText(editProfileViewModel.getAddress());
+        binding.bioEditText.setText(editProfileViewModel.getBio());
+        binding.emailEditText.setText(editProfileViewModel.getEmail());
 
-        Uri imageUri = createProfileViewModel.getImageUri();
+        Uri imageUri = editProfileViewModel.getImageUri();
         if (imageUri != null)
             binding.profileImageView.setImageURI(imageUri);
     }
@@ -103,14 +84,13 @@ public class CreateProfileActivity extends AppCompatActivity {
                     assert result.getData() != null;
                     image = result.getData().getData();
                     binding.profileImageView.setImageURI(image);
-                    createProfileViewModel.setImageUri(image);
+                    editProfileViewModel.setImageUri(image);
                 }
             }
         });
     }
 
     private void initListeners() {
-
         binding.header.backImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +122,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createProfileViewModel.setName(name);
+                editProfileViewModel.setName(name);
             }
         });
 
@@ -166,7 +146,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createProfileViewModel.setContactNo(contactNo);
+                editProfileViewModel.setContactNo(contactNo);
             }
         });
 
@@ -188,7 +168,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createProfileViewModel.setOccupation(occupation);
+                editProfileViewModel.setOccupation(occupation);
             }
         });
 
@@ -210,7 +190,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createProfileViewModel.setAddress(address);
+                editProfileViewModel.setAddress(address);
             }
         });
 
@@ -227,11 +207,11 @@ public class CreateProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createProfileViewModel.setBio(bio);
+                editProfileViewModel.setBio(bio);
             }
         });
 
-        binding.createProfileBtn.setOnClickListener(new View.OnClickListener() {
+        binding.updaterProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -250,63 +230,78 @@ public class CreateProfileActivity extends AppCompatActivity {
                     binding.addressTextInputLayout.setError("Enter address");
                     binding.addressEditText.requestFocus();
                 } else {
-
-                    createProfileViewModel.setWhoIsUser(whoIsUser);
-                    goForProfile();
+                    editProfile();
                 }
             }
         });
     }
 
-    private void goForProfile() {
+    private void editProfile() {
         if (AppBoiler.isInternetConnected(this)) {
-            progressDialog = AppBoiler.setProgressDialog(CreateProfileActivity.this);
-            observeResponseForSetTheData();
+            progressDialog = AppBoiler.setProgressDialog(EditProfileActivity.this);
+            observeResponseFoSetTheData();
         } else {
             AppBoiler.showSnackBarForInternet(this, binding.rootLayoutOfCreateProfile);
         }
     }
 
-    private void observeResponseForSetTheData() {
-        LiveData<String> response = createProfileViewModel.createOrEditUserProfile();
+    private void observeResponseFoSetTheData() {
+        LiveData<String> responseMutableLiveData = editProfileViewModel.setProfileData();
 
-        response.observe(this, new Observer<String>() {
+        responseMutableLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
 
                 progressDialog.dismiss();
+
                 if (s.equals(AppConstants.SUCCESS)) {
-
-                    responseDialog = AppBoiler.customDialogWithBtn(CreateProfileActivity.this, "Profile updated successfully", R.drawable.ic_done, new DialogListener() {
+                    responseDialog = AppBoiler.customDialogWithBtn(EditProfileActivity.this, "Updated Successfully", R.drawable.ic_done, new DialogListener() {
                         @Override
                         public void onClick() {
                             responseDialog.dismiss();
-
-                            SharedPreferenceStorage.setProfileStatusOfUser(SharedPreferencesController.getInstance(CreateProfileActivity.this).getPreferences(), whoIsUser);
-
-                            if (whoIsUser.equals(AppConstants.LANDLORD)) {
-
-                                AppBoiler.navigateToActivityWithFinish(CreateProfileActivity.this, LandlordMainActivity.class, null);
-                                finishAffinity();
-                            } else {
-                                AppBoiler.navigateToActivityWithFinish(CreateProfileActivity.this, TenantMainActivity.class, null);
-                                finishAffinity();
-                            }
+                            onBackPressed();
                         }
                     });
-
                 } else {
-
-                    responseDialog = AppBoiler.customDialogWithBtn(CreateProfileActivity.this, s, R.drawable.ic_error, new DialogListener() {
+                    responseDialog = AppBoiler.customDialogWithBtn(EditProfileActivity.this, s, R.drawable.ic_error, new DialogListener() {
                         @Override
                         public void onClick() {
                             responseDialog.dismiss();
                         }
                     });
+
                 }
             }
         });
+    }
 
+    private void observeResponseForGetTheData() {
+
+        LiveData<CreateProfileModel> profileModelLiveData = editProfileViewModel.getProfileData();
+
+        profileModelLiveData.observe(this, new Observer<CreateProfileModel>() {
+            @Override
+            public void onChanged(CreateProfileModel model) {
+                initComponents(model);
+            }
+        });
+    }
+
+    private void initComponents(CreateProfileModel model) {
+
+        binding.nameEditText.setText(model.getName());
+        binding.contactNoEditText.setText(model.getContactNo());
+        binding.occupationEditText.setText(model.getOccupation());
+        binding.addressEditText.setText(model.getAddress());
+        binding.bioEditText.setText(model.getBio());
+
+        if (!Validation.isStringEmpty(model.getImageUrl())) {
+
+            Glide.with(this).load(model.getImageUrl()).into(binding.profileImageView);
+            editProfileViewModel.setImageUri(Uri.parse(model.getImageUrl()));
+            editProfileViewModel.setImageUrl(model.getImageUrl());
+            image = Uri.parse(model.getImageUrl());
+        }
     }
 
     public void getImageFromLocalStorage() {
@@ -330,10 +325,9 @@ public class CreateProfileActivity extends AppCompatActivity {
             public void onClickRemove() {
                 imagePickerDialog.dismiss();
                 binding.profileImageView.setImageResource(R.drawable.ic_person);
-                createProfileViewModel.setImageUri(null);
+                editProfileViewModel.setImageUri(null);
                 image = null;
             }
         });
     }
-
 }

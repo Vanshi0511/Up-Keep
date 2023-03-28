@@ -13,6 +13,7 @@ import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.auth.login.LoginActivity;
 import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.databinding.ActivitySplashBinding;
 import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
@@ -23,11 +24,13 @@ import com.living.roomrental.utilities.Validation;
 
 public class SplashActivity extends AppCompatActivity {
 
+    private ActivitySplashBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
 
+        binding = ActivitySplashBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         SharedPreferences preferences = SharedPreferencesController.getInstance(SplashActivity.this).getPreferences();
         new Handler().postDelayed(new Runnable() {

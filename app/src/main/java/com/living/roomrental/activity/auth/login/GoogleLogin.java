@@ -3,6 +3,7 @@ package com.living.roomrental.activity.auth.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,12 +21,17 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.living.roomrental.BottomChoiceListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.general.UserChoiceBottomSheet;
+import com.living.roomrental.activity.profile.create.CreateProfileActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
+import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
+
+import java.util.Objects;
 
 public class GoogleLogin {
 
@@ -34,13 +40,13 @@ public class GoogleLogin {
 
     public GoogleLogin(Context context) {
         this.context = context;
-        auth = FirebaseController.getInstance().getAuth();
+        auth = FirebaseAuth.getInstance();
     }
 
     public void signIn() {
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
-        if (account == null) {
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+//        if (account == null) {
             GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(context.getString(R.string.web_client_id))
                     .requestEmail()
@@ -50,8 +56,8 @@ public class GoogleLogin {
 
             Intent signInIntent = googleSignInClient.getSignInIntent();
             ((Activity)context).startActivityForResult(signInIntent, AppConstants.GOOGLE_REQ_CODE);
-        } else
-            Toast.makeText(context, "Already exist", Toast.LENGTH_SHORT).show();
+//        } else
+//            Toast.makeText(context, "Already exist", Toast.LENGTH_SHORT).show();
     }
 
     public void activityResult(int requestCode, int resultCode, Intent data, int RESULT_OK) {
@@ -91,18 +97,37 @@ public class GoogleLogin {
             public void onSuccess(AuthResult authResult) {
                 ((LoginActivity)context).progressDialog.dismiss();
 
-                SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(context).getPreferences(),authResult.getUser().getUid());
-
-//                UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
-//                bottomSheet.show(getSupportFragmentManager(), "ChoiceBottomSheet");
+                SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(context).getPreferences(), Objects.requireNonNull(authResult.getUser()).getUid());
+                openChoiceBottomSheet();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 ((LoginActivity)context).progressDialog.dismiss();
+                Toast.makeText(context, "Error : "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         });
+    }
+
+    private void openChoiceBottomSheet(){
+        UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
+        bottomSheet.initListeners(new BottomChoiceListener() {
+            @Override
+            public void onClickLandlord() {
+                Bundle bundle = new Bundle();
+                bundle.putString(AppConstants.WHO_IS_USER, AppConstants.LANDLORD);
+                AppBoiler.navigateToActivity(context, CreateProfileActivity.class, bundle);
+            }
+
+            @Override
+            public void onClickTenant() {
+                Bundle bundle = new Bundle();
+                bundle.putString(AppConstants.WHO_IS_USER, AppConstants.TENANT);
+                AppBoiler.navigateToActivity(context, CreateProfileActivity.class, bundle);
+            }
+        });
+        bottomSheet.show(((LoginActivity)context).getSupportFragmentManager(), "ChoiceBottomSheet");
     }
 }
 

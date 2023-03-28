@@ -17,12 +17,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.living.roomrental.BottomChoiceListener;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.auth.forgotpassword.ForgotPasswordActivity;
 import com.living.roomrental.activity.auth.register.RegisterActivity;
 import com.living.roomrental.activity.general.UserChoiceBottomSheet;
+import com.living.roomrental.activity.profile.create.CreateProfileActivity;
 import com.living.roomrental.activity.profile.create.CreateProfileModel;
 import com.living.roomrental.databinding.ActivityLoginBinding;
 import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
@@ -38,8 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private LoginViewModel loginViewModel;
     private GoogleLogin googleLogin;
-    private String email="" , password="" ;
-    public Dialog progressDialog , customDialog;
+    private String email = "", password = "";
+    public Dialog progressDialog, customDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +61,11 @@ public class LoginActivity extends AppCompatActivity {
         binding.passwordEditText.setText(loginViewModel.getPassword());
     }
 
-    private void initListeners(){
+    private void initListeners() {
         binding.registerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppBoiler.navigateToActivity(LoginActivity.this, RegisterActivity.class,null);
+                AppBoiler.navigateToActivity(LoginActivity.this, RegisterActivity.class, null);
             }
         });
 
@@ -74,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     googleLogin = new GoogleLogin(LoginActivity.this);
                     googleLogin.signIn();
                 } else {
-                    AppBoiler.showSnackBarForInternet(LoginActivity.this,binding.rootLayoutOfLogin);
+                    AppBoiler.showSnackBarForInternet(LoginActivity.this, binding.rootLayoutOfLogin);
                 }
 
             }
@@ -83,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppBoiler.navigateToActivity(LoginActivity.this, ForgotPasswordActivity.class,null);
+                AppBoiler.navigateToActivity(LoginActivity.this, ForgotPasswordActivity.class, null);
             }
         });
 
@@ -98,11 +100,11 @@ public class LoginActivity extends AppCompatActivity {
                 email = charSequence.toString();
                 int isValid = Validation.isValidEmail(email);
 
-                if (isValid==1) {
+                if (isValid == 1) {
                     binding.emailTextInputLayout.setError("Enter email");
-                } else if(isValid==2) {
+                } else if (isValid == 2) {
                     binding.emailTextInputLayout.setError("Invalid email format");
-                } else if(isValid==0){
+                } else if (isValid == 0) {
                     AppBoiler.setInputLayoutErrorDisable(binding.emailTextInputLayout);
                 }
             }
@@ -122,9 +124,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 password = charSequence.toString();
-                if(Validation.isStringEmpty(password)){
+                if (Validation.isStringEmpty(password)) {
                     binding.passwordTextInputLayout.setError("Enter password");
-                }else{
+                } else {
                     AppBoiler.setInputLayoutErrorDisable(binding.passwordTextInputLayout);
                 }
             }
@@ -140,25 +142,25 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (binding.emailTextInputLayout.isErrorEnabled()) {
                     binding.emailEditText.requestFocus();
-                } else if(Validation.isStringEmpty(email)) {
+                } else if (Validation.isStringEmpty(email)) {
                     binding.emailTextInputLayout.setError("Enter email");
                     binding.emailEditText.requestFocus();
                 } else if (binding.passwordTextInputLayout.isErrorEnabled() || Validation.isStringEmpty(password)) {
                     binding.passwordEditText.requestFocus();
                     binding.passwordTextInputLayout.setError("Enter password");
-                }else{
+                } else {
                     loginUser();
                 }
             }
         });
     }
 
-    private void loginUser(){
+    private void loginUser() {
         if (AppBoiler.isInternetConnected(this)) {
             progressDialog = AppBoiler.setProgressDialog(LoginActivity.this);
             observeResponseOfLogin();
         } else {
-            AppBoiler.showSnackBarForInternet(this,binding.rootLayoutOfLogin);
+            AppBoiler.showSnackBarForInternet(this, binding.rootLayoutOfLogin);
         }
     }
 
@@ -171,13 +173,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onChanged(String s) {
 
 
-                if(s.equals(AppConstants.SUCCESS)){
+                if (s.equals(AppConstants.SUCCESS)) {
 
                     SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(), FirebaseAuth.getInstance().getUid());
                     getUserProfile();
 
-                }
-                else{
+                } else {
 
                     progressDialog.dismiss();
                     customDialog = AppBoiler.customDialogWithBtn(LoginActivity.this, s, R.drawable.ic_error, new DialogListener() {
@@ -191,25 +192,41 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void getUserProfile(){
+    private void getUserProfile() {
         LiveData<CreateProfileModel> modelLiveData = loginViewModel.getProfileDataFromServer();
 
         modelLiveData.observe(this, new Observer<CreateProfileModel>() {
             @Override
             public void onChanged(CreateProfileModel model) {
                 progressDialog.dismiss();
-                if(model!=null){
+                if (model != null) {
 
                     SharedPreferenceStorage.setProfileStatusOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(), model.getWhoIsUser());
 
-                    if(model.getWhoIsUser().equals(AppConstants.LANDLORD))
-                         AppBoiler.navigateToActivityWithFinish(LoginActivity.this, LandlordMainActivity.class,null);
+                    if (model.getWhoIsUser().equals(AppConstants.LANDLORD))
+                        AppBoiler.navigateToActivityWithFinish(LoginActivity.this, LandlordMainActivity.class, null);
                     else
-                        AppBoiler.navigateToActivityWithFinish(LoginActivity.this, TenantMainActivity.class,null);
-                }else{
+                        AppBoiler.navigateToActivityWithFinish(LoginActivity.this, TenantMainActivity.class, null);
+                } else {
 
                     UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
+                    bottomSheet.initListeners(new BottomChoiceListener() {
+                        @Override
+                        public void onClickLandlord() {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(AppConstants.WHO_IS_USER, AppConstants.LANDLORD);
+                            AppBoiler.navigateToActivity(LoginActivity.this, CreateProfileActivity.class, bundle);
+                        }
+
+                        @Override
+                        public void onClickTenant() {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(AppConstants.WHO_IS_USER, AppConstants.TENANT);
+                            AppBoiler.navigateToActivity(LoginActivity.this, CreateProfileActivity.class, bundle);
+                        }
+                    });
                     bottomSheet.show(getSupportFragmentManager(), "ChoiceBottomSheet");
+
                 }
             }
         });
@@ -220,8 +237,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode== AppConstants.GOOGLE_REQ_CODE){
+        if (requestCode == AppConstants.GOOGLE_REQ_CODE) {
             progressDialog = AppBoiler.setProgressDialog(LoginActivity.this);
-            googleLogin.activityResult(requestCode,resultCode,data , Activity.RESULT_OK);}
+            googleLogin.activityResult(requestCode, resultCode, data, Activity.RESULT_OK);
+        }
     }
 }

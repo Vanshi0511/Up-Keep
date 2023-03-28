@@ -103,39 +103,25 @@ public class CreateProfileRepository {
         return responseMutableData;
     }
 
-    public MutableLiveData<CreateProfileModel> getProfileDataFromServer(){
-        reference.child(AppConstants.USER_PROFILE).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    CreateProfileModel model = snapshot.getValue(CreateProfileModel.class);
-                    profileModelMutableLiveData.setValue(model);
-                }else{
-                    profileModelMutableLiveData.setValue(null);
-                }
+//    public MutableLiveData<CreateProfileModel> getProfileDataFromServer(){
+//        reference.child(AppConstants.USER_PROFILE).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(snapshot.exists()){
+//                    CreateProfileModel model = snapshot.getValue(CreateProfileModel.class);
+//                    profileModelMutableLiveData.setValue(model);
+//                }else{
+//                    profileModelMutableLiveData.setValue(null);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                System.out.println("=========== Error ================"+error.getMessage());
+//            }
+//        });
+//        return profileModelMutableLiveData;
+//    }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("=========== Error ================"+error.getMessage());
-            }
-        });
-        return profileModelMutableLiveData;
-    }
-
-    public void deleteImageFromServer(String url){
-        storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
-
-        storageReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    System.out.println("============= SUCCESS =========");
-                }else{
-                    System.out.println("============= ERROR ========="+task.getException());
-                }
-            }
-        });
-    }
 }

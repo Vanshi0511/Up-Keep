@@ -1,24 +1,35 @@
-package com.living.roomrental.activity.profile.create;
+package com.living.roomrental.activity.profile.edit;
+
 
 import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class CreateProfileViewModel extends ViewModel {
+import com.living.roomrental.activity.profile.create.CreateProfileModel;
 
-    private String name , email , contactNo , occupation , address , bio ,whoIsUser ;
+public class EditProfileViewModel extends ViewModel {
+
+    private EditProfileRepository repository;
+    private String name , email , contactNo , occupation , address , bio ;
     private Uri imageUri;
+    private String imageUrlFromDatabase;
 
-    public void setWhoIsUser(String whoIsUser){
-        this.whoIsUser = whoIsUser;
+    public void setImageUrl(String imageUrl){
+        this.imageUrlFromDatabase = imageUrl;
     }
+
+    public EditProfileViewModel(){
+        repository = new EditProfileRepository();
+    }
+    private MutableLiveData<CreateProfileModel> modelMutableLiveData;
 
     public Uri getImageUri(){
         return imageUri;
     }
     public void setImageUri(Uri imageUri){
-    this.imageUri = imageUri;
+        this.imageUri = imageUri;
     }
 
 
@@ -70,15 +81,16 @@ public class CreateProfileViewModel extends ViewModel {
         this.bio = bio;
     }
 
-
-    public LiveData<String> createOrEditUserProfile(){
-
-        CreateProfileRepository repository =new CreateProfileRepository();
-        CreateProfileModel model = new CreateProfileModel(name,contactNo,address,bio,occupation,whoIsUser,null);
-        if(imageUri==null){
-            return  repository.createProfileToServer(model);
-        }else{
-            return repository.createProfileToServerWithImage(model , imageUri);
-        }
+    public LiveData<CreateProfileModel> getProfileData(){
+       return repository.getDataFromServer();
     }
+
+    public LiveData<String> setProfileData(){
+        if(imageUrlFromDatabase!=null && imageUri==null){
+           repository.deleteImageFromServer(imageUrlFromDatabase);
+        }
+        CreateProfileModel model = new CreateProfileModel(name,contactNo,address,bio,occupation,imageUri.toString());
+        return repository.updateDataToServer(model);
+    }
+
 }

@@ -22,6 +22,15 @@ public class CreateProfileModel {
         this.imageUrl = imageUrl;
     }
 
+    public CreateProfileModel(String name, String contactNo, String address, String bio, String occupation, String imageUrl) {
+        this.name = name;
+        this.contactNo = contactNo;
+        this.address = address;
+        this.bio = bio;
+        this.occupation = occupation;
+        this.imageUrl = imageUrl;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
