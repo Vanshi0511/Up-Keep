@@ -210,23 +210,22 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 
                     UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
-                    bottomSheet.initListeners(new BottomChoiceListener() {
-                        @Override
-                        public void onClickLandlord() {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(AppConstants.WHO_IS_USER, AppConstants.LANDLORD);
-                            AppBoiler.navigateToActivity(LoginActivity.this, CreateProfileActivity.class, bundle);
-                        }
-
-                        @Override
-                        public void onClickTenant() {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(AppConstants.WHO_IS_USER, AppConstants.TENANT);
-                            AppBoiler.navigateToActivity(LoginActivity.this, CreateProfileActivity.class, bundle);
-                        }
-                    });
                     bottomSheet.show(getSupportFragmentManager(), "ChoiceBottomSheet");
-
+//                    bottomSheet.initListeners(new BottomChoiceListener() {
+//                        @Override
+//                        public void onClickLandlord() {
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString(AppConstants.WHO_IS_USER, AppConstants.LANDLORD);
+//                            AppBoiler.navigateToActivity(LoginActivity.this, CreateProfileActivity.class, bundle);
+//                        }
+//
+//                        @Override
+//                        public void onClickTenant() {
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString(AppConstants.WHO_IS_USER, AppConstants.TENANT);
+//                            AppBoiler.navigateToActivity(LoginActivity.this, CreateProfileActivity.class, bundle);
+//                        }
+//                    });
                 }
             }
         });
@@ -238,7 +237,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstants.GOOGLE_REQ_CODE) {
-            progressDialog = AppBoiler.setProgressDialog(LoginActivity.this);
             googleLogin.activityResult(requestCode, resultCode, data, Activity.RESULT_OK);
         }
     }

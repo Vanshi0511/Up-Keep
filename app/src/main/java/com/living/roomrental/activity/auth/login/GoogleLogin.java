@@ -64,6 +64,7 @@ public class GoogleLogin {
 
         if (requestCode == AppConstants.GOOGLE_REQ_CODE) {
             if (resultCode == RESULT_OK) {
+                ((LoginActivity)context).progressDialog = AppBoiler.setProgressDialog(context);
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 handleSignInResult(task);
             }
@@ -87,6 +88,7 @@ public class GoogleLogin {
             firebaseAuthWithGoogle(credential);
 
         } catch (ApiException e) {
+            ((LoginActivity)context).progressDialog.dismiss();
             e.printStackTrace();
         }
     }
@@ -112,22 +114,22 @@ public class GoogleLogin {
 
     private void openChoiceBottomSheet(){
         UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
-        bottomSheet.initListeners(new BottomChoiceListener() {
-            @Override
-            public void onClickLandlord() {
-                Bundle bundle = new Bundle();
-                bundle.putString(AppConstants.WHO_IS_USER, AppConstants.LANDLORD);
-                AppBoiler.navigateToActivity(context, CreateProfileActivity.class, bundle);
-            }
-
-            @Override
-            public void onClickTenant() {
-                Bundle bundle = new Bundle();
-                bundle.putString(AppConstants.WHO_IS_USER, AppConstants.TENANT);
-                AppBoiler.navigateToActivity(context, CreateProfileActivity.class, bundle);
-            }
-        });
         bottomSheet.show(((LoginActivity)context).getSupportFragmentManager(), "ChoiceBottomSheet");
+//        bottomSheet.initListeners(new BottomChoiceListener() {
+//            @Override
+//            public void onClickLandlord() {
+//                Bundle bundle = new Bundle();
+//                bundle.putString(AppConstants.WHO_IS_USER, AppConstants.LANDLORD);
+//                AppBoiler.navigateToActivity(context, CreateProfileActivity.class, bundle);
+//            }
+//
+//            @Override
+//            public void onClickTenant() {
+//                Bundle bundle = new Bundle();
+//                bundle.putString(AppConstants.WHO_IS_USER, AppConstants.TENANT);
+//                AppBoiler.navigateToActivity(context, CreateProfileActivity.class, bundle);
+//            }
+//        });
     }
 }
 

@@ -24,25 +24,53 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50" />
 
-    <ImageView
-        android:id="@+id/landlordImageView"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/landlordImageLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16sdp"
+
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="@dimen/_8sdp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iAmTextView"
-        android:src="@drawable/i_am_landlord_image" />
+        app:layout_constraintTop_toBottomOf="@+id/iAmTextView">
 
-    <ImageView
-        android:id="@+id/tenantImageView"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/landlordImageView"
+        <ImageView
+            android:id="@+id/landlordImageView"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/i_am_landlord_image" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/tenantImageLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/landlordImageLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="@dimen/_8sdp"
         app:layout_constraintStart_toStartOf="@+id/guideline_middle_vertical"
-        app:layout_constraintTop_toTopOf="@+id/landlordImageView"
-        android:src="@drawable/i_am_tenant_image" />
+        app:layout_constraintTop_toTopOf="@+id/landlordImageLayout">
+
+        <ImageView
+            android:id="@+id/tenantImageView"
+            android:layout_width="@dimen/_100sdp"
+            android:padding="@dimen/_8sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/i_am_tenant_image" />
+
+    </com.google.android.material.card.MaterialCardView>
+
 
     <TextView
         android:id="@+id/landlordTextView"
@@ -52,9 +80,9 @@
         android:text="I'Am a \nLandlord"
         android:textSize="@dimen/_14ssp"
         android:fontFamily="@font/montserrat_semibold"
-        app:layout_constraintEnd_toEndOf="@+id/landlordImageView"
-        app:layout_constraintStart_toStartOf="@+id/landlordImageView"
-        app:layout_constraintTop_toBottomOf="@+id/landlordImageView"
+        app:layout_constraintEnd_toEndOf="@+id/landlordImageLayout"
+        app:layout_constraintStart_toStartOf="@+id/landlordImageLayout"
+        app:layout_constraintTop_toBottomOf="@+id/landlordImageLayout"
         app:layout_constraintBottom_toTopOf="@id/guideline_bottom_horizontal"/>
 
     <TextView
@@ -65,8 +93,8 @@
         android:text="I'Am a\nTenant"
         android:textSize="@dimen/_14ssp"
         app:layout_constraintBottom_toBottomOf="@+id/landlordTextView"
-        app:layout_constraintEnd_toEndOf="@+id/tenantImageView"
-        app:layout_constraintStart_toStartOf="@+id/tenantImageView"
+        app:layout_constraintEnd_toEndOf="@+id/tenantImageLayout"
+        app:layout_constraintStart_toStartOf="@+id/tenantImageLayout"
         app:layout_constraintTop_toTopOf="@+id/landlordTextView" />
 
     <androidx.constraintlayout.widget.Guideline

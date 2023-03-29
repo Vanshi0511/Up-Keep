@@ -10,6 +10,8 @@ import android.view.View;
 import com.google.android.material.navigation.NavigationBarView;
 import com.living.roomrental.R;
 import com.living.roomrental.databinding.ActivityLandlordMainBinding;
+import com.living.roomrental.landlord.activity.create_property.CreatePropertyActivity;
+import com.living.roomrental.utilities.AppBoiler;
 
 public class LandlordMainActivity extends AppCompatActivity {
 
@@ -32,7 +34,7 @@ public class LandlordMainActivity extends AppCompatActivity {
         binding.fabCreateProperty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AppBoiler.navigateToActivity(LandlordMainActivity.this, CreatePropertyActivity.class,null);
             }
         });
 

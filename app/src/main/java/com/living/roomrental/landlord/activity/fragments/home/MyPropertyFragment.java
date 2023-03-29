@@ -1,4 +1,4 @@
-package com.living.roomrental.landlord.fragments;
+package com.living.roomrental.landlord.activity.fragments.home;
 
 import android.os.Bundle;
 
@@ -18,8 +18,6 @@ public class MyPropertyFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_my_property, container, false);
-
-
         return view;
     }
 }

@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".landlord.activity.create_property.CreatePropertyActivity">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerImageLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal"/>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/addImageCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                app:cardBackgroundColor="@color/app_default_color"
+                app:cardElevation="@dimen/_6sdp"
+                app:cardCornerRadius="@dimen/_4sdp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerImageLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_add_image"
+                    android:drawablePadding="@dimen/_4sdp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Add Image"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/propertyNameTextInputLayout"
+                style="@style/TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+
+                android:hint="Property Name"
+
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/addImageCardView">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/propertyNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="50"
+                    android:singleLine="true"
+                    android:textAppearance="@style/InputTextAppearance"
+                    android:textColor="@color/black_text_secondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/addressInformationTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="@font/montserrat_mediumitalic"
+                android:text="Address Information"
+                android:textAlignment="center"
+                android:textColor="@color/black_text_secondary"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyNameTextInputLayout" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addressLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_8sdp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/addressInformationTextView">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:paddingRight="@dimen/_8sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyStreetAddressTextInputLayout"
+                        style="@style/TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+
+                        android:hint="Street Address"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/propertyStreetAddressEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLength="100"
+                            android:singleLine="true"
+                            android:textAppearance="@style/InputTextAppearance"
+                            android:textColor="@color/black_text_secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyPinCodeTextInputLayout"
+                        style="@style/TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+
+                        android:hint="Pincode"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/propertyStreetAddressTextInputLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/propertyPinCodeEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:singleLine="true"
+                            android:textAppearance="@style/InputTextAppearance"
+                            android:textColor="@color/black_text_secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyLandmarkTextInputLayout"
+                        style="@style/TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+
+                        android:hint="Landmark"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/propertyPinCodeTextInputLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/propertyLandmarkEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLength="100"
+                            android:singleLine="true"
+                            android:textAppearance="@style/InputTextAppearance"
+                            android:textColor="@color/black_text_secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/mapLocationLinaerLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:background="@drawable/layout_border"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom_horizontal_inner"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/propertyLandmarkTextInputLayout">
+
+                        <TextView
+                            android:id="@+id/mapLocationTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/_12sdp"
+                            android:layout_marginRight="@dimen/_4sdp"
+                            android:layout_toLeftOf="@+id/locationDividerView"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:hint="Location"
+                            android:padding="@dimen/_4sdp"
+                            android:textColor="@color/black_text_secondary"
+                            android:textColorHint="@color/black_text_disabled"
+                            android:textSize="@dimen/_14ssp" />
+
+                        <View
+                            android:id="@+id/locationDividerView"
+                            android:layout_width="@dimen/_1sdp"
+                            android:layout_height="match_parent"
+                            android:layout_toLeftOf="@+id/locationImageView"
+                            android:background="@color/black_text_disabled" />
+
+                        <ImageView
+                            android:id="@+id/locationImageView"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:padding="@dimen/_6sdp"
+                            android:src="@drawable/ic_location" />
+
+                    </RelativeLayout>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_bottom_horizontal_inner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_end="@dimen/_8sdp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/propertyTypeSpinnerLayout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/layout_border"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/addressLayout">
+
+                <Spinner
+                    android:id="@+id/propertyTypeSpinner"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/propertyRentTextInputLayout"
+                style="@style/TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+
+                android:hint="Rent (per month)"
+
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyTypeSpinnerLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/propertyRentEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_currency"
+                    android:drawablePadding="@dimen/_4sdp"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textAppearance="@style/InputTextAppearance"
+                    android:textColor="@color/black_text_secondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/propertyPeopleForSpinnerLayout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/layout_border"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyRentTextInputLayout">
+
+                <Spinner
+                    android:id="@+id/propertyPeopleForSpinner"
+                    style="@style/SpinnerTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/propertySizeTextInputLayout"
+                style="@style/TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+
+                android:hint="Property Size (Sq. ft.)"
+                app:helperText="Eg : 10 X 50 "
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyPeopleForSpinnerLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/propertySizeEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textAppearance="@style/InputTextAppearance"
+                    android:textColor="@color/black_text_secondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/propertyAgreementTextInputLayout"
+                style="@style/TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+
+                android:hint="Agreement (if any)"
+                app:helperText="Enter no, if there is no agreement"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertySizeTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/propertyAgreementEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textAppearance="@style/InputTextAppearance"
+                    android:textColor="@color/black_text_secondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/facilitiesTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="@font/montserrat_mediumitalic"
+                android:text="Facilities"
+                android:textAlignment="center"
+                android:textColor="@color/black_text_secondary"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyAgreementTextInputLayout" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/facilitiesCardViewLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_6sdp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/facilitiesTextView">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:paddingRight="@dimen/_8sdp">
+
+                    <TextView
+                        android:id="@+id/withinRentTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Within rent"
+                        android:textColor="@color/app_default_color"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintStart_toStartOf="@+id/waterFacilityCheckBox"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <CheckBox
+                        android:id="@+id/waterFacilityCheckBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="RO Water"
+                        android:textColor="@color/black_text_secondary"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintEnd_toStartOf="@+id/lightFacilityCheckBox"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/withinRentTextView" />
+
+                    <CheckBox
+                        android:id="@+id/lightFacilityCheckBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Electricity"
+                        android:textColor="@color/black_text_secondary"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/waterFacilityCheckBox"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/waterFacilityCheckBox"
+                        app:layout_constraintTop_toTopOf="@+id/waterFacilityCheckBox" />
+
+                    <CheckBox
+                        android:id="@+id/parkingFacilityCheckBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Parking"
+                        android:textColor="@color/black_text_secondary"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintStart_toStartOf="@+id/waterFacilityCheckBox"
+                        app:layout_constraintTop_toBottomOf="@+id/waterFacilityCheckBox" />
+
+                    <TextView
+                        android:id="@+id/furnishingTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Furnishing"
+                        android:textColor="@color/app_default_color"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintStart_toStartOf="@+id/waterFacilityCheckBox"
+                        app:layout_constraintTop_toBottomOf="@+id/parkingFacilityCheckBox"/>
+
+                    <RadioGroup
+                        android:id="@+id/furnishingRadioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/furnishingTextView">
+
+                        <RadioButton
+                            android:id="@+id/furnishedRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="Full Furnished"
+                            android:textColor="@color/black_text_secondary"
+                            android:textSize="@dimen/_14ssp" />
+
+                        <RadioButton
+                            android:id="@+id/semiFurnishedRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="Semi-Furnished"
+                            android:textColor="@color/black_text_secondary"
+                            android:textSize="@dimen/_14ssp" />
+
+                        <RadioButton
+                            android:id="@+id/unFurnishedRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="UnFurnished"
+                            android:textColor="@color/black_text_secondary"
+                            android:textSize="@dimen/_14ssp" />
+
+
+                    </RadioGroup>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/propertyFurnishingTextInputLayout"
+                        style="@style/TextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+
+                        android:visibility="gone"
+                        android:hint="Furnished Items"
+                        app:helperText="What furnished items should you provide to your tenant"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/furnishingRadioGroup"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom_horizontal_inner_facility">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/propertyFurnishingEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textAppearance="@style/InputTextAppearance"
+                        android:textColor="@color/black_text_secondary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_bottom_horizontal_inner_facility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_end="@dimen/_8sdp" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/propertyDescriptionTextInputLayout"
+                style="@style/TextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+
+                android:hint="Description"
+
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/facilitiesCardViewLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/propertyDescriptionEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="4"
+                    android:textAppearance="@style/InputTextAppearance"
+                    android:textColor="@color/black_text_secondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/createPropertyBtn"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_52sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Create"
+                android:textAllCaps="false"
+                android:textAppearance="@style/InputTextAppearance"
+                app:cornerRadius="@dimen/_24sdp"
+
+                app:layout_constraintBottom_toTopOf="@+id/guideline_bottom_horizontal"
+
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyDescriptionTextInputLayout"
+                app:rippleColor="@color/black" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_top_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="@dimen/_16sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_bottom_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="@dimen/_16sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/_8sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_8sdp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
