@@ -1,6 +1,10 @@
 package com.living.roomrental.activity.profile.create;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -18,7 +22,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.living.roomrental.FirebaseController;
+import com.living.roomrental.repository.local.SharedPreferenceStorage;
+import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.utilities.AppConstants;
+import com.living.roomrental.utilities.TypeConverters;
+
+import java.io.ByteArrayOutputStream;
 
 public class CreateProfileRepository {
 
@@ -27,12 +36,15 @@ public class CreateProfileRepository {
     private FirebaseController controller;
 
     private String uid ;
+    private Context context;
 
     private MutableLiveData<String> responseMutableData = new MutableLiveData<>();
 
     private MutableLiveData<CreateProfileModel> profileModelMutableLiveData = new MutableLiveData<>();
 
-    public CreateProfileRepository(){
+    public CreateProfileRepository(Context context){
+        this.context = context;
+
         controller = FirebaseController.getInstance();
         reference = controller.getDatabaseReference();
         storageReference = controller.getStorageReference();
@@ -50,6 +62,7 @@ public class CreateProfileRepository {
                    @Override
                    public void onSuccess(Uri uri) {
                        model.setImageUrl(uri.toString());
+                       SharedPreferenceStorage.setUserExtraData(SharedPreferencesController.getInstance(context).getPreferences(),model.getName(),uri.toString());
 
                        reference.child(AppConstants.USER_PROFILE).child(uid).setValue(model)
                                .addOnSuccessListener(new OnSuccessListener<Void>() {

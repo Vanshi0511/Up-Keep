@@ -215,7 +215,11 @@
                             android:padding="@dimen/_4sdp"
                             android:textColor="@color/black_text_secondary"
                             android:textColorHint="@color/black_text_disabled"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_14ssp"
+                            android:focusableInTouchMode="true">
+                        <requestFocus />
+
+                        </TextView>
 
                         <View
                             android:id="@+id/locationDividerView"
@@ -246,11 +250,23 @@
 
             </androidx.cardview.widget.CardView>
 
+            <TextView
+                android:id="@+id/selectPropertyTypeRequestFocus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:focusableInTouchMode="true"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/addressLayout">
+                <requestFocus />
+            </TextView>
+
             <LinearLayout
                 android:id="@+id/propertyTypeSpinnerLayout"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:orientation="vertical"
                 android:background="@drawable/layout_border"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
@@ -260,8 +276,8 @@
                     android:id="@+id/propertyTypeSpinner"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginStart="@dimen/_12sdp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_12sdp"/>
 
             </LinearLayout>
 
@@ -292,6 +308,17 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/selectPropertyForRequestFocus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:focusableInTouchMode="true"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyRentTextInputLayout">
+                <requestFocus />
+            </TextView>
+
             <LinearLayout
                 android:id="@+id/propertyPeopleForSpinnerLayout"
                 android:layout_width="0dp"
@@ -307,7 +334,10 @@
                     style="@style/SpinnerTheme"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/_12sdp" />
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:focusableInTouchMode="true">
+                    <requestFocus />
+                </Spinner>
 
             </LinearLayout>
 

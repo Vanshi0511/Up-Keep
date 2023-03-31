@@ -79,6 +79,20 @@ public class CreatePropertyViewModel extends ViewModel {
             this.facilitiesArrayList.add(facility);
     }
 
+    @Override
+    public String toString() {
+        return "CreatePropertyViewModel{" +
+                "mapLocationAddress='" + mapLocationAddress + '\'' +
+                ", peopleFor='" + peopleFor + '\'' +
+                ", type='" + type + '\'' +
+                ", furnishing='" + furnishing + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", propertyImages=" + propertyImages +
+                ", facilitiesArrayList=" + facilitiesArrayList +
+                '}';
+    }
+
     public LiveData<String> setDataOfPropertyToServer(CreatePropertyDataModel model){
         CreatePropertyRepository repository = new CreatePropertyRepository();
 

@@ -152,6 +152,13 @@ public class CreatePropertyActivity extends AppCompatActivity {
             }
         });
 
+        binding.header.backImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
         binding.propertyNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -444,6 +451,7 @@ public class CreatePropertyActivity extends AppCompatActivity {
         else if(Validation.isStringEmpty(createPropertyViewModel.getMapLocationAddress())){
             binding.mapLocationLinaerLayout.setBackgroundResource(R.drawable.error_border_drawable);
             binding.mapLocationTextView.setFocusable(true);
+            binding.mapLocationTextView.requestFocus();
             isValid = false;
         }
         else if(Validation.isStringEmpty(propertyLandmark)){
@@ -453,7 +461,8 @@ public class CreatePropertyActivity extends AppCompatActivity {
         }
         else if(Validation.isStringEmpty(createPropertyViewModel.getType())){
             binding.propertyTypeSpinnerLayout.setBackgroundResource(R.drawable.error_border_drawable);
-            binding.propertyTypeSpinner.setFocusable(true);
+            binding.selectPropertyTypeRequestFocus.setFocusable(true);
+            binding.selectPropertyTypeRequestFocus.requestFocus();
             isValid = false;
         }
         else if(Validation.isStringEmpty(propertyRent)){
@@ -463,7 +472,8 @@ public class CreatePropertyActivity extends AppCompatActivity {
         }
         else if(Validation.isStringEmpty(createPropertyViewModel.getPeopleFor())){
             binding.propertyPeopleForSpinnerLayout.setBackgroundResource(R.drawable.error_border_drawable);
-            binding.propertyTypeSpinner.setFocusable(true);
+            binding.selectPropertyForRequestFocus.setFocusable(true);
+            binding.selectPropertyForRequestFocus.requestFocus();
             isValid = false;
         }
         else if(Validation.isStringEmpty(propertySize)){
@@ -597,7 +607,8 @@ public class CreatePropertyActivity extends AppCompatActivity {
         imagePickerDialog = AppBoiler.showImagePickerDialog(this, new ImagePickerDialogListener() {
             @Override
             public void onClickCamera() {
-
+                // todo get image from camera
+                imagePickerDialog.dismiss();
             }
 
             @Override
@@ -608,7 +619,7 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
             @Override
             public void onClickRemove() {
-
+                // no need to remove image
             }
         });
     }

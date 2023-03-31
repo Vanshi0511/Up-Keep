@@ -24,6 +24,7 @@ import com.living.roomrental.DialogListener;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.create.CreateProfileActivity;
+import com.living.roomrental.activity.profile.edit.EditProfileActivity;
 
 public class AppBoiler {
 
@@ -114,6 +115,10 @@ public class AppBoiler {
         imageFromCameraLayout = dialog.findViewById(R.id.imageFromCameraLayout);
         imageFromGalleryLayout = dialog.findViewById(R.id.imageFromGalleryLayout);
         removeImageLayout = dialog.findViewById(R.id.removeImageLayout);
+
+        if(context instanceof CreateProfileActivity || context instanceof EditProfileActivity){
+            removeImageLayout.setVisibility(View.VISIBLE);
+        }
 
         imageFromCameraLayout.setOnClickListener(new View.OnClickListener() {
             @Override

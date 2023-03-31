@@ -268,7 +268,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     }
 
     private void observeResponseForSetTheData() {
-        LiveData<String> response = createProfileViewModel.createOrEditUserProfile();
+        LiveData<String> response = createProfileViewModel.createOrEditUserProfile(this);
 
         response.observe(this, new Observer<String>() {
             @Override
@@ -281,6 +281,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                         @Override
                         public void onClick() {
                             responseDialog.dismiss();
+
 
                             SharedPreferenceStorage.setProfileStatusOfUser(SharedPreferencesController.getInstance(CreateProfileActivity.this).getPreferences(), whoIsUser);
 

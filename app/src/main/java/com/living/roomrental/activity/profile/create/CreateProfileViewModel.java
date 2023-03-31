@@ -1,9 +1,14 @@
 package com.living.roomrental.activity.profile.create;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.io.IOException;
 
 public class CreateProfileViewModel extends ViewModel {
 
@@ -71,13 +76,13 @@ public class CreateProfileViewModel extends ViewModel {
     }
 
 
-    public LiveData<String> createOrEditUserProfile(){
+    public LiveData<String> createOrEditUserProfile(Context context){
 
-        CreateProfileRepository repository =new CreateProfileRepository();
+        CreateProfileRepository repository =new CreateProfileRepository(context);
         CreateProfileModel model = new CreateProfileModel(name,contactNo,address,bio,occupation,whoIsUser,null);
         if(imageUri==null){
             return  repository.createProfileToServer(model);
-        }else{
+        } else {
             return repository.createProfileToServerWithImage(model , imageUri);
         }
     }

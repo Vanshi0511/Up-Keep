@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +80,7 @@
             <ImageView
                 android:layout_width="@dimen/_32sdp"
                 android:layout_height="@dimen/_32sdp"
-                android:src="@drawable/ic_remove" />
+                android:src="@drawable/ic_delete" />
 
             <TextView
                 android:layout_width="match_parent"
