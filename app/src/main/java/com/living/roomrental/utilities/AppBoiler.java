@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -22,6 +23,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
+import com.living.roomrental.activity.profile.create.CreateProfileActivity;
 
 public class AppBoiler {
 
@@ -87,6 +89,13 @@ public class AppBoiler {
         ((Activity)context).finish();
     }
 
+    public static void navigateToActivityForResult(Context context , Class nextActivity , Bundle bundle , ActivityResultLauncher<Intent> mapLocationLauncher){
+        Intent intent = new Intent(context,nextActivity);
+        if(bundle!=null)
+            intent.putExtras(bundle);
+       mapLocationLauncher.launch(intent);
+    }
+
     public static void showSnackBarForInternet(Context context , View view){
        Snackbar.make(view,"No Internet Found",Snackbar.LENGTH_SHORT)
                .setBackgroundTint(context.getColor(R.color.red_400))
@@ -128,6 +137,13 @@ public class AppBoiler {
 
         dialog.show();
         return dialog;
+    }
+
+    public static void showCustomSnackBar( View view , String msg){
+        Snackbar.make(view,msg,Snackbar.LENGTH_SHORT)
+                .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                .show();
+        // snackbar.showAction -------> operations like undo
     }
 
 

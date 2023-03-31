@@ -14,6 +14,8 @@ public class AppConstants {
 
     public static final String ROOM_RENTAL = "RoomRental";
     public static final String USER_PROFILE = "UserProfile";
+    public static final String LANDLORD_PROPERTY = "LandlordProperty";
+    public static final String PROPERTY_IMAGES = "PropertyImages";
     public static final String LANDLORD = "Landlord";
     public static final String TENANT = "Tenant";
 }

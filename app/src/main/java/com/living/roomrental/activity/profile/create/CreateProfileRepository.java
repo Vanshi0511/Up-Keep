@@ -42,7 +42,7 @@ public class CreateProfileRepository {
     public MutableLiveData<String> createProfileToServerWithImage(CreateProfileModel model , Uri uri){
 
 
-       storageReference = storageReference.child(AppConstants.PROFILE_IMAGES).child(AppConstants.PROFILE_IMAGES).child(uid);
+       storageReference = storageReference.child(AppConstants.PROFILE_IMAGES).child(uid);
        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
            @Override
            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

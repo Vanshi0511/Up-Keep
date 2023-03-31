@@ -19,4 +19,11 @@ public class ImplicitUtils {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return intent;
     }
+
+    public static Intent getMultipleImagesFromGallery(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        return intent;
+    }
 }

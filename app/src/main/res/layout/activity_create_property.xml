@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/rootLayoutOfCreateProperty"
     tools:context=".landlord.activity.create_property.CreatePropertyActivity">
 
     <include
@@ -28,7 +29,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerImageLayout"
+                android:id="@+id/propertyImageRecyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
@@ -46,7 +47,7 @@
                 app:cardCornerRadius="@dimen/_4sdp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerImageLayout">
+                app:layout_constraintTop_toBottomOf="@+id/propertyImageRecyclerView">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,9 +92,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:fontFamily="@font/montserrat_mediumitalic"
-                android:text="Address Information"
-                android:textAlignment="center"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Pick Address from Location"
                 android:textColor="@color/black_text_secondary"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
@@ -117,54 +117,54 @@
                     android:paddingLeft="@dimen/_8sdp"
                     android:paddingRight="@dimen/_8sdp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/propertyStreetAddressTextInputLayout"
-                        style="@style/TextInputLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:id="@+id/propertyStreetAddressTextInputLayout"-->
+<!--                        style="@style/TextInputLayout"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="@dimen/_8sdp"-->
 
-                        android:hint="Street Address"
+<!--                        android:hint="Street Address"-->
 
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent">-->
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/propertyStreetAddressEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxLength="100"
-                            android:singleLine="true"
-                            android:textAppearance="@style/InputTextAppearance"
-                            android:textColor="@color/black_text_secondary" />
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            android:id="@+id/propertyStreetAddressEditText"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:maxLength="100"-->
+<!--                            android:singleLine="true"-->
+<!--                            android:textAppearance="@style/InputTextAppearance"-->
+<!--                            android:textColor="@color/black_text_secondary" />-->
 
-                    </com.google.android.material.textfield.TextInputLayout>
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/propertyPinCodeTextInputLayout"
-                        style="@style/TextInputLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_4sdp"
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:id="@+id/propertyPinCodeTextInputLayout"-->
+<!--                        style="@style/TextInputLayout"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="@dimen/_4sdp"-->
 
-                        android:hint="Pincode"
+<!--                        android:hint="Pincode"-->
 
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/propertyStreetAddressTextInputLayout">
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/propertyStreetAddressTextInputLayout">-->
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/propertyPinCodeEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:maxLength="6"
-                            android:singleLine="true"
-                            android:textAppearance="@style/InputTextAppearance"
-                            android:textColor="@color/black_text_secondary" />
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            android:id="@+id/propertyPinCodeEditText"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:inputType="number"-->
+<!--                            android:maxLength="6"-->
+<!--                            android:singleLine="true"-->
+<!--                            android:textAppearance="@style/InputTextAppearance"-->
+<!--                            android:textColor="@color/black_text_secondary" />-->
 
-                    </com.google.android.material.textfield.TextInputLayout>
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/propertyLandmarkTextInputLayout"
@@ -174,10 +174,9 @@
                         android:layout_marginTop="@dimen/_4sdp"
 
                         android:hint="Landmark"
-
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/propertyPinCodeTextInputLayout">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/propertyLandmarkEditText"
@@ -193,7 +192,7 @@
                     <RelativeLayout
                         android:id="@+id/mapLocationLinaerLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50sdp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:background="@drawable/layout_border"

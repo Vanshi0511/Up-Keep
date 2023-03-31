@@ -1,5 +1,24 @@
 package com.living.roomrental.landlord.activity.create_property;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -8,44 +27,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-
+import com.living.roomrental.DialogListener;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.databinding.ActivityCreatePropertyBinding;
+import com.living.roomrental.landlord.activity.PropertyMapActivity;
 import com.living.roomrental.utilities.AppBoiler;
+import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.ImplicitUtils;
+import com.living.roomrental.utilities.Validation;
 
 import java.util.ArrayList;
 
 public class CreatePropertyActivity extends AppCompatActivity {
 
     private ActivityCreatePropertyBinding binding;
-
     private CreatePropertyViewModel createPropertyViewModel;
-    private Dialog imagePickerDialog;
-    private ActivityResultLauncher<Intent> imageResultLauncher;
-
-    private ArrayList<Uri> propertyImages = new ArrayList<>();
+    private Dialog imagePickerDialog , progressDialog , responseDialog ;
+    private ActivityResultLauncher<Intent> imageResultLauncher , mapLocationLauncher;
+    private PropertyImageAdapter propertyImageAdapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,31 +59,91 @@ public class CreatePropertyActivity extends AppCompatActivity {
         binding = ActivityCreatePropertyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        createPropertyViewModel = ViewModelProviders.of(this).get(CreatePropertyViewModel.class);
+        createPropertyViewModel = new ViewModelProvider(this).get(CreatePropertyViewModel.class);
 
         binding.header.headerTitle.setText("Create Property");
+
+        setAdapterForImage();
         initListeners();
         setArrayAdaptersToSpinner();
 
-        initLauncherForImage();
+        setDataFromViewModel();
+        initLaunchers();
     }
 
-    private void initLauncherForImage() {
+    public void setDataFromViewModel(){
+        binding.mapLocationTextView.setText(createPropertyViewModel.getMapLocationAddress());
+        notifyAdapter();
+    }
+
+    private void setAdapterForImage(){
+        if(propertyImageAdapter==null)
+            propertyImageAdapter = new PropertyImageAdapter(this);
+
+        binding.propertyImageRecyclerView.setAdapter(propertyImageAdapter);
+    }
+
+    private void initLaunchers() {
 
         imageResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
 
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    // todo set data to view model and observe it and generate recycler view
+                    // todo set image uri to view model and then notify adapter
+                    Intent response = result.getData();
+                    if(response!=null)
+                    {
+                        if(response.getClipData()!=null) //if images is more than one (multiple)
+                        {
+                            for(int i=0;i<response.getClipData().getItemCount();i++)
+                                createPropertyViewModel.setPropertyImages(response.getClipData().getItemAt(i).getUri());
+                        }
+                        else
+                            createPropertyViewModel.setPropertyImages(response.getData()); //single image
+
+                        notifyAdapter();
+                    }
+                }
+                else{
+                    AppBoiler.showCustomSnackBar(binding.rootLayoutOfCreateProperty,"Failed to get Image");
+                }
+            }
+        });
+
+        mapLocationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == Activity.RESULT_OK){
+
+                   if(result.getData()!=null){
+                       Bundle bundle = result.getData().getExtras();
+
+                       binding.mapLocationTextView.setText(bundle.getString("address"));
+                       createPropertyViewModel.setLatitude(bundle.getDouble("latitude"));
+                       createPropertyViewModel.setLongitude(bundle.getDouble("longitude"));
+                   }
+                }
+                else{
+                    AppBoiler.showCustomSnackBar(binding.rootLayoutOfCreateProperty,"Failed to get Location");
                 }
             }
         });
     }
+    private void notifyAdapter(){
+        propertyImageAdapter.setImagesList(createPropertyViewModel.getPropertyImages());
+    }
 
     private void initListeners() {
-        //binding.propertyImageRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL , false));
 
+        binding.propertyImageRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL , false));
+
+        propertyImageAdapter.setListener(new PropertyImageAdapter.ItemListener() {
+            @Override
+            public void onClickCancel(int position) {
+                propertyImageAdapter.removeImage(position);
+            }
+        });
 
         binding.addImageCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,49 +168,6 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createPropertyViewModel.setPropertyName(editable.toString());
-            }
-        });
-
-        binding.propertyStreetAddressEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.toString().length()==0){
-                    binding.propertyStreetAddressTextInputLayout.setError("Enter street address");
-                }else{
-                    AppBoiler.setInputLayoutErrorDisable(binding.propertyStreetAddressTextInputLayout);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                createPropertyViewModel.setStreetAddress(editable.toString());
-            }
-        });
-
-        binding.propertyPinCodeEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.toString().length()==0){
-                    binding.propertyPinCodeTextInputLayout.setError("Enter pincode");
-                }else{
-                    AppBoiler.setInputLayoutErrorDisable(binding.propertyPinCodeTextInputLayout);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                createPropertyViewModel.setPincodeAddress(editable.toString());
             }
         });
 
@@ -166,7 +188,24 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createPropertyViewModel.setLandmarkAddress(editable.toString());
+            }
+        });
+
+        binding.mapLocationTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    // todo remove error
+                    binding.mapLocationLinaerLayout.setBackgroundResource(R.drawable.layout_border);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                createPropertyViewModel.setMapLocationAddress(editable.toString());
             }
         });
 
@@ -174,18 +213,23 @@ public class CreatePropertyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //todo open map and get location
+                AppBoiler.navigateToActivityForResult(CreatePropertyActivity.this, PropertyMapActivity.class,null,mapLocationLauncher);
             }
         });
 
         binding.propertyTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
 
                 try{
-                    TextView textView = (TextView) view;
+                    TextView textView = (TextView) adapterView.getSelectedView();
                     textView.setTextColor(getColor(R.color.black_text_secondary));
                     textView.setTypeface(getTypeFace());
-                    createPropertyViewModel.setType(adapterView.getSelectedItem().toString());
+                    if(position!=0){
+                        createPropertyViewModel.setType(adapterView.getSelectedItem().toString());
+                        binding.propertyTypeSpinnerLayout.setBackgroundResource(R.drawable.layout_border);
+                    }
+
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -216,19 +260,22 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createPropertyViewModel.setRent(editable.toString());
             }
         });
 
         binding.propertyPeopleForSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
 
                 try{
-                    TextView textView = (TextView) view;
+                    TextView textView = (TextView) adapterView.getSelectedView();
                     textView.setTextColor(getColor(R.color.black_text_secondary));
                     textView.setTypeface(getTypeFace());
-                    createPropertyViewModel.setPeopleFor(adapterView.getSelectedItem().toString());
+                    if(position!=0){
+                        createPropertyViewModel.setPeopleFor(adapterView.getSelectedItem().toString());
+                        binding.propertyPeopleForSpinnerLayout.setBackgroundResource(R.drawable.layout_border);
+                    }
+
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -259,7 +306,6 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createPropertyViewModel.setSize(editable.toString());
             }
         });
 
@@ -280,40 +326,19 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                createPropertyViewModel.setAgreement(editable.toString());
-            }
-        });
-
-
-
-        binding.propertyDescriptionEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                createPropertyViewModel.setDescription(editable.toString());
-            }
-        });
-
-        binding.createPropertyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
             }
         });
 
         binding.furnishingRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (radioGroup.getCheckedRadioButtonId()){
+
+                int id = radioGroup.getCheckedRadioButtonId();
+                RadioButton button = (RadioButton)findViewById(id);
+                createPropertyViewModel.setFurnishing(button.getText().toString());
+
+                binding.furnishingTextView.setTextColor(getColor(R.color.app_default_color));
+                switch (id){
                     case R.id.unFurnishedRadioButton: binding.propertyFurnishingTextInputLayout.setVisibility(View.GONE);
                         break;
                     case R.id.furnishedRadioButton:
@@ -323,38 +348,189 @@ public class CreatePropertyActivity extends AppCompatActivity {
             }
         });
 
-//        binding.nestedScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                binding.nestedScrollView.post(new Runnable() {
-//                    public void run() {
-//                        binding.nestedScrollView.scrollTo(0, binding.nestedScrollView.getBottom() + binding.nestedScrollView.getScrollY());
-//                    }
-//                });
-//            }
-//        });
-    }
-
-    private void openImagePickerDialog() {
-        imagePickerDialog = AppBoiler.showImagePickerDialog(this, new ImagePickerDialogListener() {
+        binding.propertyFurnishingEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClickCamera() {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
             @Override
-            public void onClickGallery() {
-                imagePickerDialog.dismiss();
-                Intent implicitIntent = ImplicitUtils.getIntentForImagePickGallery();
-                imageResultLauncher.launch(implicitIntent);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.toString().length()==0){
+                    binding.propertyFurnishingTextInputLayout.setError("Enter Furnished items");
+                }else{
+                    AppBoiler.setInputLayoutErrorDisable(binding.propertyFurnishingTextInputLayout);
+                }
             }
 
             @Override
-            public void onClickRemove() {
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
+        binding.lightFacilityCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                String facility = binding.lightFacilityCheckBox.getText().toString();
+                if(binding.lightFacilityCheckBox.isChecked()){
+                    createPropertyViewModel.setFacilitiesArrayList(facility);
+                }
+                else{
+                    createPropertyViewModel.setFacilitiesArrayList(facility);
+                }
+            }
+        });
+
+        binding.waterFacilityCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                String facility = binding.waterFacilityCheckBox.getText().toString();
+                if(binding.waterFacilityCheckBox.isChecked()){
+                    createPropertyViewModel.setFacilitiesArrayList(facility);
+                }
+                else{
+                    createPropertyViewModel.setFacilitiesArrayList(facility);
+                }
+            }
+        });
+
+        binding.parkingFacilityCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                String facility = binding.parkingFacilityCheckBox.getText().toString();
+                if(binding.parkingFacilityCheckBox.isChecked()){
+                    createPropertyViewModel.setFacilitiesArrayList(facility);
+                }
+                else{
+                    createPropertyViewModel.setFacilitiesArrayList(facility);
+                }
+            }
+        });
+
+        binding.createPropertyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                System.out.println("============  "+createPropertyViewModel.toString());
+
+
+                String propertyName = binding.propertyNameEditText.getText().toString().trim();
+                String propertyLandmark = binding.propertyLandmarkEditText.getText().toString().trim();
+                String propertyRent = binding.propertyRentEditText.getText().toString().trim();
+                String propertySize  = binding.propertySizeEditText.getText().toString().trim();
+                String propertyAgreement = binding.propertyAgreementEditText.getText().toString().trim();
+                String propertyFurnishingDescription = binding.propertyFurnishingEditText.getText().toString().trim();
+                String description = binding.propertyDescriptionEditText.getText().toString().trim();
+
+
+                if(isValidationSuccess(propertyName,propertyLandmark,propertyRent,propertySize,propertyAgreement,propertyFurnishingDescription)){
+
+                    CreatePropertyDataModel model = new CreatePropertyDataModel(propertyName,propertyLandmark, createPropertyViewModel.getMapLocationAddress(),propertyRent,propertySize,propertyAgreement,description, createPropertyViewModel.getPeopleFor(), createPropertyViewModel.getType(), createPropertyViewModel.getFurnishing(), propertyFurnishingDescription, createPropertyViewModel.getLatitude(), createPropertyViewModel.getLongitude(),null,createPropertyViewModel.getFacilitiesArrayList());
+                    setDataToServer(model);
+                }
             }
         });
     }
+
+    public boolean isValidationSuccess(String propertyName , String propertyLandmark,String propertyRent,String propertySize,String propertyAgreement,String propertyFurnishingDescription){
+
+        boolean isValid;
+
+        if(Validation.isStringEmpty(propertyName)) {
+            binding.propertyNameTextInputLayout.setError("Enter name");
+            binding.propertyNameEditText.requestFocus();
+            isValid =  false;
+        }
+        else if(Validation.isStringEmpty(createPropertyViewModel.getMapLocationAddress())){
+            binding.mapLocationLinaerLayout.setBackgroundResource(R.drawable.error_border_drawable);
+            binding.mapLocationTextView.setFocusable(true);
+            isValid = false;
+        }
+        else if(Validation.isStringEmpty(propertyLandmark)){
+            binding.propertyLandmarkTextInputLayout.setError("Enter landmark");
+            binding.propertyLandmarkTextInputLayout.requestFocus();
+            isValid = false;
+        }
+        else if(Validation.isStringEmpty(createPropertyViewModel.getType())){
+            binding.propertyTypeSpinnerLayout.setBackgroundResource(R.drawable.error_border_drawable);
+            binding.propertyTypeSpinner.setFocusable(true);
+            isValid = false;
+        }
+        else if(Validation.isStringEmpty(propertyRent)){
+            binding.propertyRentTextInputLayout.setError("Enter property rent");
+            binding.propertyRentEditText.requestFocus();
+            isValid = false;
+        }
+        else if(Validation.isStringEmpty(createPropertyViewModel.getPeopleFor())){
+            binding.propertyPeopleForSpinnerLayout.setBackgroundResource(R.drawable.error_border_drawable);
+            binding.propertyTypeSpinner.setFocusable(true);
+            isValid = false;
+        }
+        else if(Validation.isStringEmpty(propertySize)){
+            binding.propertySizeTextInputLayout.setError("Enter property size");
+            binding.propertySizeEditText.requestFocus();
+            isValid = false;
+        }
+        else if(Validation.isStringEmpty(propertyAgreement)){
+            binding.propertyAgreementTextInputLayout.setError("Enter agreement status");
+            binding.propertyAgreementEditText.requestFocus();
+            isValid = false;
+        }
+        else if(Validation.isStringEmpty(createPropertyViewModel.getFurnishing())){
+            Toast.makeText(CreatePropertyActivity.this, "Select furnishing", Toast.LENGTH_SHORT).show();
+            binding.furnishingTextView.setTextColor(getColor(R.color.error_color));
+            isValid = false;
+        }
+        else if((createPropertyViewModel.getFurnishing().equals("Semi-Furnished") || createPropertyViewModel.getFurnishing().equals("Full Furnished") ) && Validation.isStringEmpty(propertyFurnishingDescription)) {
+            binding.propertyFurnishingTextInputLayout.setError("Enter furnishing items");
+            binding.propertyFurnishingEditText.requestFocus();
+            isValid = false;
+        }
+        else {
+            isValid = true;
+        }
+        return isValid;
+    }
+
+
+    private void setDataToServer(CreatePropertyDataModel model){
+        if (AppBoiler.isInternetConnected(this)) {
+            progressDialog = AppBoiler.setProgressDialog(CreatePropertyActivity.this);
+            observeDataForSetTheData(model);
+        } else {
+            AppBoiler.showSnackBarForInternet(this, binding.rootLayoutOfCreateProperty);
+        }
+    }
+    private void observeDataForSetTheData(CreatePropertyDataModel model){
+        LiveData<String> responseData  = createPropertyViewModel.setDataOfPropertyToServer(model);
+
+        responseData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                progressDialog.dismiss();
+
+                if (s.equals(AppConstants.SUCCESS)) {
+                    responseDialog = AppBoiler.customDialogWithBtn(CreatePropertyActivity.this,"Property Created Successfully", R.drawable.ic_done, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            responseDialog.dismiss();
+                            onBackPressed();
+                        }
+                    });
+
+                } else {
+                    responseDialog = AppBoiler.customDialogWithBtn(CreatePropertyActivity.this, s, R.drawable.ic_error, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            responseDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
 
     private void setArrayAdaptersToSpinner(){
 
@@ -415,5 +591,37 @@ public class CreatePropertyActivity extends AppCompatActivity {
     private Typeface getTypeFace(){
         Typeface typeface = ResourcesCompat.getFont(this, R.font.montserrat_medium);
         return typeface;
+    }
+
+    private void openImagePickerDialog() {
+        imagePickerDialog = AppBoiler.showImagePickerDialog(this, new ImagePickerDialogListener() {
+            @Override
+            public void onClickCamera() {
+
+            }
+
+            @Override
+            public void onClickGallery() {
+                imagePickerDialog.dismiss();
+                imageResultLauncher.launch(ImplicitUtils.getMultipleImagesFromGallery());
+            }
+
+            @Override
+            public void onClickRemove() {
+
+            }
+        });
+    }
+
+    public void setSpinnerItemByValue(Spinner spinner, String value) {
+
+        SpinnerAdapter adapter = (SpinnerAdapter) spinner.getAdapter();
+
+        for (int position = 0; position < adapter.getCount(); position++) {
+            if(adapter.getItem(position).toString().equalsIgnoreCase(value)) {
+                spinner.setSelection(position);
+                return;
+            }
+        }
     }
 }
