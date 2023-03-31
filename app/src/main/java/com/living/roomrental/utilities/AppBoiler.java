@@ -16,10 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.living.roomrental.AlertDialogListener;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
@@ -151,5 +153,25 @@ public class AppBoiler {
         // snackbar.showAction -------> operations like undo
     }
 
+    public static void showAlertDialog(Context context , int iconId , String text , String message , AlertDialogListener listener){
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                dialog.setIcon(iconId);
+                dialog.setTitle(text);
+                dialog.setMessage(message)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.onClickPositiveButton();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.onClickNegativeButton();
+                    }
+                })
+                .show();
+    }
 
 }

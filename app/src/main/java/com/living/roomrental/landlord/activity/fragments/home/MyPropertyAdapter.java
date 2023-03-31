@@ -1,19 +1,25 @@
 package com.living.roomrental.landlord.activity.fragments.home;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.living.roomrental.R;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyDataModel;
+import com.living.roomrental.landlord.activity.view_property.ViewPropertyLandlordActivity;
+import com.living.roomrental.utilities.AppBoiler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MyPropertyAdapter extends RecyclerView.Adapter<MyPropertyAdapter.ViewHolder> {
@@ -44,6 +50,15 @@ public class MyPropertyAdapter extends RecyclerView.Adapter<MyPropertyAdapter.Vi
         holder.propertyAddress.setText(model.getMapLocationAddress());
         holder.propertyType.setText(model.getType());
         holder.propertyRent.setText(model.getRent());
+
+        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle =new Bundle();
+                bundle.putSerializable("data", (Serializable) model);
+                AppBoiler.navigateToActivity(context, ViewPropertyLandlordActivity.class,bundle);
+            }
+        });
     }
 
     @Override
@@ -55,6 +70,8 @@ public class MyPropertyAdapter extends RecyclerView.Adapter<MyPropertyAdapter.Vi
 
         private TextView propertyName , propertyAddress , propertyRent , propertyType ;
         private ImageView propertyImage;
+
+        private MaterialCardView itemLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -63,6 +80,8 @@ public class MyPropertyAdapter extends RecyclerView.Adapter<MyPropertyAdapter.Vi
             propertyAddress = itemView.findViewById(R.id.propertyAddress);
             propertyRent = itemView.findViewById(R.id.propertyRent);
             propertyType = itemView.findViewById(R.id.propertyType);
+            itemLayout = itemView.findViewById(R.id.itemLayout);
         }
     }
+
 }

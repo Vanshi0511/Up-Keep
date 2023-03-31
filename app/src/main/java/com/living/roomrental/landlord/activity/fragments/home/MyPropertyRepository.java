@@ -36,8 +36,12 @@ public class MyPropertyRepository {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
 
+                    CreatePropertyDataModel model;
                     for(DataSnapshot dataSingleModel : snapshot.getChildren()){
-                        modelList.add(dataSingleModel.getValue(CreatePropertyDataModel.class));
+
+                        model = dataSingleModel.getValue(CreatePropertyDataModel.class);
+                        model.setKey(dataSingleModel.getKey());
+                        modelList.add(model);
                     }
                     propertyMutableData.setValue(modelList);
                 }

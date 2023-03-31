@@ -4,14 +4,17 @@ import android.net.Uri;
 
 import com.living.roomrental.utilities.Validation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CreatePropertyDataModel {
+public class CreatePropertyDataModel implements Serializable {
 
     private String propertyName , landmarkAddress, mapLocationAddress , rent ;
     private String size , agreement  , description , peopleFor , type , furnishing , furnishingDescription;
 
     private Double latitude , longitude ;
+
+    private String key;
 
     private ArrayList<String> propertyImagesUrl = new ArrayList<>();
 
@@ -36,6 +39,14 @@ public class CreatePropertyDataModel {
         this.longitude = longitude;
         this.propertyImagesUrl = propertyImagesUrl;
         this.facilities = facilities;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getPropertyName() {
