@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
@@ -41,6 +42,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private Uri image;
     private String name, email, contactNo, occupation, address, bio;
 
+    public static boolean isImageChanged = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +51,32 @@ public class EditProfileActivity extends AppCompatActivity {
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if(editProfileViewModel==null){
-            editProfileViewModel = ViewModelProviders.of(this).get(EditProfileViewModel.class);
-            observeResponseForGetTheData();
-        }
-        else
-          getDataFromViewModel();
-
+        editProfileViewModel = new ViewModelProvider(this).get(EditProfileViewModel.class);
+        //observeResponseForGetTheData();
         initListeners();
+        getBundleData();
+        //getDataFromViewModel();
+
+
         initLauncherForImage();
+    }
+
+    private void getBundleData(){
+        Bundle bundle = getIntent().getExtras();
+
+
+        CreateProfileModel model = bundle.getParcelable("data");
+
+        binding.nameEditText.setText(model.getName());
+        binding.contactNoEditText.setText(model.getContactNo());
+        binding.occupationEditText.setText(model.getOccupation());
+        binding.addressEditText.setText(model.getAddress());
+        binding.bioEditText.setText(model.getBio());
+
+        System.out.println("=================== IMAGE========= "+model.toString());
+        if(!Validation.isStringEmpty(model.getImageUrl())){
+            Glide.with(this).load(model.getImageUrl()).into(binding.profileImageView);
+        }
     }
 
     private void getDataFromViewModel() {
@@ -80,6 +100,8 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onActivityResult(ActivityResult result) {
 
                 if (result.getResultCode() == Activity.RESULT_OK) {
+
+                    isImageChanged = true ;
 
                     assert result.getData() != null;
                     image = result.getData().getData();
@@ -246,7 +268,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void observeResponseFoSetTheData() {
-        LiveData<String> responseMutableLiveData = editProfileViewModel.setProfileData();
+
+        LiveData<String> responseMutableLiveData = editProfileViewModel.setProfileData(this);
 
         responseMutableLiveData.observe(this, new Observer<String>() {
             @Override
@@ -275,34 +298,34 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void observeResponseForGetTheData() {
+//    private void observeResponseForGetTheData() {
+//
+//        LiveData<CreateProfileModel> profileModelLiveData = editProfileViewModel.getProfileData();
+//
+//        profileModelLiveData.observe(this, new Observer<CreateProfileModel>() {
+//            @Override
+//            public void onChanged(CreateProfileModel model) {
+//                initComponents(model);
+//            }
+//        });
+//    }
 
-        LiveData<CreateProfileModel> profileModelLiveData = editProfileViewModel.getProfileData();
-
-        profileModelLiveData.observe(this, new Observer<CreateProfileModel>() {
-            @Override
-            public void onChanged(CreateProfileModel model) {
-                initComponents(model);
-            }
-        });
-    }
-
-    private void initComponents(CreateProfileModel model) {
-
-        binding.nameEditText.setText(model.getName());
-        binding.contactNoEditText.setText(model.getContactNo());
-        binding.occupationEditText.setText(model.getOccupation());
-        binding.addressEditText.setText(model.getAddress());
-        binding.bioEditText.setText(model.getBio());
-
-        if (!Validation.isStringEmpty(model.getImageUrl())) {
-
-            Glide.with(this).load(model.getImageUrl()).into(binding.profileImageView);
-            editProfileViewModel.setImageUri(Uri.parse(model.getImageUrl()));
-            editProfileViewModel.setImageUrl(model.getImageUrl());
-            image = Uri.parse(model.getImageUrl());
-        }
-    }
+//    private void initComponents(CreateProfileModel model) {
+//
+//        binding.nameEditText.setText(model.getName());
+//        binding.contactNoEditText.setText(model.getContactNo());
+//        binding.occupationEditText.setText(model.getOccupation());
+//        binding.addressEditText.setText(model.getAddress());
+//        binding.bioEditText.setText(model.getBio());
+//
+//        if (!Validation.isStringEmpty(model.getImageUrl())) {
+//
+//            Glide.with(this).load(model.getImageUrl()).into(binding.profileImageView);
+//            editProfileViewModel.setImageUri(Uri.parse(model.getImageUrl()));
+//            editProfileViewModel.setImageUrl(model.getImageUrl());
+//            image = Uri.parse(model.getImageUrl());
+//        }
+//    }
 
     public void getImageFromLocalStorage() {
 
@@ -327,6 +350,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 binding.profileImageView.setImageResource(R.drawable.ic_person);
                 editProfileViewModel.setImageUri(null);
                 image = null;
+                isImageChanged = false;
             }
         });
     }

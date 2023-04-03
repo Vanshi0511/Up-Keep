@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
@@ -20,6 +21,7 @@ import android.text.TextWatcher;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
@@ -50,8 +52,10 @@ public class CreateProfileActivity extends AppCompatActivity {
         binding = ActivityCreateProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        createProfileViewModel = ViewModelProviders.of(this).get(CreateProfileViewModel.class);
+        createProfileViewModel = new ViewModelProvider(this).get(CreateProfileViewModel.class);
 
+        binding.header.headerTitle.setText("Create Profile");
+        binding.emailEditText.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         getBundles();
         getDataFromViewModel();
         initLauncherForImage();

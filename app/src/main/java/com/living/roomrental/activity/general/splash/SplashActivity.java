@@ -57,3 +57,4 @@ public class SplashActivity extends AppCompatActivity {
 }
 
 //========= WhoIsUser is to check from database that the user is tenant or landlord or not defined yet==========
+// uid will check the user is logged in or not

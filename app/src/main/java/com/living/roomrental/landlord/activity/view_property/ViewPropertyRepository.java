@@ -49,6 +49,7 @@ public class ViewPropertyRepository {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    responseMutableData.setValue("Failed");
                     System.out.println("============= ERROR ======= "+e.getMessage());
                 }
             });

@@ -1,6 +1,7 @@
 package com.living.roomrental.activity.profile.edit;
 
 
+import android.content.Context;
 import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
@@ -8,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.activity.profile.create.CreateProfileRepository;
 
 public class EditProfileViewModel extends ViewModel {
 
@@ -23,7 +25,7 @@ public class EditProfileViewModel extends ViewModel {
     public EditProfileViewModel(){
         repository = new EditProfileRepository();
     }
-    private MutableLiveData<CreateProfileModel> modelMutableLiveData;
+
 
     public Uri getImageUri(){
         return imageUri;
@@ -85,12 +87,18 @@ public class EditProfileViewModel extends ViewModel {
        return repository.getDataFromServer();
     }
 
-    public LiveData<String> setProfileData(){
+    public LiveData<String> setProfileData(Context context){
+        CreateProfileModel model = new CreateProfileModel(name,contactNo,address,bio,occupation,null);
+
+        CreateProfileRepository createProfileRepository = new CreateProfileRepository(context);
+
         if(imageUrlFromDatabase!=null && imageUri==null){
            repository.deleteImageFromServer(imageUrlFromDatabase);
+        } if(EditProfileActivity.isImageChanged){
+            return createProfileRepository.createProfileToServerWithImage(model,imageUri);
+        } else{
+            return createProfileRepository.createProfileToServer(model);
         }
-        CreateProfileModel model = new CreateProfileModel(name,contactNo,address,bio,occupation,imageUri.toString());
-        return repository.updateDataToServer(model);
     }
 
 }

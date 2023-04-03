@@ -13,6 +13,7 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationBarView;
 import com.living.roomrental.R;
+import com.living.roomrental.activity.profile.view.ViewProfileBottomSheet;
 import com.living.roomrental.databinding.ActivityLandlordMainBinding;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyActivity;
 import com.living.roomrental.landlord.activity.fragments.FragmentController;
@@ -22,6 +23,7 @@ import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.TypeConverters;
+import com.living.roomrental.utilities.Validation;
 
 import java.util.ArrayList;
 
@@ -48,7 +50,8 @@ public class LandlordMainActivity extends AppCompatActivity {
         ArrayList<String> list ;
         list = SharedPreferenceStorage.getUserExtraData(SharedPreferencesController.getInstance(this).getPreferences());
 
-        Glide.with(this).load(list.get(1)).into(binding.header.headerProfileImageView);
+        if(!Validation.isStringEmpty(list.get(1)))
+             Glide.with(this).load(list.get(1)).into(binding.header.headerProfileImageView);
         binding.header.headerUserName.setText(list.get(0));
     }
 
@@ -58,6 +61,14 @@ public class LandlordMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AppBoiler.navigateToActivity(LandlordMainActivity.this, CreatePropertyActivity.class,null);
+            }
+        });
+
+        binding.header.headerProfileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ViewProfileBottomSheet bottomSheet = new ViewProfileBottomSheet();
+                bottomSheet.show(getSupportFragmentManager(),"ViewProfileBottomSheet");
             }
         });
 

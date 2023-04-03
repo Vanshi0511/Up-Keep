@@ -1,5 +1,7 @@
 package com.living.roomrental.activity.auth.login;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,6 +16,7 @@ import com.living.roomrental.activity.profile.create.CreateProfileModel;
 import com.living.roomrental.activity.profile.create.CreateProfileRepository;
 import com.living.roomrental.activity.profile.create.CreateProfileViewModel;
 import com.living.roomrental.activity.profile.edit.EditProfileRepository;
+import com.living.roomrental.activity.profile.view.ViewProfileRepository;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 
@@ -45,9 +48,8 @@ public class LoginViewModel extends ViewModel {
     }
 
     public LiveData<CreateProfileModel> getProfileDataFromServer(){
-       // repository = new LoginRepository();
-        EditProfileRepository createProfileRepository = new EditProfileRepository();
-        return createProfileRepository.getDataFromServer();
+        ViewProfileRepository viewProfileRepository = new ViewProfileRepository();
+        return viewProfileRepository.getProfileDataFromServer();
     }
 
     @Override

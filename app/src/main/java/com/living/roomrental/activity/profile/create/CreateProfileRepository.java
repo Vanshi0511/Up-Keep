@@ -62,6 +62,7 @@ public class CreateProfileRepository {
                    @Override
                    public void onSuccess(Uri uri) {
                        model.setImageUrl(uri.toString());
+
                        SharedPreferenceStorage.setUserExtraData(SharedPreferencesController.getInstance(context).getPreferences(),model.getName(),uri.toString());
 
                        reference.child(AppConstants.USER_PROFILE).child(uid).setValue(model)

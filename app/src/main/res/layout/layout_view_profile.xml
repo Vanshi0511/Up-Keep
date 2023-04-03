@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_8sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImage"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="@dimen/_2sdp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top_horizontal"
+        android:src="@drawable/ic_person" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/_8sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/_8sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/_8sdp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/_8sdp" />
+
+    <TextView
+        android:id="@+id/nameLabelTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="Name"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/profileImage" />
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sanskar Patidar (Education)"
+        android:textColor="@color/black_text_secondary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/montserrat_medium"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/nameLabelTextView" />
+
+    <TextView
+        android:id="@+id/contactLabelTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+
+    <TextView
+        android:id="@+id/contactTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="+91 7224890928"
+        android:textColor="@color/black_text_secondary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/montserrat_medium"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/contactLabelTextView" />
+
+    <TextView
+        android:id="@+id/emailLabelTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/contactTextView" />
+
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="user@gmail.com"
+        android:textColor="@color/black_text_secondary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/montserrat_medium"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/emailLabelTextView" />
+
+    <TextView
+        android:id="@+id/addressLabelTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
+    <TextView
+        android:id="@+id/addressTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="51 shanti nagar , Bhawarkuan square , indore 454332 , Madhya Pradesh"
+        android:textColor="@color/black_text_secondary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/montserrat_medium"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/addressLabelTextView" />
+
+
+    <TextView
+        android:id="@+id/aboutLabelTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/addressTextView" />
+
+    <TextView
+        android:id="@+id/aboutTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="I am Android Developer"
+        android:textColor="@color/black_text_secondary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/montserrat_medium"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom_horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/aboutLabelTextView" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/editProfileCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_4sdp"
+           app:cardBackgroundColor="@color/grey_300"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+            app:layout_constraintTop_toBottomOf="@id/guideline_top_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Edit Profile"
+                android:padding="@dimen/_4sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

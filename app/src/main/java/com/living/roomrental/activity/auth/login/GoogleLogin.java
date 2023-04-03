@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,8 +28,13 @@ import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.general.UserChoiceBottomSheet;
 import com.living.roomrental.activity.profile.create.CreateProfileActivity;
+import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.activity.profile.edit.EditProfileRepository;
+import com.living.roomrental.activity.profile.view.ViewProfileRepository;
+import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
+import com.living.roomrental.tenant.activity.main.TenantMainActivity;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
 
@@ -97,10 +104,9 @@ public class GoogleLogin {
         auth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                ((LoginActivity)context).progressDialog.dismiss();
 
                 SharedPreferenceStorage.setUidOfUser(SharedPreferencesController.getInstance(context).getPreferences(), Objects.requireNonNull(authResult.getUser()).getUid());
-                openChoiceBottomSheet();
+                getProfileData();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -112,6 +118,31 @@ public class GoogleLogin {
         });
     }
 
+    private void getProfileData(){
+        ViewProfileRepository viewProfileRepository = new ViewProfileRepository();
+        LiveData<CreateProfileModel> modelLiveData = viewProfileRepository.getProfileDataFromServer();
+
+        modelLiveData.observe((LoginActivity)context, new Observer<CreateProfileModel>() {
+            @Override
+            public void onChanged(CreateProfileModel model) {
+                ((LoginActivity)context).progressDialog.dismiss();
+
+                if(model!=null){
+                    SharedPreferenceStorage.setProfileStatusOfUser(SharedPreferencesController.getInstance(context).getPreferences(), model.getWhoIsUser());
+                    SharedPreferenceStorage.setUserExtraData(SharedPreferencesController.getInstance(context).getPreferences(),model.getName(),model.getImageUrl());
+
+                    if (model.getWhoIsUser().equals(AppConstants.LANDLORD))
+                        AppBoiler.navigateToActivityWithFinish(context, LandlordMainActivity.class, null);
+                    else
+                        AppBoiler.navigateToActivityWithFinish(context, TenantMainActivity.class, null);
+                }
+                else{
+                    openChoiceBottomSheet();
+                }
+
+            }
+        });
+    }
     private void openChoiceBottomSheet(){
         UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
         bottomSheet.show(((LoginActivity)context).getSupportFragmentManager(), "ChoiceBottomSheet");

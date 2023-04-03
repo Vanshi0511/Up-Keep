@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         getDataFromViewModel();
         initListeners();
@@ -202,6 +203,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (model != null) {
 
                     SharedPreferenceStorage.setProfileStatusOfUser(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(), model.getWhoIsUser());
+                    SharedPreferenceStorage.setUserExtraData(SharedPreferencesController.getInstance(LoginActivity.this).getPreferences(),model.getName(),model.getImageUrl());
 
                     if (model.getWhoIsUser().equals(AppConstants.LANDLORD))
                         AppBoiler.navigateToActivityWithFinish(LoginActivity.this, LandlordMainActivity.class, null);

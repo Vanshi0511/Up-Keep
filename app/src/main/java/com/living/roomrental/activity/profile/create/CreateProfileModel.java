@@ -1,6 +1,11 @@
 package com.living.roomrental.activity.profile.create;
 
-public class CreateProfileModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class CreateProfileModel implements Parcelable {
     private String name;
     private String contactNo;
     private String address;
@@ -15,11 +20,11 @@ public class CreateProfileModel {
     public CreateProfileModel(String name, String contactNo, String address, String bio, String occupation, String whoIsUser , String imageUrl) {
         this.name = name;
         this.contactNo = contactNo;
-        this.address = address;
         this.bio = bio;
+        this.address = address;
         this.occupation = occupation;
-        this.whoIsUser = whoIsUser;
         this.imageUrl = imageUrl;
+        this.whoIsUser = whoIsUser;
     }
 
     public CreateProfileModel(String name, String contactNo, String address, String bio, String occupation, String imageUrl) {
@@ -29,6 +34,17 @@ public class CreateProfileModel {
         this.bio = bio;
         this.occupation = occupation;
         this.imageUrl = imageUrl;
+    }
+
+    protected CreateProfileModel(Parcel in) {
+        name = in.readString();
+        contactNo = in.readString();
+        bio = in.readString();
+        address = in.readString();
+        occupation = in.readString();
+        imageUrl = in.readString();
+        whoIsUser = in.readString();
+
     }
 
     public String getImageUrl() {
@@ -85,5 +101,45 @@ public class CreateProfileModel {
 
     public void setWhoIsUser(String whoIsUser) {
         this.whoIsUser = whoIsUser;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(contactNo);
+        parcel.writeString(bio);
+        parcel.writeString(address);
+        parcel.writeString(occupation);
+        parcel.writeString(imageUrl);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator<CreateProfileModel>() {
+        @Override
+        public CreateProfileModel createFromParcel(Parcel parcel) {
+            return new CreateProfileModel(parcel);
+        }
+
+        @Override
+        public CreateProfileModel[] newArray(int i) {
+            return new CreateProfileModel[0];
+        }
+    };
+
+    @Override
+    public String toString() {
+        return "CreateProfileModel{" +
+                "name='" + name + '\'' +
+                ", contactNo='" + contactNo + '\'' +
+                ", address='" + address + '\'' +
+                ", bio='" + bio + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", whoIsUser='" + whoIsUser + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
     }
 }
