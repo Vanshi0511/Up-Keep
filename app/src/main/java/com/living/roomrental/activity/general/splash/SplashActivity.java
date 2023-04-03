@@ -1,18 +1,12 @@
 package com.living.roomrental.activity.general.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.living.roomrental.FirebaseController;
-import com.living.roomrental.R;
 import com.living.roomrental.activity.auth.login.LoginActivity;
-import com.living.roomrental.activity.profile.create.CreateProfileModel;
 import com.living.roomrental.databinding.ActivitySplashBinding;
 import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;

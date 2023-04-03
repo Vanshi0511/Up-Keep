@@ -1,11 +1,11 @@
-package com.living.roomrental.activity.profile.create;
+package com.living.roomrental.activity.profile.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class CreateProfileModel implements Parcelable {
+public class ProfileModel implements Parcelable {
     private String name;
     private String contactNo;
     private String address;
@@ -14,10 +14,10 @@ public class CreateProfileModel implements Parcelable {
     private String whoIsUser;
     private String imageUrl;
 
-    public CreateProfileModel() {
+    public ProfileModel() {
     }
 
-    public CreateProfileModel(String name, String contactNo, String address, String bio, String occupation, String whoIsUser , String imageUrl) {
+    public ProfileModel(String name, String contactNo, String address, String bio, String occupation, String whoIsUser , String imageUrl) {
         this.name = name;
         this.contactNo = contactNo;
         this.bio = bio;
@@ -27,16 +27,7 @@ public class CreateProfileModel implements Parcelable {
         this.whoIsUser = whoIsUser;
     }
 
-    public CreateProfileModel(String name, String contactNo, String address, String bio, String occupation, String imageUrl) {
-        this.name = name;
-        this.contactNo = contactNo;
-        this.address = address;
-        this.bio = bio;
-        this.occupation = occupation;
-        this.imageUrl = imageUrl;
-    }
-
-    protected CreateProfileModel(Parcel in) {
+    protected ProfileModel(Parcel in) {
         name = in.readString();
         contactNo = in.readString();
         bio = in.readString();
@@ -44,7 +35,6 @@ public class CreateProfileModel implements Parcelable {
         occupation = in.readString();
         imageUrl = in.readString();
         whoIsUser = in.readString();
-
     }
 
     public String getImageUrl() {
@@ -116,17 +106,18 @@ public class CreateProfileModel implements Parcelable {
         parcel.writeString(address);
         parcel.writeString(occupation);
         parcel.writeString(imageUrl);
+        parcel.writeString(whoIsUser);
     }
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator<CreateProfileModel>() {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator<ProfileModel>() {
         @Override
-        public CreateProfileModel createFromParcel(Parcel parcel) {
-            return new CreateProfileModel(parcel);
+        public ProfileModel createFromParcel(Parcel parcel) {
+            return new ProfileModel(parcel);
         }
 
         @Override
-        public CreateProfileModel[] newArray(int i) {
-            return new CreateProfileModel[0];
+        public ProfileModel[] newArray(int i) {
+            return new ProfileModel[0];
         }
     };
 

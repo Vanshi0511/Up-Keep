@@ -14,6 +14,17 @@ public class CreatePropertyViewModel extends ViewModel {
     private ArrayList<Uri> propertyImages = new ArrayList<>();
 
     private ArrayList<String> facilitiesArrayList = new ArrayList<>();
+
+    private ArrayList<String> imagesUrlArrayList = new ArrayList<>();
+
+    public ArrayList<String> getImagesUrlArrayList() {
+        return imagesUrlArrayList;
+    }
+
+    public void setImagesUrlArrayList(ArrayList<String> imagesUrlArrayList) {
+        this.imagesUrlArrayList = imagesUrlArrayList;
+    }
+
     public String getMapLocationAddress() {
         return mapLocationAddress;
     }

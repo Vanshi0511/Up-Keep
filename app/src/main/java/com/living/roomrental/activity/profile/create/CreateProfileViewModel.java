@@ -1,23 +1,16 @@
 package com.living.roomrental.activity.profile.create;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.io.IOException;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 
 public class CreateProfileViewModel extends ViewModel {
 
-    private String name , email , contactNo , occupation , address , bio ,whoIsUser ;
     private Uri imageUri;
-
-    public void setWhoIsUser(String whoIsUser){
-        this.whoIsUser = whoIsUser;
-    }
 
     public Uri getImageUri(){
         return imageUri;
@@ -26,60 +19,9 @@ public class CreateProfileViewModel extends ViewModel {
     this.imageUri = imageUri;
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getContactNo() {
-        return contactNo;
-    }
-
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
-    }
-
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-
-    public LiveData<String> createOrEditUserProfile(Context context){
+    public LiveData<String> createUserProfile(Context context, ProfileModel model){
 
         CreateProfileRepository repository =new CreateProfileRepository(context);
-        CreateProfileModel model = new CreateProfileModel(name,contactNo,address,bio,occupation,whoIsUser,null);
         if(imageUri==null){
             return  repository.createProfileToServer(model);
         } else {

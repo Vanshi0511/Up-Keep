@@ -3,7 +3,6 @@ package com.living.roomrental.activity.auth.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -23,13 +21,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.living.roomrental.BottomChoiceListener;
-import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.general.UserChoiceBottomSheet;
-import com.living.roomrental.activity.profile.create.CreateProfileActivity;
-import com.living.roomrental.activity.profile.create.CreateProfileModel;
-import com.living.roomrental.activity.profile.edit.EditProfileRepository;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.activity.profile.view.ViewProfileRepository;
 import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
@@ -120,11 +114,11 @@ public class GoogleLogin {
 
     private void getProfileData(){
         ViewProfileRepository viewProfileRepository = new ViewProfileRepository();
-        LiveData<CreateProfileModel> modelLiveData = viewProfileRepository.getProfileDataFromServer();
+        LiveData<ProfileModel> modelLiveData = viewProfileRepository.getProfileDataFromServer();
 
-        modelLiveData.observe((LoginActivity)context, new Observer<CreateProfileModel>() {
+        modelLiveData.observe((LoginActivity)context, new Observer<ProfileModel>() {
             @Override
-            public void onChanged(CreateProfileModel model) {
+            public void onChanged(ProfileModel model) {
                 ((LoginActivity)context).progressDialog.dismiss();
 
                 if(model!=null){

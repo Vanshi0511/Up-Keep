@@ -1,6 +1,5 @@
 package com.living.roomrental.activity.profile.view;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +17,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.card.MaterialCardView;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
-import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.activity.profile.edit.EditProfileActivity;
 import com.living.roomrental.utilities.AppBoiler;
-
-import java.io.Serializable;
+import com.living.roomrental.utilities.Validation;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,7 +28,7 @@ public class ViewProfileBottomSheet extends BottomSheetDialogFragment {
 
     private ViewProfileViewModel viewProfileViewModel;
     private MaterialCardView cardViewEditProfile;
-    private CreateProfileModel model;
+    private ProfileModel model;
 
     @Nullable
     @Override
@@ -59,16 +57,14 @@ public class ViewProfileBottomSheet extends BottomSheetDialogFragment {
     }
     private void getDataFromServer(View view) {
 
+        LiveData<ProfileModel> modelLiveData = viewProfileViewModel.getProfileData();
 
-
-        LiveData<CreateProfileModel> modelLiveData = viewProfileViewModel.getProfileData();
-
-        modelLiveData.observe(this, new Observer<CreateProfileModel>() {
+        modelLiveData.observe(this, new Observer<ProfileModel>() {
             @Override
-            public void onChanged(CreateProfileModel createProfileModel) {
+            public void onChanged(ProfileModel profileModel) {
 
-                if(createProfileModel!=null){
-                    model = createProfileModel;
+                if(profileModel !=null){
+                    model = profileModel;
                     setData(view);
                 }else{
                     System.out.println("================= NO DATA FOUND =================");
@@ -93,7 +89,10 @@ public class ViewProfileBottomSheet extends BottomSheetDialogFragment {
         addressTextView.setText(model.getAddress());
         aboutTextView.setText(model.getBio());
         emailTextView.setText(FirebaseController.getInstance().getUser().getEmail());
+
         System.out.println("=========== image     "+model.getImageUrl());
-        Glide.with(this).load(model.getImageUrl()).into(imageView);
+        if(!Validation.isStringEmpty(model.getImageUrl())){
+            Glide.with(this).load(model.getImageUrl()).into(imageView);
+        }
     }
 }

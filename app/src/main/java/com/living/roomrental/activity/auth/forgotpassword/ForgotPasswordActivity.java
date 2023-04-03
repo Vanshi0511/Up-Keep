@@ -1,15 +1,15 @@
 package com.living.roomrental.activity.auth.forgotpassword;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
@@ -22,8 +22,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private ActivityForgotPasswordBinding binding;
     private ForgotPasswordViewModel forgotPasswordViewModel;
-    private String email="";
-    private LiveData<String> responseLiveData ;
+    private String email;
     private Dialog progressDialog , customDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +31,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         binding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        forgotPasswordViewModel = ViewModelProviders.of(this).get(ForgotPasswordViewModel.class);
+        forgotPasswordViewModel = new ViewModelProvider(this).get(ForgotPasswordViewModel.class);
 
-        binding.header.headerTitle.setText("Forgot Password");
-
-        getDataFromViewModel();
+        binding.header.headerTitle.setText(R.string.forgot_password);
         initListeners();
     }
 
-    private void getDataFromViewModel() {
-        binding.emailEditText.setText(forgotPasswordViewModel.getEmail());
-    }
     private void initListeners(){
 
         binding.header.backImageView.setOnClickListener(new View.OnClickListener() {
@@ -63,9 +57,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 int isValid = Validation.isValidEmail(email);
 
                 if (isValid==1) {
-                    binding.emailTextInputLayout.setError("Enter email");
+                    binding.emailTextInputLayout.setError(getString(R.string.enter_email));
                 } else if(isValid==2) {
-                    binding.emailTextInputLayout.setError("Invalid email format");
+                    binding.emailTextInputLayout.setError(getString(R.string.invalid_email_format));
                 } else if(isValid==0){
                     AppBoiler.setInputLayoutErrorDisable(binding.emailTextInputLayout);
                 }
@@ -73,7 +67,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                forgotPasswordViewModel.setEmail(binding.emailEditText.getText().toString().trim());
+                email = editable.toString().trim();
             }
         });
 
@@ -83,7 +77,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 if (binding.emailTextInputLayout.isErrorEnabled()) {
                     binding.emailEditText.requestFocus();
                 } else if(Validation.isStringEmpty(email)) {
-                    binding.emailTextInputLayout.setError("Enter email");
+                    binding.emailTextInputLayout.setError(getString(R.string.enter_email));
                     binding.emailEditText.requestFocus();
                 }else{
                   sendEmail();
@@ -103,7 +97,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void observeResponseForResetPassword() {
 
-        responseLiveData = forgotPasswordViewModel.sendResetPasswordEmail();
+        LiveData<String> responseLiveData = forgotPasswordViewModel.sendResetPasswordEmail(email);
 
         responseLiveData.observe(this, new Observer<String>() {
             @Override
@@ -111,7 +105,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                 progressDialog.dismiss();
                 if(s.equals(AppConstants.SUCCESS)){
-                    customDialog = AppBoiler.customDialogWithBtn(ForgotPasswordActivity.this, "Link has send to your email id.", R.drawable.ic_done, new DialogListener() {
+                    customDialog = AppBoiler.customDialogWithBtn(ForgotPasswordActivity.this, getString(R.string.link_has_send_to_your_email_id), R.drawable.ic_done, new DialogListener() {
                         @Override
                         public void onClick() {
                             customDialog.dismiss();
@@ -120,7 +114,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     });
                 }
                 else{
-                    customDialog = AppBoiler.customDialogWithBtn(ForgotPasswordActivity.this, s, R.drawable.ic_error, new DialogListener() {
+                    customDialog = AppBoiler.customDialogWithBtn(ForgotPasswordActivity.this, getString(R.string.failed_to_send_email), R.drawable.ic_error, new DialogListener() {
                         @Override
                         public void onClick() {
                             customDialog.dismiss();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,6 +38,8 @@ import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.databinding.ActivityCreatePropertyBinding;
 import com.living.roomrental.landlord.activity.PropertyMapActivity;
+import com.living.roomrental.landlord.activity.edit_property.EditPropertyImageAdapter;
+import com.living.roomrental.landlord.activity.view_property.ViewPropertyImageAdapter;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.ImplicitUtils;
@@ -51,6 +54,10 @@ public class CreatePropertyActivity extends AppCompatActivity {
     private Dialog imagePickerDialog , progressDialog , responseDialog ;
     private ActivityResultLauncher<Intent> imageResultLauncher , mapLocationLauncher;
     private PropertyImageAdapter propertyImageAdapter ;
+    private EditPropertyImageAdapter editPropertyImageAdapter;
+
+    private boolean isFromEdit ;
+    private boolean isImageSelected ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +70,68 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
         binding.header.headerTitle.setText("Create Property");
 
+
+        if(getIntent().getExtras()!=null)
+            isFromEdit=true;
+
         setAdapterForImage();
         initListeners();
         setArrayAdaptersToSpinner();
 
+        getBundleData();
+
         setDataFromViewModel();
         initLaunchers();
+    }
+
+    private void getBundleData(){
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            CreatePropertyDataModel model = bundle.getParcelable("data");
+            binding.propertyNameEditText.setText(model.getPropertyName());
+            binding.propertyLandmarkEditText.setText(model.getLandmarkAddress());
+            binding.mapLocationTextView.setText(model.getMapLocationAddress());
+
+            binding.mapLocationTextView.setText(model.getMapLocationAddress());
+            createPropertyViewModel.setLatitude(model.getLatitude());
+            createPropertyViewModel.setLongitude(model.getLongitude());
+
+
+            binding.propertyRentEditText.setText(model.getRent());
+            binding.propertySizeEditText.setText(model.getSize());
+            binding.propertyAgreementEditText.setText(model.getAgreement());
+            binding.propertyDescriptionEditText.setText(model.getDescription());
+
+
+            if(model.getFurnishing().equals("UnFurnished")){
+                binding.unFurnishedRadioButton.setChecked(true);
+            } else if(model.getFurnishing().equals("Semi-Furnished")){
+                binding.semiFurnishedRadioButton.setChecked(true);
+            } else {
+                binding.furnishedRadioButton.setChecked(true);
+            }
+            binding.propertyFurnishingEditText.setText(model.getFurnishingDescription());
+
+
+            if(model.getFacilities().size()>0){
+               for(String facility : model.getFacilities()){
+                   if(facility.equals("RO Water"))
+                       binding.waterFacilityCheckBox.setChecked(true);
+                   else if(facility.equals("Electricity"))
+                       binding.lightFacilityCheckBox.setChecked(true);
+                   else
+                       binding.parkingFacilityCheckBox.setChecked(true);
+               }
+            }
+
+            setSpinnerItemByValue(binding.propertyTypeSpinner,model.getType());
+            setSpinnerItemByValue(binding.propertyPeopleForSpinner,model.getPeopleFor());
+
+            if(model.getPropertyImages().size()>0) {
+                createPropertyViewModel.setImagesUrlArrayList(model.getPropertyImages());
+            }
+            isFromEdit = true;
+        }
     }
 
     public void setDataFromViewModel(){
@@ -77,10 +140,18 @@ public class CreatePropertyActivity extends AppCompatActivity {
     }
 
     private void setAdapterForImage(){
-        if(propertyImageAdapter==null)
-            propertyImageAdapter = new PropertyImageAdapter(this);
 
-        binding.propertyImageRecyclerView.setAdapter(propertyImageAdapter);
+            if(propertyImageAdapter==null)
+                propertyImageAdapter = new PropertyImageAdapter(this);
+
+            binding.propertyImageRecyclerView.setAdapter(propertyImageAdapter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setAdapterForImage();
     }
 
     private void initLaunchers() {
@@ -138,12 +209,12 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
         binding.propertyImageRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL , false));
 
-        propertyImageAdapter.setListener(new PropertyImageAdapter.ItemListener() {
-            @Override
-            public void onClickCancel(int position) {
-                propertyImageAdapter.removeImage(position);
-            }
-        });
+                propertyImageAdapter.setListener(new PropertyImageAdapter.ItemListener() {
+                    @Override
+                    public void onClickCancel(int position) {
+                        propertyImageAdapter.removeImage(position);
+                    }
+                });
 
         binding.addImageCardView.setOnClickListener(new View.OnClickListener() {
             @Override

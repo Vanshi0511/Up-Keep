@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -15,18 +14,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.living.roomrental.BottomChoiceListener;
 import com.living.roomrental.DialogListener;
-import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.auth.forgotpassword.ForgotPasswordActivity;
 import com.living.roomrental.activity.auth.register.RegisterActivity;
 import com.living.roomrental.activity.general.UserChoiceBottomSheet;
-import com.living.roomrental.activity.profile.create.CreateProfileActivity;
-import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.databinding.ActivityLoginBinding;
 import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
@@ -194,11 +189,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getUserProfile() {
-        LiveData<CreateProfileModel> modelLiveData = loginViewModel.getProfileDataFromServer();
+        LiveData<ProfileModel> modelLiveData = loginViewModel.getProfileDataFromServer();
 
-        modelLiveData.observe(this, new Observer<CreateProfileModel>() {
+        modelLiveData.observe(this, new Observer<ProfileModel>() {
             @Override
-            public void onChanged(CreateProfileModel model) {
+            public void onChanged(ProfileModel model) {
                 progressDialog.dismiss();
                 if (model != null) {
 

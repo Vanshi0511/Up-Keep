@@ -15,4 +15,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_property_map">PropertyMapActivity</string>
+
+
+    <string name="forgot_password">Forgot Password</string>
+    <string name="link_has_send_to_your_email_id">Link has send to your email id.</string>
+    <string name="enter_email">Enter email</string>
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="failed_to_send_email">Failed to send email</string>
 </resources>

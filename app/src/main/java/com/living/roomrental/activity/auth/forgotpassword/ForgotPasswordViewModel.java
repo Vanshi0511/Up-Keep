@@ -12,17 +12,7 @@ import com.living.roomrental.FirebaseController;
 
 public class ForgotPasswordViewModel extends ViewModel {
 
-    private String email;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public MutableLiveData<String> sendResetPasswordEmail(){
+    public MutableLiveData<String> sendResetPasswordEmail(String email){
         ForgotPasswordRepository repository = new ForgotPasswordRepository();
         return repository.sendResetPasswordEmailLink(email);
     }

@@ -53,7 +53,7 @@ public class MyPropertyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         progressDialog = AppBoiler.setProgressDialog(getContext());
-        observeDataFromServer();
+       observeDataFromServer();
     }
 
     public void observeDataFromServer(){
@@ -73,11 +73,17 @@ public class MyPropertyFragment extends Fragment {
                     binding.myPropertyRecyclerView.setAdapter(adapter);
                 }
                 else {
-                    Toast.makeText(context, "no property", Toast.LENGTH_SHORT).show();
+                    binding.createNewPropertyTextView.setVisibility(View.VISIBLE);
                   System.out.println("=========== NO PROPERTY FOUND ================");
                 }
             }
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("========================= on resume");
+        //observeDataFromServer();
+    }
 }

@@ -31,11 +31,12 @@ public class MyPropertyRepository {
 
         List<CreatePropertyDataModel> modelList = new ArrayList<>();
 
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
 
+                    modelList.clear();
                     CreatePropertyDataModel model;
                     for(DataSnapshot dataSingleModel : snapshot.getChildren()){
 

@@ -1,33 +1,22 @@
 package com.living.roomrental.activity.profile.create;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.living.roomrental.FirebaseController;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.utilities.AppConstants;
-import com.living.roomrental.utilities.TypeConverters;
-
-import java.io.ByteArrayOutputStream;
 
 public class CreateProfileRepository {
 
@@ -40,7 +29,7 @@ public class CreateProfileRepository {
 
     private MutableLiveData<String> responseMutableData = new MutableLiveData<>();
 
-    private MutableLiveData<CreateProfileModel> profileModelMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<ProfileModel> profileModelMutableLiveData = new MutableLiveData<>();
 
     public CreateProfileRepository(Context context){
         this.context = context;
@@ -51,7 +40,7 @@ public class CreateProfileRepository {
 
         uid = FirebaseAuth.getInstance().getUid();
     }
-    public MutableLiveData<String> createProfileToServerWithImage(CreateProfileModel model , Uri uri){
+    public MutableLiveData<String> createProfileToServerWithImage(ProfileModel model , Uri uri){
 
 
        storageReference = storageReference.child(AppConstants.PROFILE_IMAGES).child(uid);
@@ -75,7 +64,7 @@ public class CreateProfileRepository {
                                    @Override
                                    public void onFailure(@NonNull Exception e) {
                                        System.out.println("========== EXCEPTION 1 ========="+e.getMessage());
-                                       responseMutableData.setValue(e.getMessage());
+                                       responseMutableData.setValue("Failed to Update Profile");
                                    }
                                });
                    }
@@ -97,45 +86,23 @@ public class CreateProfileRepository {
        return responseMutableData;
     }
 
-    public MutableLiveData<String> createProfileToServer(CreateProfileModel model){
-
-        model.setImageUrl(null);
+    public MutableLiveData<String> createProfileToServer(ProfileModel model){
 
         reference.child(AppConstants.USER_PROFILE).child(uid).setValue(model)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
+                        SharedPreferenceStorage.setUserExtraData(SharedPreferencesController.getInstance(context).getPreferences(),model.getName(),model.getImageUrl());
                         responseMutableData.setValue(AppConstants.SUCCESS);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         System.out.println("============ EXCEPTION ============"+e.getMessage());
-                        responseMutableData.setValue(e.getMessage());
+                        responseMutableData.setValue("Failed to Update Profile");
                     }
                 });
         return responseMutableData;
     }
-
-//    public MutableLiveData<CreateProfileModel> getProfileDataFromServer(){
-//        reference.child(AppConstants.USER_PROFILE).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    CreateProfileModel model = snapshot.getValue(CreateProfileModel.class);
-//                    profileModelMutableLiveData.setValue(model);
-//                }else{
-//                    profileModelMutableLiveData.setValue(null);
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                System.out.println("=========== Error ================"+error.getMessage());
-//            }
-//        });
-//        return profileModelMutableLiveData;
-//    }
 
 }

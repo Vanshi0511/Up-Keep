@@ -55,7 +55,7 @@ public class MyPropertyAdapter extends RecyclerView.Adapter<MyPropertyAdapter.Vi
             @Override
             public void onClick(View view) {
                 Bundle bundle =new Bundle();
-                bundle.putSerializable("data", (Serializable) model);
+                bundle.putParcelable("data", model);
                 AppBoiler.navigateToActivity(context, ViewPropertyLandlordActivity.class,bundle);
             }
         });

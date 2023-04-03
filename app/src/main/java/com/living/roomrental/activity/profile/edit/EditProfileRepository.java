@@ -15,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.living.roomrental.FirebaseController;
-import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.utilities.AppConstants;
 
 public class EditProfileRepository {
@@ -24,7 +24,7 @@ public class EditProfileRepository {
     private StorageReference storageReference;
     private String uid;
 
-    private MutableLiveData<CreateProfileModel> modelMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<ProfileModel> modelMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<String> responseMutableLiveData = new MutableLiveData<>();
 
     public EditProfileRepository(){
@@ -32,13 +32,13 @@ public class EditProfileRepository {
         databaseReference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.USER_PROFILE).child(uid);
     }
 
-    public MutableLiveData<CreateProfileModel> getDataFromServer(){
+    public MutableLiveData<ProfileModel> getDataFromServer(){
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    CreateProfileModel model = snapshot.getValue(CreateProfileModel.class);
+                    ProfileModel model = snapshot.getValue(ProfileModel.class);
                     modelMutableLiveData.setValue(model);
                 }else{
                     modelMutableLiveData.setValue(null);
@@ -53,7 +53,7 @@ public class EditProfileRepository {
         return modelMutableLiveData;
     }
 
-    public MutableLiveData<String> updateDataToServer(CreateProfileModel model){
+    public MutableLiveData<String> updateDataToServer(ProfileModel model){
 
         databaseReference.setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -71,8 +71,8 @@ public class EditProfileRepository {
     }
 
     public void deleteImageFromServer(String url){
-        storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
 
+        storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
         storageReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

@@ -18,14 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
-import com.living.roomrental.activity.auth.register.RegisterActivity;
-import com.living.roomrental.activity.profile.create.CreateProfileModel;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.databinding.ActivityEditProfileBinding;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
@@ -39,10 +37,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditProfileViewModel editProfileViewModel;
     private Dialog progressDialog, responseDialog, imagePickerDialog;
     private ActivityResultLauncher<Intent> getImageLauncher;
-    private Uri image;
-    private String name, email, contactNo, occupation, address, bio;
 
-    public static boolean isImageChanged = false;
+    private ProfileModel model = new ProfileModel();
+
+    public static boolean isImageRemoved = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +50,11 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         editProfileViewModel = new ViewModelProvider(this).get(EditProfileViewModel.class);
-        //observeResponseForGetTheData();
+
+        binding.header.headerTitle.setText("Update Profile");
         initListeners();
         getBundleData();
-        //getDataFromViewModel();
+        getDataFromViewModel();
 
 
         initLauncherForImage();
@@ -64,8 +63,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void getBundleData(){
         Bundle bundle = getIntent().getExtras();
 
-
-        CreateProfileModel model = bundle.getParcelable("data");
+        ProfileModel model = bundle.getParcelable("data");
 
         binding.nameEditText.setText(model.getName());
         binding.contactNoEditText.setText(model.getContactNo());
@@ -74,19 +72,14 @@ public class EditProfileActivity extends AppCompatActivity {
         binding.bioEditText.setText(model.getBio());
 
         System.out.println("=================== IMAGE========= "+model.toString());
+
         if(!Validation.isStringEmpty(model.getImageUrl())){
             Glide.with(this).load(model.getImageUrl()).into(binding.profileImageView);
+            this.model.setImageUrl(model.getImageUrl());
         }
     }
 
     private void getDataFromViewModel() {
-
-        binding.nameEditText.setText(editProfileViewModel.getName());
-        binding.contactNoEditText.setText(editProfileViewModel.getContactNo());
-        binding.occupationEditText.setText(editProfileViewModel.getOccupation());
-        binding.addressEditText.setText(editProfileViewModel.getAddress());
-        binding.bioEditText.setText(editProfileViewModel.getBio());
-        binding.emailEditText.setText(editProfileViewModel.getEmail());
 
         Uri imageUri = editProfileViewModel.getImageUri();
         if (imageUri != null)
@@ -101,12 +94,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 if (result.getResultCode() == Activity.RESULT_OK) {
 
-                    isImageChanged = true ;
+                    isImageRemoved = false ;
 
                     assert result.getData() != null;
-                    image = result.getData().getData();
-                    binding.profileImageView.setImageURI(image);
-                    editProfileViewModel.setImageUri(image);
+                    Uri imageUri = result.getData().getData();
+                    binding.profileImageView.setImageURI(imageUri);
+                    editProfileViewModel.setImageUri(imageUri);
                 }
             }
         });
@@ -134,8 +127,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                name = charSequence.toString();
-                if (name.length() == 0) {
+                if (charSequence.toString().length() == 0) {
                     binding.nameTextInputLayout.setError("Enter name");
                 } else {
                     AppBoiler.setInputLayoutErrorDisable(binding.nameTextInputLayout);
@@ -144,7 +136,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                editProfileViewModel.setName(name);
+                model.setName(editable.toString());
             }
         });
 
@@ -156,10 +148,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                contactNo = charSequence.toString();
-                if (contactNo.length() == 0) {
+                if (charSequence.toString().length() == 0) {
                     binding.contactNoTextInputLayout.setError("Enter contact no");
-                } else if (contactNo.length() < 10) {
+                } else if (charSequence.toString().length() < 10) {
                     binding.contactNoTextInputLayout.setError("Invalid contact no");
                 } else {
                     AppBoiler.setInputLayoutErrorDisable(binding.contactNoTextInputLayout);
@@ -168,7 +159,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                editProfileViewModel.setContactNo(contactNo);
+                model.setContactNo(editable.toString());
             }
         });
 
@@ -180,8 +171,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                occupation = charSequence.toString();
-                if (occupation.length() == 0) {
+                if (charSequence.toString().length() == 0) {
                     binding.occupationTextInputLayout.setError("Enter occupation");
                 } else {
                     AppBoiler.setInputLayoutErrorDisable(binding.occupationTextInputLayout);
@@ -190,7 +180,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                editProfileViewModel.setOccupation(occupation);
+                model.setOccupation(editable.toString());
             }
         });
 
@@ -202,8 +192,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                address = charSequence.toString();
-                if (address.length() == 0) {
+                if (charSequence.toString().length() == 0) {
                     binding.addressTextInputLayout.setError("Enter address");
                 } else {
                     AppBoiler.setInputLayoutErrorDisable(binding.addressTextInputLayout);
@@ -212,7 +201,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                editProfileViewModel.setAddress(address);
+                model.setAddress(editable.toString());
             }
         });
 
@@ -224,12 +213,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                bio = charSequence.toString();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                editProfileViewModel.setBio(bio);
+                model.setBio(editable.toString());
             }
         });
 
@@ -237,20 +225,25 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (binding.nameTextInputLayout.isErrorEnabled() || Validation.isStringEmpty(name)) {
+                if (Validation.isStringEmpty(model.getName())) {
                     binding.nameTextInputLayout.setError("Enter name");
                     binding.nameEditText.requestFocus();
+
                 } else if (binding.contactNoTextInputLayout.isErrorEnabled()) {
                     binding.contactNoEditText.requestFocus();
-                } else if (Validation.isStringEmpty(contactNo)) {
+
+                } else if (Validation.isStringEmpty(model.getContactNo())) {
                     binding.contactNoTextInputLayout.setError("Enter contact no");
                     binding.contactNoEditText.requestFocus();
-                } else if (binding.occupationTextInputLayout.isErrorEnabled() || Validation.isStringEmpty(occupation)) {
+
+                } else if (Validation.isStringEmpty(model.getOccupation())) {
                     binding.occupationTextInputLayout.setError("Enter occupation");
                     binding.occupationEditText.requestFocus();
-                } else if (binding.addressTextInputLayout.isErrorEnabled() || Validation.isStringEmpty(address)) {
+
+                } else if (Validation.isStringEmpty(model.getAddress())) {
                     binding.addressTextInputLayout.setError("Enter address");
                     binding.addressEditText.requestFocus();
+
                 } else {
                     editProfile();
                 }
@@ -269,7 +262,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void observeResponseFoSetTheData() {
 
-        LiveData<String> responseMutableLiveData = editProfileViewModel.setProfileData(this);
+        LiveData<String> responseMutableLiveData = editProfileViewModel.setProfileData(this,model);
 
         responseMutableLiveData.observe(this, new Observer<String>() {
             @Override
@@ -297,36 +290,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void observeResponseForGetTheData() {
-//
-//        LiveData<CreateProfileModel> profileModelLiveData = editProfileViewModel.getProfileData();
-//
-//        profileModelLiveData.observe(this, new Observer<CreateProfileModel>() {
-//            @Override
-//            public void onChanged(CreateProfileModel model) {
-//                initComponents(model);
-//            }
-//        });
-//    }
-
-//    private void initComponents(CreateProfileModel model) {
-//
-//        binding.nameEditText.setText(model.getName());
-//        binding.contactNoEditText.setText(model.getContactNo());
-//        binding.occupationEditText.setText(model.getOccupation());
-//        binding.addressEditText.setText(model.getAddress());
-//        binding.bioEditText.setText(model.getBio());
-//
-//        if (!Validation.isStringEmpty(model.getImageUrl())) {
-//
-//            Glide.with(this).load(model.getImageUrl()).into(binding.profileImageView);
-//            editProfileViewModel.setImageUri(Uri.parse(model.getImageUrl()));
-//            editProfileViewModel.setImageUrl(model.getImageUrl());
-//            image = Uri.parse(model.getImageUrl());
-//        }
-//    }
-
     public void getImageFromLocalStorage() {
 
         imagePickerDialog = AppBoiler.showImagePickerDialog(this, new ImagePickerDialogListener() {
@@ -349,8 +312,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 imagePickerDialog.dismiss();
                 binding.profileImageView.setImageResource(R.drawable.ic_person);
                 editProfileViewModel.setImageUri(null);
-                image = null;
-                isImageChanged = false;
+                isImageRemoved = true;
             }
         });
     }

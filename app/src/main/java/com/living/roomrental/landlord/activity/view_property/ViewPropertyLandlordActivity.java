@@ -15,6 +15,7 @@ import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.auth.register.RegisterActivity;
 import com.living.roomrental.databinding.ActivityViewPropertyLandlordBinding;
+import com.living.roomrental.landlord.activity.create_property.CreatePropertyActivity;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyDataModel;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
@@ -53,6 +54,9 @@ public class ViewPropertyLandlordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // todo edit property
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("data",model);
+                AppBoiler.navigateToActivity(ViewPropertyLandlordActivity.this, CreatePropertyActivity.class,bundle);
             }
         });
 
@@ -70,7 +74,7 @@ public class ViewPropertyLandlordActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         if(model==null){
-            model = (CreatePropertyDataModel) bundle.getSerializable("data");
+            model = bundle.getParcelable("data");
         }
         if(model!=null){
 

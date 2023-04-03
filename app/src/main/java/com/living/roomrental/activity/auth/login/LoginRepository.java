@@ -7,8 +7,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.living.roomrental.FirebaseController;
-import com.living.roomrental.activity.profile.create.CreateProfileModel;
 import com.living.roomrental.utilities.AppConstants;
 
 

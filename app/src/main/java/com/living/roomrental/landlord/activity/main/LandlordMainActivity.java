@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -31,6 +32,8 @@ public class LandlordMainActivity extends AppCompatActivity {
 
     private ActivityLandlordMainBinding binding;
 
+    private ViewProfileBottomSheet bottomSheet;
+
     private FragmentController controller  = new FragmentController(this);;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,6 @@ public class LandlordMainActivity extends AppCompatActivity {
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.getMenu().getItem(2).setEnabled(false);
 
-        getDataFromLocal();
         initListeners();
     }
 
@@ -52,6 +54,9 @@ public class LandlordMainActivity extends AppCompatActivity {
 
         if(!Validation.isStringEmpty(list.get(1)))
              Glide.with(this).load(list.get(1)).into(binding.header.headerProfileImageView);
+        else{
+            binding.header.headerProfileImageView.setImageResource(R.drawable.ic_person);
+        }
         binding.header.headerUserName.setText(list.get(0));
     }
 
@@ -67,7 +72,7 @@ public class LandlordMainActivity extends AppCompatActivity {
         binding.header.headerProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ViewProfileBottomSheet bottomSheet = new ViewProfileBottomSheet();
+                bottomSheet = new ViewProfileBottomSheet();
                 bottomSheet.show(getSupportFragmentManager(),"ViewProfileBottomSheet");
             }
         });
@@ -105,5 +110,14 @@ public class LandlordMainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDataFromLocal();
+        if(bottomSheet!=null){
+            bottomSheet.dismiss();
+        }
     }
 }
