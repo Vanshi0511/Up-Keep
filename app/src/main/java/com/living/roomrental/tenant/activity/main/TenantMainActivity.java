@@ -1,18 +1,26 @@
 package com.living.roomrental.tenant.activity.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.navigation.NavigationBarView;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.view.ViewProfileBottomSheet;
 import com.living.roomrental.databinding.ActivityTenantMainBinding;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyActivity;
+import com.living.roomrental.landlord.activity.fragments.FragmentController;
+import com.living.roomrental.landlord.activity.fragments.chat.ChatFragment;
+import com.living.roomrental.landlord.activity.fragments.home.MyPropertyFragment;
 import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
+import com.living.roomrental.tenant.activity.fragments.home.AllPropertyFragment;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.Validation;
 
@@ -22,6 +30,8 @@ public class TenantMainActivity extends AppCompatActivity {
 
     private ActivityTenantMainBinding binding;
     private ViewProfileBottomSheet bottomSheet;
+
+    private FragmentController controller  = new FragmentController(this);;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +61,33 @@ public class TenantMainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 bottomSheet = new ViewProfileBottomSheet();
                 bottomSheet.show(getSupportFragmentManager(), "ViewProfileBottomSheet");
+            }
+        });
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+        if(fragment==null)
+            controller.addFragment(new AllPropertyFragment(),R.id.fragmentContainer);
+
+        binding.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+
+                    case R.id.myProperty :
+                        controller.replaceFragment(new AllPropertyFragment(),R.id.fragmentContainer);
+                        break;
+                    case R.id.myBookings:
+
+                        break;
+                    case R.id.myChats:
+                        controller.replaceFragment(new ChatFragment(),R.id.fragmentContainer);
+                        break;
+                    case R.id.myProfile:
+                        break;
+                    default:
+                }
+                return true;
             }
         });
     }

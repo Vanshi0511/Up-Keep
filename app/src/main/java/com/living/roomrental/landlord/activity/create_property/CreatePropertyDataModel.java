@@ -6,15 +6,25 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
 import com.living.roomrental.utilities.Validation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CreatePropertyDataModel implements Parcelable {
 
     private String propertyName , landmarkAddress, mapLocationAddress , rent ;
     private String size , agreement  , description , peopleFor , type , furnishing , furnishingDescription;
+
+    private String bookingStatus;
+
+    private String uid;
+
+    private CurrentBookingModel currentBookingModel;
+
+    private List<PropertyRequestModel> propertyRequest;
 
     private Double latitude , longitude ;
 
@@ -27,7 +37,7 @@ public class CreatePropertyDataModel implements Parcelable {
     public CreatePropertyDataModel() {
     }
 
-    public CreatePropertyDataModel(String propertyName, String landmarkAddress, String mapLocationAddress, String rent, String size, String agreement, String description, String peopleFor, String type, String furnishing, String furnishingDescription, Double latitude, Double longitude, ArrayList<String> propertyImagesUrl, ArrayList<String> facilities) {
+    public CreatePropertyDataModel(String propertyName, String landmarkAddress, String mapLocationAddress, String rent, String size, String agreement, String description, String peopleFor, String type, String furnishing, String furnishingDescription, Double latitude, Double longitude, ArrayList<String> propertyImagesUrl, ArrayList<String> facilities , String bookingStatus , CurrentBookingModel model) {
         this.propertyName = propertyName;
         this.landmarkAddress = landmarkAddress;
         this.mapLocationAddress = mapLocationAddress;
@@ -43,7 +53,35 @@ public class CreatePropertyDataModel implements Parcelable {
         this.longitude = longitude;
         this.propertyImagesUrl = propertyImagesUrl;
         this.facilities = facilities;
+        this.bookingStatus = bookingStatus;
+        this.currentBookingModel = model;
     }
+
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(String bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
+    public CurrentBookingModel getModel() {
+        return currentBookingModel;
+    }
+
+    public void setModel(CurrentBookingModel model) {
+        this.currentBookingModel = model;
+    }
+
 
     public String getKey() {
         return key;
@@ -181,17 +219,19 @@ public class CreatePropertyDataModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.propertyName);
-        dest.writeString(this.landmarkAddress);
         dest.writeString(this.mapLocationAddress);
+        dest.writeString(this.landmarkAddress);
+        dest.writeString(this.rent);
         dest.writeString(this.size);
         dest.writeString(this.agreement);
-        dest.writeString(this.rent);
         dest.writeString(this.description);
         dest.writeString(this.peopleFor);
         dest.writeString(this.type);
         dest.writeString(this.furnishing);
         dest.writeString(this.furnishingDescription);
+        dest.writeString(this.bookingStatus);
+        dest.writeString(this.uid);
+        dest.writeParcelable(this.currentBookingModel, flags);
         dest.writeValue(this.latitude);
         dest.writeValue(this.longitude);
         dest.writeString(this.key);
@@ -200,17 +240,20 @@ public class CreatePropertyDataModel implements Parcelable {
     }
 
     public void readFromParcel(Parcel source) {
-        this.propertyName = source.readString();
-        this.landmarkAddress = source.readString();
         this.mapLocationAddress = source.readString();
+        this.landmarkAddress = source.readString();
+        this.rent = source.readString();
         this.size = source.readString();
         this.agreement = source.readString();
-        this.rent = source.readString();
         this.description = source.readString();
         this.peopleFor = source.readString();
         this.type = source.readString();
         this.furnishing = source.readString();
         this.furnishingDescription = source.readString();
+        this.bookingStatus = source.readString();
+        this.uid = source.readString();
+        this.currentBookingModel = source.readParcelable(CurrentBookingModel.class.getClassLoader());
+        source.readList(this.propertyRequest, PropertyRequestModel.class.getClassLoader());
         this.latitude = (Double) source.readValue(Double.class.getClassLoader());
         this.longitude = (Double) source.readValue(Double.class.getClassLoader());
         this.key = source.readString();
@@ -219,17 +262,20 @@ public class CreatePropertyDataModel implements Parcelable {
     }
 
     protected CreatePropertyDataModel(Parcel in) {
-        this.propertyName = in.readString();
-        this.landmarkAddress = in.readString();
         this.mapLocationAddress = in.readString();
+        this.landmarkAddress = in.readString();
+        this.rent = in.readString();
         this.size = in.readString();
         this.agreement = in.readString();
-        this.rent = in.readString();
         this.description = in.readString();
         this.peopleFor = in.readString();
         this.type = in.readString();
         this.furnishing = in.readString();
         this.furnishingDescription = in.readString();
+        this.bookingStatus = in.readString();
+        this.uid = in.readString();
+        this.currentBookingModel = in.readParcelable(CurrentBookingModel.class.getClassLoader());
+        in.readList(this.propertyRequest, PropertyRequestModel.class.getClassLoader());
         this.latitude = (Double) in.readValue(Double.class.getClassLoader());
         this.longitude = (Double) in.readValue(Double.class.getClassLoader());
         this.key = in.readString();

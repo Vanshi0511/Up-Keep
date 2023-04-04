@@ -8,19 +8,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.living.roomrental.activity.profile.model.ProfileModel;
-import com.living.roomrental.activity.profile.create.CreateProfileRepository;
+import com.living.roomrental.activity.profile.repository.ProfileRepository;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 
 public class EditProfileViewModel extends ViewModel {
 
-    private EditProfileRepository repository;
     private Uri imageUri;
-
-    public EditProfileViewModel(){
-        repository = new EditProfileRepository();
-    }
-
 
     public Uri getImageUri(){
         return imageUri;
@@ -34,16 +28,16 @@ public class EditProfileViewModel extends ViewModel {
         String whoIsUser = SharedPreferenceStorage.getWhoIsUser(SharedPreferencesController.getInstance(context).getPreferences());
         model.setWhoIsUser(whoIsUser);
 
-        CreateProfileRepository createProfileRepository = new CreateProfileRepository(context);
+        ProfileRepository profileRepository = new ProfileRepository(context);
 
         if(model.getImageUrl()!=null && EditProfileActivity.isImageRemoved){
-           repository.deleteImageFromServer(model.getImageUrl());
+           profileRepository.deleteImageFromServer(model.getImageUrl());
            model.setImageUrl(null);
         }
         if(imageUri!=null){
-            return createProfileRepository.createProfileToServerWithImage(model,imageUri);
+            return profileRepository.createProfileToServerWithImage(model,imageUri);
         } else {
-            return createProfileRepository.createProfileToServer(model);
+            return profileRepository.createProfileToServer(model);
         }
     }
 

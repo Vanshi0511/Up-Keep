@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class CreatePropertyViewModel extends ViewModel {
 
-    private String mapLocationAddress ,peopleFor , type , furnishing ;
+    private String mapLocationAddress ,peopleFor , type , furnishing , bookingStatus ="vacant";
     private Double latitude , longitude ;
     private ArrayList<Uri> propertyImages = new ArrayList<>();
 
@@ -27,6 +27,14 @@ public class CreatePropertyViewModel extends ViewModel {
 
     public String getMapLocationAddress() {
         return mapLocationAddress;
+    }
+
+    public String getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(String bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 
     public void setMapLocationAddress(String mapLocationAddress) {

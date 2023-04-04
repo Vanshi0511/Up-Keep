@@ -503,7 +503,7 @@ public class CreatePropertyActivity extends AppCompatActivity {
 
                 if(isValidationSuccess(propertyName,propertyLandmark,propertyRent,propertySize,propertyAgreement,propertyFurnishingDescription)){
 
-                    CreatePropertyDataModel model = new CreatePropertyDataModel(propertyName,propertyLandmark, createPropertyViewModel.getMapLocationAddress(),propertyRent,propertySize,propertyAgreement,description, createPropertyViewModel.getPeopleFor(), createPropertyViewModel.getType(), createPropertyViewModel.getFurnishing(), propertyFurnishingDescription, createPropertyViewModel.getLatitude(), createPropertyViewModel.getLongitude(),null,createPropertyViewModel.getFacilitiesArrayList());
+                    CreatePropertyDataModel model = new CreatePropertyDataModel(propertyName,propertyLandmark, createPropertyViewModel.getMapLocationAddress(),propertyRent,propertySize,propertyAgreement,description, createPropertyViewModel.getPeopleFor(), createPropertyViewModel.getType(), createPropertyViewModel.getFurnishing(), propertyFurnishingDescription, createPropertyViewModel.getLatitude(), createPropertyViewModel.getLongitude(),null,createPropertyViewModel.getFacilitiesArrayList() , createPropertyViewModel.getBookingStatus() , null);
                     setDataToServer(model);
                 }
             }

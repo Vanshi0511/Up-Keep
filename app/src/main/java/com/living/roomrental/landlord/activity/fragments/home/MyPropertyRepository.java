@@ -42,6 +42,7 @@ public class MyPropertyRepository {
 
                         model = dataSingleModel.getValue(CreatePropertyDataModel.class);
                         model.setKey(dataSingleModel.getKey());
+
                         modelList.add(model);
                     }
                     propertyMutableData.setValue(modelList);

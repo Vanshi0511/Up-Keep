@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.living.roomrental.DialogListener;
+import com.living.roomrental.FirebaseController;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.model.ProfileModel;
@@ -52,6 +53,8 @@ public class EditProfileActivity extends AppCompatActivity {
         editProfileViewModel = new ViewModelProvider(this).get(EditProfileViewModel.class);
 
         binding.header.headerTitle.setText("Update Profile");
+        System.out.println("==================== data "+FirebaseController.getInstance().getUser().getEmail());
+        binding.emailEditText.setText(FirebaseController.getInstance().getUser().getEmail());
         initListeners();
         getBundleData();
         getDataFromViewModel();

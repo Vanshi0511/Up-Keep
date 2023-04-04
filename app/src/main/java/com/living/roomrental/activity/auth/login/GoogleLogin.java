@@ -24,7 +24,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.general.UserChoiceBottomSheet;
 import com.living.roomrental.activity.profile.model.ProfileModel;
-import com.living.roomrental.activity.profile.view.ViewProfileRepository;
+import com.living.roomrental.activity.profile.repository.ProfileRepository;
 import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
@@ -113,8 +113,8 @@ public class GoogleLogin {
     }
 
     private void getProfileData(){
-        ViewProfileRepository viewProfileRepository = new ViewProfileRepository();
-        LiveData<ProfileModel> modelLiveData = viewProfileRepository.getProfileDataFromServer();
+        ProfileRepository profileRepository = new ProfileRepository(context);
+        LiveData<ProfileModel> modelLiveData = profileRepository.getProfileDataFromServer();
 
         modelLiveData.observe((LoginActivity)context, new Observer<ProfileModel>() {
             @Override

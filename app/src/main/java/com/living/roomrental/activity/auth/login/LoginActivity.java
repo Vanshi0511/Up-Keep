@@ -189,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getUserProfile() {
-        LiveData<ProfileModel> modelLiveData = loginViewModel.getProfileDataFromServer();
+        LiveData<ProfileModel> modelLiveData = loginViewModel.getProfileDataFromServer(this);
 
         modelLiveData.observe(this, new Observer<ProfileModel>() {
             @Override

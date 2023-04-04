@@ -100,7 +100,7 @@
                     android:enabled="false"
                     android:inputType="textEmailAddress"
                     android:textAppearance="@style/InputTextAppearance"
-                    android:textColor="@color/black_text_secondary" />
+                    android:textColor="@color/black_text_disabled" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

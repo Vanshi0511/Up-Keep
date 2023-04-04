@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/_300sdp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_8sdp"
+    android:layout_margin="@dimen/_4sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/SendRequestTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Request to Landlord"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textSize="@dimen/_16ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/descriptionTextInputLayout"
+            style="@style/TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+
+            android:layout_margin="@dimen/_8sdp"
+            android:hint="Description"
+            app:helperText="Any thing which you want to say to Landlord"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SendRequestTextView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/descriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="200"
+            android:maxLines="4"
+            android:textAppearance="@style/InputTextAppearance"
+            android:textColor="@color/black_text_secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendRequestBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_46sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Send Request"
+            android:textAllCaps="false"
+
+            android:textAppearance="@style/InputTextAppearance"
+            app:cornerRadius="@dimen/_6sdp"
+            android:textColor="@color/indigo_600"
+            android:backgroundTint="@color/white"
+            android:layout_marginRight="@dimen/_8sdp"
+            app:strokeColor="@color/indigo_600"
+            app:strokeWidth="@dimen/_1sdp"
+            app:rippleColor="@color/black_text_disabled"
+
+            app:layout_constraintBottom_toTopOf="@+id/guideline_bottom_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextInputLayout" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_bottom_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/_8sdp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

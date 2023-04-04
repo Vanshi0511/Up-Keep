@@ -1,7 +1,6 @@
-package com.living.roomrental.landlord.activity.fragments.home;
+package com.living.roomrental.tenant.activity.fragments.home;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,36 +15,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.living.roomrental.R;
-import com.living.roomrental.databinding.FragmentMyPropertyBinding;
+import com.living.roomrental.databinding.FragmentAllPropertyBinding;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyDataModel;
-import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
+import com.living.roomrental.landlord.activity.fragments.home.MyPropertyAdapter;
 import com.living.roomrental.utilities.AppBoiler;
 
 import java.util.ArrayList;
 import java.util.List;
 
+public class AllPropertyFragment extends Fragment {
 
-public class MyPropertyFragment extends Fragment {
+    private FragmentAllPropertyBinding binding;
 
-    private FragmentMyPropertyBinding binding;
-
-    private MyPropertyViewModel myPropertyViewModel;
-    private Context context;
-
-    private MyPropertyAdapter adapter;
-
-    private Dialog progressDialog ;
+    private AllPropertyAdapter adapter;
+    private Dialog progressDialog;
+    private AllPropertyViewModel allPropertyViewModel;
     private List<CreatePropertyDataModel> createPropertyDataModelList = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        binding = FragmentAllPropertyBinding.inflate(inflater, container, false);
 
-        binding = FragmentMyPropertyBinding.inflate(inflater,container,false);
-
-        myPropertyViewModel = new ViewModelProvider(this).get(MyPropertyViewModel.class);
-        context = getActivity();
-
+        allPropertyViewModel = new ViewModelProvider(this).get(AllPropertyViewModel.class);
         return binding.getRoot();
     }
 
@@ -55,42 +47,33 @@ public class MyPropertyFragment extends Fragment {
 
         setAdapter();
         progressDialog = AppBoiler.setProgressDialog(getContext());
-       observeDataFromServer();
+        observeDataFromServer();
     }
+
     private void setAdapter(){
-        adapter = new MyPropertyAdapter(getActivity());
+        adapter = new AllPropertyAdapter(getActivity());
         adapter.setPropertyList((ArrayList<CreatePropertyDataModel>) createPropertyDataModelList);
-        binding.myPropertyRecyclerView.setAdapter(adapter);
+        binding.allPropertyRecyclerView.setAdapter(adapter);
     }
 
-    public void observeDataFromServer(){
+    private void observeDataFromServer(){
 
-        LiveData<List<CreatePropertyDataModel>> propertyModel = myPropertyViewModel.getProperty();
+        LiveData<List<CreatePropertyDataModel>> modelList = allPropertyViewModel.getPropertyFromRepository();
 
-        propertyModel.observe(getViewLifecycleOwner(), new Observer<List<CreatePropertyDataModel>>() {
+        modelList.observe(getViewLifecycleOwner(), new Observer<List<CreatePropertyDataModel>>() {
             @Override
             public void onChanged(List<CreatePropertyDataModel> createPropertyDataModels) {
-
                 progressDialog.dismiss();
 
-                if(createPropertyDataModels != null){
-                    binding.createNewPropertyTextView.setVisibility(View.GONE);
+                if(createPropertyDataModels!=null){
                     createPropertyDataModelList = createPropertyDataModels;
                     adapter.setPropertyList((ArrayList<CreatePropertyDataModel>) createPropertyDataModelList);
                     adapter.notifyDataSetChanged();
-                }
-                else {
-                    binding.createNewPropertyTextView.setVisibility(View.VISIBLE);
-                  System.out.println("=========== NO PROPERTY FOUND ================");
+                    System.out.println("============= DATA FOUND ===========" +createPropertyDataModels.size());
+                } else {
+                    System.out.println("============= NO PROPERTY DATA FOUND ===========");
                 }
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println("========================= on resume");
-        //observeDataFromServer();
     }
 }

@@ -3,11 +3,8 @@ package com.living.roomrental.landlord.activity.main;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -20,10 +17,10 @@ import com.living.roomrental.landlord.activity.create_property.CreatePropertyAct
 import com.living.roomrental.landlord.activity.fragments.FragmentController;
 import com.living.roomrental.landlord.activity.fragments.chat.ChatFragment;
 import com.living.roomrental.landlord.activity.fragments.home.MyPropertyFragment;
+import com.living.roomrental.landlord.activity.fragments.request.MyRequestFragment;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.utilities.AppBoiler;
-import com.living.roomrental.utilities.TypeConverters;
 import com.living.roomrental.utilities.Validation;
 
 import java.util.ArrayList;
@@ -91,7 +88,7 @@ public class LandlordMainActivity extends AppCompatActivity {
                          controller.replaceFragment(new MyPropertyFragment(),R.id.fragmentContainer);
                          break;
                     case R.id.myBookings:
-
+                         controller.replaceFragment(new MyRequestFragment(),R.id.fragmentContainer);
                         break;
                     case R.id.myChats:
                         controller.replaceFragment(new ChatFragment(),R.id.fragmentContainer);

@@ -132,6 +132,7 @@ public class PropertyMapActivity extends FragmentActivity implements OnMapReadyC
                         if(mMap!=null){
                             mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                            mMap.animateCamera( CameraUpdateFactory.zoomTo( 17.0f ) );
                         }
                         getLocationAddress();
                     }

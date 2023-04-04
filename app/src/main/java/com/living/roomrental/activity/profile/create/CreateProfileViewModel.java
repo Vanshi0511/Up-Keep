@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.living.roomrental.activity.profile.model.ProfileModel;
+import com.living.roomrental.activity.profile.repository.ProfileRepository;
 
 public class CreateProfileViewModel extends ViewModel {
 
@@ -21,7 +22,7 @@ public class CreateProfileViewModel extends ViewModel {
 
     public LiveData<String> createUserProfile(Context context, ProfileModel model){
 
-        CreateProfileRepository repository =new CreateProfileRepository(context);
+        ProfileRepository repository =new ProfileRepository(context);
         if(imageUri==null){
             return  repository.createProfileToServer(model);
         } else {

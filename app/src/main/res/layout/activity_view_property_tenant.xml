@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootLayoutOfViewProperty"
+    tools:context=".landlord.activity.view_property.ViewPropertyLandlordActivity">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/propertyImageRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/propertyNameLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+
+                android:text="Name"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyImageRecyclerView" />
+
+            <TextView
+                android:id="@+id/propertyNameData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertyNameLabel" />
+
+            <TextView
+                android:id="@+id/addressLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Address"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyNameData" />
+
+            <TextView
+                android:id="@+id/addressData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/addressLabel" />
+
+            <TextView
+                android:id="@+id/landmarkLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Landmark"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/addressData" />
+
+            <TextView
+                android:id="@+id/landmarkData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/landmarkLabel" />
+
+            <TextView
+                android:id="@+id/propertyTypeLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="Type"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/landmarkData" />
+
+            <TextView
+                android:id="@+id/propertyTypeData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertyTypeLabel" />
+
+            <TextView
+                android:id="@+id/propertyForLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Tenant"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyTypeData" />
+
+            <TextView
+                android:id="@+id/propertyForData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertyForLabel" />
+
+
+            <TextView
+                android:id="@+id/propertySizeLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Size (sq. ft.)"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyForData" />
+
+            <TextView
+                android:id="@+id/propertySizeData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertySizeLabel" />
+
+            <TextView
+                android:id="@+id/propertyAgreementLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Agreement"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertySizeData" />
+
+            <TextView
+                android:id="@+id/propertyAgreementData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertyAgreementLabel" />
+
+            <TextView
+                android:id="@+id/propertyFacilitiesLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Facilities"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyAgreementData" />
+
+            <TextView
+                android:id="@+id/propertyFacilitiesData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertyFacilitiesLabel" />
+
+            <TextView
+                android:id="@+id/propertyFurnishingLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Furnishing"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyFacilitiesData" />
+
+            <TextView
+                android:id="@+id/propertyFurnishingData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertyFurnishingLabel" />
+
+            <TextView
+                android:id="@+id/furnishingDescriptionLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Furnishing items"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyFurnishingData" />
+
+            <TextView
+                android:id="@+id/furnishingDescriptionData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/furnishingDescriptionLabel" />
+
+            <TextView
+                android:id="@+id/propertyRentLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Rent"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/furnishingDescriptionData" />
+
+            <TextView
+                android:id="@+id/propertyRentData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/black_text_primary"
+                android:drawableLeft="@drawable/ic_currency"
+                android:drawablePadding="@dimen/_3sdp"
+                android:textSize="@dimen/_14ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertyRentLabel" />
+
+            <TextView
+                android:id="@+id/propertyDescriptionLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Description"
+                android:textColor="@color/black_text_primary"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_bottom_horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_middle_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/propertyRentData" />
+
+            <TextView
+                android:id="@+id/propertyDescriptionData"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/montserrat_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/guideline_middle_vertical"
+                app:layout_constraintTop_toTopOf="@+id/propertyDescriptionLabel" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_bottom_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="@dimen/_16sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/_8sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_8sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_middle_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.50" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_70sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bookBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_52sdp"
+            android:layout_margin="@dimen/_8sdp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Book"
+
+            android:layout_weight="1"
+            android:textAllCaps="false"
+
+            android:textAppearance="@style/InputTextAppearance"
+            app:cornerRadius="@dimen/_8sdp"
+            app:rippleColor="@color/black" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

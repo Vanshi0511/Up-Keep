@@ -57,7 +57,7 @@ public class ViewProfileBottomSheet extends BottomSheetDialogFragment {
     }
     private void getDataFromServer(View view) {
 
-        LiveData<ProfileModel> modelLiveData = viewProfileViewModel.getProfileData();
+        LiveData<ProfileModel> modelLiveData = viewProfileViewModel.getProfileData(getContext());
 
         modelLiveData.observe(this, new Observer<ProfileModel>() {
             @Override
@@ -65,6 +65,7 @@ public class ViewProfileBottomSheet extends BottomSheetDialogFragment {
 
                 if(profileModel !=null){
                     model = profileModel;
+                    System.out.println("======== model data======"+profileModel.toString());
                     setData(view);
                 }else{
                     System.out.println("================= NO DATA FOUND =================");
