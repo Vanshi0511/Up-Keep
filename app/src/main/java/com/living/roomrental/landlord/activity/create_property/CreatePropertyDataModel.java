@@ -24,7 +24,6 @@ public class CreatePropertyDataModel implements Parcelable {
 
     private CurrentBookingModel currentBookingModel;
 
-    private List<PropertyRequestModel> propertyRequest;
 
     private Double latitude , longitude ;
 
@@ -219,6 +218,7 @@ public class CreatePropertyDataModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.propertyName);
         dest.writeString(this.mapLocationAddress);
         dest.writeString(this.landmarkAddress);
         dest.writeString(this.rent);
@@ -240,6 +240,7 @@ public class CreatePropertyDataModel implements Parcelable {
     }
 
     public void readFromParcel(Parcel source) {
+        this.propertyName = source.readString();
         this.mapLocationAddress = source.readString();
         this.landmarkAddress = source.readString();
         this.rent = source.readString();
@@ -253,7 +254,6 @@ public class CreatePropertyDataModel implements Parcelable {
         this.bookingStatus = source.readString();
         this.uid = source.readString();
         this.currentBookingModel = source.readParcelable(CurrentBookingModel.class.getClassLoader());
-        source.readList(this.propertyRequest, PropertyRequestModel.class.getClassLoader());
         this.latitude = (Double) source.readValue(Double.class.getClassLoader());
         this.longitude = (Double) source.readValue(Double.class.getClassLoader());
         this.key = source.readString();
@@ -262,6 +262,7 @@ public class CreatePropertyDataModel implements Parcelable {
     }
 
     protected CreatePropertyDataModel(Parcel in) {
+        this.propertyName = in.readString();
         this.mapLocationAddress = in.readString();
         this.landmarkAddress = in.readString();
         this.rent = in.readString();
@@ -275,7 +276,6 @@ public class CreatePropertyDataModel implements Parcelable {
         this.bookingStatus = in.readString();
         this.uid = in.readString();
         this.currentBookingModel = in.readParcelable(CurrentBookingModel.class.getClassLoader());
-        in.readList(this.propertyRequest, PropertyRequestModel.class.getClassLoader());
         this.latitude = (Double) in.readValue(Double.class.getClassLoader());
         this.longitude = (Double) in.readValue(Double.class.getClassLoader());
         this.key = in.readString();
@@ -294,4 +294,29 @@ public class CreatePropertyDataModel implements Parcelable {
             return new CreatePropertyDataModel[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "CreatePropertyDataModel{" +
+                "propertyName='" + propertyName + '\'' +
+                ", landmarkAddress='" + landmarkAddress + '\'' +
+                ", mapLocationAddress='" + mapLocationAddress + '\'' +
+                ", rent='" + rent + '\'' +
+                ", size='" + size + '\'' +
+                ", agreement='" + agreement + '\'' +
+                ", description='" + description + '\'' +
+                ", peopleFor='" + peopleFor + '\'' +
+                ", type='" + type + '\'' +
+                ", furnishing='" + furnishing + '\'' +
+                ", furnishingDescription='" + furnishingDescription + '\'' +
+                ", bookingStatus='" + bookingStatus + '\'' +
+                ", uid='" + uid + '\'' +
+                ", currentBookingModel=" + currentBookingModel +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", key='" + key + '\'' +
+                ", propertyImagesUrl=" + propertyImagesUrl +
+                ", facilities=" + facilities +
+                '}';
+    }
 }

@@ -3,6 +3,7 @@ package com.living.roomrental.tenant.activity.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Dialog;
@@ -30,7 +31,9 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
     private String description;
 
     private Dialog progressDialog , responseDialog;
-    private ViewPropertyTenantRepository repository = new ViewPropertyTenantRepository();
+
+    private ViewPropertyTenantViewModel viewPropertyTenantViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,10 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
 
         binding.header.headerTitle.setText("Book Property");
 
+
         getBundles();
+        if(!model.getBookingStatus().equals("vacant"))
+           isUserRequestedForProperty();
         initListeners();
         setDataToViews();
     }
@@ -50,6 +56,7 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
 
         if(bundle!=null){
            model =  bundle.getParcelable("data");
+           viewPropertyTenantViewModel = new ViewModelProvider(this ,new ViewPropertyTenantViewModelFactory(model.getKey(),model.getUid())).get(ViewPropertyTenantViewModel.class);
         }
     }
 
@@ -92,10 +99,8 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
         binding.propertyDescriptionData.setText(model.getDescription());
 
         if(!model.getBookingStatus().equals("vacant")){
-            binding.bookBtn.setEnabled(false);
-            binding.bookBtn.setBackgroundColor(getColor(R.color.grey_500));
+           binding.bookBtn.setVisibility(View.GONE);
         }
-
     }
     private void sendRequestToLandlordDialog(){
 
@@ -139,20 +144,35 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
         sendRequestDialog.show();
     }
 
+    private void isUserRequestedForProperty(){
+        LiveData<Boolean> isUserRequestLiveData = viewPropertyTenantViewModel.isUserRequested();
+
+        isUserRequestLiveData.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean == true){
+                    binding.bookBtn.setText("Already Requested");
+                    binding.bookBtn.setBackgroundColor(getColor(R.color.grey_300));
+                    binding.bookBtn.setEnabled(false);
+                }
+            }
+        });
+    }
+
     private void sendRequestToLandlord(){
 
         progressDialog = AppBoiler.setProgressDialog(this);
+        PropertyRequestModel propertyRequestModel = new PropertyRequestModel(null,description);
 
-        PropertyRequestModel propertyRequestModel = new PropertyRequestModel(description);
-        LiveData<String> responseLiveData = repository.sendRequest(propertyRequestModel,model.getKey());
+        LiveData<String> responseLiveData = viewPropertyTenantViewModel.sendRequestToLandlord(propertyRequestModel) ; //sendRequest(,model.getKey(),model.getUid());
 
         responseLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
 
                 if(s.equals(AppConstants.SUCCESS)){
+                    storeRequestDataToServer();
 
-                    setRequestDataToTenantData();
                 } else {
                     progressDialog.dismiss();
                     System.out.println("========= ERROR 1 =====");
@@ -161,9 +181,9 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
         });
     }
 
-    private void setRequestDataToTenantData(){
+    private void storeRequestDataToServer(){
 
-        LiveData<String> responseLiveData = repository.setTenantRequestData(model.getKey());
+        LiveData<String> responseLiveData = viewPropertyTenantViewModel.storeRequestDataToServer();
 
         responseLiveData.observe(this, new Observer<String>() {
             @Override

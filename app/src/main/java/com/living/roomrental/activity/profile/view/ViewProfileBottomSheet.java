@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.model.ProfileModel;
@@ -89,7 +90,7 @@ public class ViewProfileBottomSheet extends BottomSheetDialogFragment {
         contactTextView.setText(model.getContactNo());
         addressTextView.setText(model.getAddress());
         aboutTextView.setText(model.getBio());
-        emailTextView.setText(FirebaseController.getInstance().getUser().getEmail());
+        emailTextView.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         System.out.println("=========== image     "+model.getImageUrl());
         if(!Validation.isStringEmpty(model.getImageUrl())){

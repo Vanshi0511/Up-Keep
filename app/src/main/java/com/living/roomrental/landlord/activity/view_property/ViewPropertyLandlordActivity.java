@@ -85,6 +85,9 @@ public class ViewPropertyLandlordActivity extends AppCompatActivity {
                 binding.propertyImageRecyclerView.setAdapter(adapter);
             }
 
+            System.out.println("============= Property name"+model.getPropertyName());
+            System.out.println("============= Property name"+model.toString());
+
             binding.propertyNameData.setText(model.getPropertyName());
             binding.addressData.setText(model.getMapLocationAddress());
             binding.landmarkData.setText(model.getLandmarkAddress());

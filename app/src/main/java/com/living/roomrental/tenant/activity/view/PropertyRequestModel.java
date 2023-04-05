@@ -5,11 +5,12 @@ public class PropertyRequestModel {
     private String uidOfUser ;
     private String description;
 
-    public PropertyRequestModel() {
+    public PropertyRequestModel(String uidOfUser, String description) {
+        this.uidOfUser = uidOfUser;
+        this.description = description;
     }
 
-    public PropertyRequestModel(String description) {
-        this.description = description;
+    public PropertyRequestModel() {
     }
 
     public String getUidOfUser() {
