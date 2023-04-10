@@ -87,7 +87,7 @@ public class LandlordMainActivity extends AppCompatActivity {
                     case R.id.myProperty :
                          controller.replaceFragment(new MyPropertyFragment(),R.id.fragmentContainer);
                          break;
-                    case R.id.myBookings:
+                    case R.id.myRequest:
                          controller.replaceFragment(new MyRequestFragment(),R.id.fragmentContainer);
                         break;
                     case R.id.myChats:

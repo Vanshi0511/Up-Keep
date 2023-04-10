@@ -22,5 +22,4 @@ public class ViewPropertyTenantViewModel extends ViewModel {
     public MutableLiveData<String> storeRequestDataToServer(){
         return repository.setTenantRequestData();
     }
-
 }

@@ -1,6 +1,8 @@
 package com.living.roomrental.landlord.activity.fragments.request;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.living.roomrental.R;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyDataModel;
 import com.living.roomrental.landlord.activity.view_property.ViewPropertyLandlordActivity;
 import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
@@ -25,36 +28,60 @@ import java.util.ArrayList;
 public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<PropertyRequestModel> modelArrayList;
+    private ArrayList<MyRequestsModel> modelArrayList;
+    private ArrayList<ProfileModel> profileModelArrayList;
 
-    public MyRequestAdapter(Context context) {
+    private ConfirmationListener confirmationListener;
+    public MyRequestAdapter(Context context ) {
         this.context = context;
     }
-
-    public void setPropertyList(ArrayList<PropertyRequestModel> modelList) {
+    public void setRequestList(ArrayList<MyRequestsModel> modelList) {
         this.modelArrayList = modelList;
     }
+    public void setProfileList(ArrayList<ProfileModel> profileModelList){
+        this.profileModelArrayList = profileModelList;
+    }
 
+    public void initConfirmationInterface(ConfirmationListener confirmationListener){
+        this.confirmationListener = confirmationListener;
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.listitem_my_property, parent, false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.listitem_my_requests, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PropertyRequestModel model = modelArrayList.get(position);
 
+        MyRequestsModel model = modelArrayList.get(position);
 
+        holder.whoRequestedTextView.setText(model.getNameOfTenant()+", requested to rent your property "+model.getPropertyName());
+        holder.descriptionTextView.setText(model.getDescription());
 
-        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+        holder.viewProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-               // bundle.putParcelable("data", model);
-                AppBoiler.navigateToActivity(context, ViewPropertyLandlordActivity.class, bundle);
+                AppBoiler.showProfileDialog(context,profileModelArrayList.get(position));
             }
         });
+
+        holder.acceptCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //acceptConfirmationDialog(model.getNameOfTenant());
+                confirmationListener.onClickAccept(model.getNameOfTenant() , position);
+            }
+        });
+
+        holder.rejectCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //rejectConfirmationDialog(model.getNameOfTenant());
+                confirmationListener.onClickReject(model.getNameOfTenant() , position);
+            }
+        });
+
     }
 
     @Override
@@ -64,20 +91,24 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView propertyName, descriptionTextView;
+        private TextView whoRequestedTextView, descriptionTextView;
+        private ImageView viewProfileImageView;
 
-        private MaterialCardView itemLayout;
+        private MaterialCardView acceptCardView  , rejectCardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-//            propertyImage = itemView.findViewById(R.id.propertyImageView);
-//            propertyName = itemView.findViewById(R.id.propertyName);
-//            propertyAddress = itemView.findViewById(R.id.propertyAddress);
-//            propertyRent = itemView.findViewById(R.id.propertyRent);
-//            propertyType = itemView.findViewById(R.id.propertyType);
-//            itemLayout = itemView.findViewById(R.id.itemLayout);
+            acceptCardView = itemView.findViewById(R.id.acceptCardView);
+            rejectCardView = itemView.findViewById(R.id.rejectCardView);
+            whoRequestedTextView = itemView.findViewById(R.id.whoRequestTextView);
+            descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
+            viewProfileImageView = itemView.findViewById(R.id.viewProfileImageView);
         }
     }
 
+    public interface ConfirmationListener{
+        public void onClickAccept(String tenantName , int position);
+        public void onClickReject(String tenantName , int position);
+    }
 }

@@ -38,9 +38,9 @@ public class ViewPropertyTenantRepository {
 
     public MutableLiveData<String> sendRequest(PropertyRequestModel model){
 
-        model.setUidOfUser(uidOfCurrentUser);
+        //model.setUidOfUser(uidOfCurrentUser);
         databaseReference.child(AppConstants.LANDLORD_PROPERTY).child(uidOfLandlord).child(propertyKey).child("propertyRequests")
-                .push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .child(uidOfCurrentUser).setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 responseMutableDataForSendRequest.setValue(AppConstants.SUCCESS);
@@ -73,27 +73,34 @@ public class ViewPropertyTenantRepository {
     }
 
     public MutableLiveData<Boolean> isUserRequested(){
-        databaseReference.child(AppConstants.LANDLORD_PROPERTY).child(uidOfLandlord).child(propertyKey).child("propertyRequests")
+        databaseReference.child(AppConstants.LANDLORD_PROPERTY).child(uidOfLandlord).child(propertyKey).child("propertyRequests").child(uidOfCurrentUser)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        if(snapshot.exists()){
+//
+//                            System.out.println("========== found 1");
+//                            PropertyRequestModel model;
+//                            String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//
+//                            for(DataSnapshot keySnapshot : snapshot.getChildren()){
+//                                System.out.println("========== found 2");
+//                                model = keySnapshot.getValue(PropertyRequestModel.class);
+//
+//                                if(model.getUidOfUser().equals(currentUid)){
+//                                    System.out.println("========== found 3");
+//                                   isRequestedMutableData.setValue(true);
+//                                   break;
+//                                }
+//                            }
+//                        } else{
+//                            System.out.println("=========== No DATA ======== ");
+//                            isRequestedMutableData.setValue(false);
+//                        }
                         if(snapshot.exists()){
-
-                            System.out.println("========== found 1");
-                            PropertyRequestModel model;
-                            String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-                            for(DataSnapshot keySnapshot : snapshot.getChildren()){
-                                System.out.println("========== found 2");
-                                model = keySnapshot.getValue(PropertyRequestModel.class);
-
-                                if(model.getUidOfUser().equals(currentUid)){
-                                    System.out.println("========== found 3");
-                                   isRequestedMutableData.setValue(true);
-                                   break;
-                                }
-                            }
-                        } else{
+                            System.out.println("========== found 3");
+                            isRequestedMutableData.setValue(true);
+                        } else {
                             System.out.println("=========== No DATA ======== ");
                             isRequestedMutableData.setValue(false);
                         }

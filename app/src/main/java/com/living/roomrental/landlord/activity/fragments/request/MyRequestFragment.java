@@ -1,5 +1,8 @@
 package com.living.roomrental.landlord.activity.fragments.request;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,9 +16,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.living.roomrental.DialogListener;
+import com.living.roomrental.R;
+import com.living.roomrental.activity.auth.register.RegisterActivity;
+import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.databinding.FragmentRequestBinding;
 import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
+import com.living.roomrental.utilities.AppBoiler;
+import com.living.roomrental.utilities.AppConstants;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +37,11 @@ public class MyRequestFragment extends Fragment {
 
     private MyRequestAdapter adapter;
 
-    private ArrayList<PropertyRequestModel> propertyRequestModelList = new ArrayList<>();
+    private Dialog progressDialog , responseDialog;
+
+    private ArrayList<MyRequestsModel> myRequestsModelList = new ArrayList<>();
+
+    private ArrayList<ProfileModel> profileModelArrayList = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,8 +49,6 @@ public class MyRequestFragment extends Fragment {
         binding = FragmentRequestBinding.inflate(inflater, container, false);
 
         myRequestViewModel = new ViewModelProvider(this).get(MyRequestViewModel.class);
-        //setAdapter();
-        getRequestDataFromServer();
         return binding.getRoot();
     }
 
@@ -44,25 +56,135 @@ public class MyRequestFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        progressDialog = AppBoiler.setProgressDialog(getContext());
+        setAdapter();
+        getRequestDataFromServer();
     }
 
     private void setAdapter(){
+
         if(adapter==null)
             adapter = new MyRequestAdapter(getContext());
+        adapter.setRequestList(myRequestsModelList);
+        adapter.setProfileList(profileModelArrayList);
+        adapter.initConfirmationInterface(new MyRequestAdapter.ConfirmationListener() {
+            @Override
+            public void onClickAccept(String tenantName , int position) {
+
+                    new AlertDialog.Builder(getContext())
+                            .setIcon(R.drawable.ic_double_correct)
+                            .setMessage("Are you sure to accept '"+tenantName+"'s request?")
+                            .setTitle("Accept")
+                            .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            })
+                            .show();
+            }
+
+            @Override
+            public void onClickReject(String tenantName , int position) {
+
+                new AlertDialog.Builder(getContext())
+                        .setIcon(R.drawable.ic_cancel)
+                        .setMessage("Are you sure to reject '"+tenantName+"'s request?")
+                        .setTitle("Reject")
+                        .setPositiveButton("Reject", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                progressDialog.show();
+                                rejectProperty(position);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+            }
+        });
 
         binding.myRequestRecyclerView.setAdapter(adapter);
     }
     private void getRequestDataFromServer(){
 
-        LiveData<List<PropertyRequestModel>> listLiveData = myRequestViewModel.getRequest();
-        listLiveData.observe(getViewLifecycleOwner(), new Observer<List<PropertyRequestModel>>() {
+        LiveData<List<MyRequestsModel>> listLiveData = myRequestViewModel.getRequest();
+        listLiveData.observe(getViewLifecycleOwner(), new Observer<List<MyRequestsModel>>() {
             @Override
-            public void onChanged(List<PropertyRequestModel> propertyRequestModels) {
-                if(propertyRequestModels!=null){
+            public void onChanged(List<MyRequestsModel> myRequestsModels) {
 
+                if(myRequestsModels!=null){
+                    myRequestsModelList = (ArrayList<MyRequestsModel>) myRequestsModels;
+                    getProfileDataFromServer();
                 }
                 else {
                     System.out.println("+============ No data found ===================");
+                }
+            }
+        });
+    }
+
+    private void getProfileDataFromServer(){
+
+        LiveData<List<ProfileModel>> profileModelLiveData = myRequestViewModel.getProfileDataOfTenant(myRequestsModelList);
+
+        profileModelLiveData.observe(getViewLifecycleOwner(), new Observer<List<ProfileModel>>() {
+            @Override
+            public void onChanged(List<ProfileModel> profileModels) {
+
+                progressDialog.dismiss();
+                if(profileModels!=null){
+                    profileModelArrayList = (ArrayList<ProfileModel>) profileModels;
+                    notifyAdapter();
+                } else {
+                    System.out.println("=========== No profile data ===========");
+                }
+            }
+        });
+    }
+    private void notifyAdapter(){
+
+        for(int i=0 ; i< myRequestsModelList.size() ; i++){
+            myRequestsModelList.get(i).setNameOfTenant(profileModelArrayList.get(i).getName());
+        }
+        System.out.println("============= notify adapter =======");
+        adapter.setRequestList(myRequestsModelList);
+        adapter.setProfileList(profileModelArrayList);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void rejectProperty(int position){
+        //todo delete request from property
+        LiveData<String> deleteLiveData = myRequestViewModel.removePropertyRequest(myRequestsModelList.get(position).getUidOfTenant() ,  myRequestsModelList.get(position).getPropertyKey());
+        deleteLiveData.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+
+                progressDialog.dismiss();
+                if(s.equals(AppConstants.SUCCESS)){
+                    responseDialog = AppBoiler.customDialogWithBtn(getContext(),"Request Deleted Successfully", R.drawable.ic_done, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            responseDialog.dismiss();
+                        }
+                    });
+                } else {
+                    responseDialog = AppBoiler.customDialogWithBtn(getContext(), s, R.drawable.ic_error, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            responseDialog.dismiss();
+                        }
+                    });
                 }
             }
         });

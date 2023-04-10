@@ -7,10 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,14 +22,20 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.AlertDialogListener;
 import com.living.roomrental.DialogListener;
+import com.living.roomrental.FirebaseController;
 import com.living.roomrental.ImagePickerDialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.create.CreateProfileActivity;
 import com.living.roomrental.activity.profile.edit.EditProfileActivity;
+import com.living.roomrental.activity.profile.model.ProfileModel;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AppBoiler {
 
@@ -144,6 +153,39 @@ public class AppBoiler {
 
         dialog.show();
         return dialog;
+    }
+
+    public static void showProfileDialog(Context context , ProfileModel model){
+
+        TextView name, address , about , contact , email;
+        CircleImageView profileImageView;
+
+        Dialog dialog =new Dialog(context);
+        dialog.setContentView(R.layout.layout_view_profile_dialog);
+
+
+        name = dialog.findViewById(R.id.nameTextView);
+        address = dialog.findViewById(R.id.addressTextView);
+        about = dialog.findViewById(R.id.aboutTextView);
+        contact = dialog.findViewById(R.id.contactTextView);
+        email = dialog.findViewById(R.id.emailTextView);
+        profileImageView = dialog.findViewById(R.id.profileImage);
+
+        name.setText(model.getName()+" ("+model.getOccupation()+")");
+        address.setText(model.getAddress());
+        about.setText(model.getBio());
+        contact.setText(model.getContactNo());
+        email.setText(FirebaseController.getInstance().getUser().getEmail());
+
+        if(!Validation.isStringEmpty(model.getImageUrl()))
+                Glide.with(context).load(model.getImageUrl()).into(profileImageView);
+
+        Window window = dialog.getWindow();
+        ColorDrawable back = new ColorDrawable(Color.TRANSPARENT);
+        InsetDrawable inset = new InsetDrawable(back, 20);
+        window.setBackgroundDrawable(inset);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
     public static void showCustomSnackBar( View view , String msg){

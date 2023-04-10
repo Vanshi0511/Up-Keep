@@ -45,7 +45,7 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
 
 
         getBundles();
-        if(!model.getBookingStatus().equals("vacant"))
+        if(model.getBookingStatus().equals("vacant"))
            isUserRequestedForProperty();
         initListeners();
         setDataToViews();
