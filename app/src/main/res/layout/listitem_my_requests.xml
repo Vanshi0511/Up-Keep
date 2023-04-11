@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/descriptionTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
             android:padding="@dimen/_4sdp"
@@ -37,6 +37,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/whoRequestTextView"/>
+
+        <TextView
+            android:id="@+id/selectedDateTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:padding="@dimen/_4sdp"
+            android:layout_margin="@dimen/_6sdp"
+            android:text="from 10-12-2023"
+            android:textColor="@color/black_text_secondary"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"/>
 
         <ImageView
             android:id="@+id/viewProfileImageView"
@@ -55,7 +69,7 @@
             app:cardBackgroundColor="@color/grey_300"
             app:cardCornerRadius="@dimen/_4sdp"
             android:layout_margin="@dimen/_6sdp"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+            app:layout_constraintTop_toBottomOf="@+id/selectedDateTextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/rejectCardView"
             app:layout_constraintStart_toStartOf="parent">

@@ -13,11 +13,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.activity.profile.model.ProfileModel;
+import com.living.roomrental.landlord.activity.create_property.CurrentBookingModel;
 import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
 import com.living.roomrental.utilities.AppConstants;
+import com.living.roomrental.utilities.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyRequestRepository {
 
@@ -26,6 +30,9 @@ public class MyRequestRepository {
     private MutableLiveData<List<ProfileModel>> profileModelMutableLiveData = new MutableLiveData<>();
 
     private MutableLiveData<String> deleteResponseMutableData = new MutableLiveData<>();
+    private MutableLiveData<String> deleteAllRequestsResponseMutableData = new MutableLiveData<>();
+
+    private MutableLiveData<String> updateBookingStatusMutableData = new MutableLiveData<>();
 
 
     public MutableLiveData<List<MyRequestsModel>> getRequestFromServer(){
@@ -49,16 +56,22 @@ public class MyRequestRepository {
                                 String propertyName = propertyKeySnapshot.child("propertyName").getValue().toString();
                                 String description  = requestSnapshot.child("description").getValue().toString();
                                 String uidOfTenant  = requestSnapshot.getKey();
+                                String selectedDate = requestSnapshot.child("date").getValue().toString();
 
-                                MyRequestsModel myRequestsModel = new MyRequestsModel(description,uidOfTenant ,null,propertyName);
+                                MyRequestsModel myRequestsModel = new MyRequestsModel(description,uidOfTenant ,null,propertyName,selectedDate);
                                 myRequestsModel.setPropertyKey(propertyKeySnapshot.getKey());
                                 modelList.add(myRequestsModel);
+                            } else {
+                                System.out.println("=========== no 1");
+                                rentModelMutableLiveData.setValue(null);
                             }
+
                         }
                     }
                     System.out.println("=========== Data found for request====="+modelList.size());
                     rentModelMutableLiveData.setValue(modelList);
                 }else{
+                    System.out.println("=========== no snapshot");
                     rentModelMutableLiveData.setValue(null);
                 }
             }
@@ -135,5 +148,58 @@ public class MyRequestRepository {
             }
         });
         return deleteResponseMutableData;
+    }
+
+    public MutableLiveData<String> deleteAllRequests(String propertyKey){
+
+        String uid = FirebaseController.getInstance().getUser().getUid();
+        DatabaseReference databaseReference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.LANDLORD_PROPERTY)
+                .child(uid)
+                .child(propertyKey)
+                .child("propertyRequests");
+        databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        System.out.println("======== Deleted all requests ======= ");
+                        deleteAllRequestsResponseMutableData.setValue(AppConstants.SUCCESS);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("======== Error ======= "+e.getMessage());
+                        deleteAllRequestsResponseMutableData.setValue("Failed");
+                    }
+                });
+        return deleteAllRequestsResponseMutableData;
+    }
+
+    public MutableLiveData<String> updateBookingStatus(MyRequestsModel myRequestsModel){
+
+        String uid = FirebaseController.getInstance().getUser().getUid();
+        DatabaseReference databaseReference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.LANDLORD_PROPERTY)
+                .child(uid)
+                .child(myRequestsModel.getPropertyKey());
+
+        Map<String,Object> childMap = new HashMap<>();
+        childMap.put("bookingStatus","full");
+
+        CurrentBookingModel model = new CurrentBookingModel(myRequestsModel.getUidOfTenant(), myRequestsModel.getSelectedDate());
+        childMap.put("currentBooking",model);
+
+        databaseReference.updateChildren(childMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("========= Booking status updated ======= ");
+                updateBookingStatusMutableData.setValue(AppConstants.SUCCESS);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("========= Error ======= "+e.getMessage());
+                updateBookingStatusMutableData.setValue("Failed");
+            }
+        });
+        return updateBookingStatusMutableData;
     }
 }

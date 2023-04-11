@@ -4,10 +4,20 @@ public class PropertyRequestModel {
 
     private String uidOfUser ;
     private String description;
+    private String date;
 
-    public PropertyRequestModel(String uidOfUser, String description) {
+    public PropertyRequestModel(String uidOfUser, String description , String date) {
         this.uidOfUser = uidOfUser;
         this.description = description;
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public PropertyRequestModel() {

@@ -42,6 +42,11 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
         this.profileModelArrayList = profileModelList;
     }
 
+    public void clearList(){
+        modelArrayList.clear();
+        profileModelArrayList.clear();
+        notifyDataSetChanged();
+    }
     public void initConfirmationInterface(ConfirmationListener confirmationListener){
         this.confirmationListener = confirmationListener;
     }
@@ -58,6 +63,7 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
 
         holder.whoRequestedTextView.setText(model.getNameOfTenant()+", requested to rent your property "+model.getPropertyName());
         holder.descriptionTextView.setText(model.getDescription());
+        holder.selectedDateTextView.setText("From "+model.getSelectedDate());
 
         holder.viewProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +97,7 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView whoRequestedTextView, descriptionTextView;
+        private TextView whoRequestedTextView, descriptionTextView , selectedDateTextView;
         private ImageView viewProfileImageView;
 
         private MaterialCardView acceptCardView  , rejectCardView;
@@ -104,6 +110,7 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
             whoRequestedTextView = itemView.findViewById(R.id.whoRequestTextView);
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
             viewProfileImageView = itemView.findViewById(R.id.viewProfileImageView);
+            selectedDateTextView = itemView.findViewById(R.id.selectedDateTextView);
         }
     }
 

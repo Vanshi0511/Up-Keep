@@ -9,13 +9,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.living.roomrental.DatePickerInterface;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.databinding.ActivityViewPropertyTenantBinding;
@@ -23,6 +29,8 @@ import com.living.roomrental.landlord.activity.create_property.CreatePropertyDat
 import com.living.roomrental.landlord.activity.view_property.ViewPropertyImageAdapter;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
+import com.living.roomrental.utilities.DateTimeFormatter;
+import com.living.roomrental.utilities.Validation;
 
 public class ViewPropertyTenantActivity extends AppCompatActivity {
 
@@ -106,11 +114,19 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
 
         Dialog sendRequestDialog = new Dialog(this);
         sendRequestDialog.setContentView(R.layout.layout_send_request_for_book_dialog);
-        sendRequestDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextInputEditText descriptionEditText = sendRequestDialog.findViewById(R.id.descriptionEditText);
+        Window dialogWindow = sendRequestDialog.getWindow();
+        ColorDrawable colorDrawable = new ColorDrawable(Color.TRANSPARENT);
+        InsetDrawable insetDrawable = new InsetDrawable(colorDrawable,20);
+        dialogWindow.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogWindow.setBackgroundDrawable(insetDrawable);
+
+        TextInputLayout selectDateTextInputLayout = sendRequestDialog.findViewById(R.id.selectDateTextInputLayout);
+        TextInputEditText descriptionEditText , selectDateEditText;
+        descriptionEditText= sendRequestDialog.findViewById(R.id.descriptionEditText);
+        selectDateEditText= sendRequestDialog.findViewById(R.id.selectDateEditText);
+
         MaterialButton button = sendRequestDialog.findViewById(R.id.sendRequestBtn);
-
         descriptionEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -128,16 +144,38 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
             }
         });
 
+        selectDateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               //todo -> open calender - pick date - setText date to picked date
+                DateTimeFormatter.selectDateDialog(ViewPropertyTenantActivity.this, new DatePickerInterface() {
+                    @Override
+                    public void onSelectDate(String date) {
+                        selectDateEditText.setText(date);
+                        viewPropertyTenantViewModel.setDate(date);
+                        AppBoiler.setInputLayoutErrorDisable(selectDateTextInputLayout);
+                    }
+                });
+            }
+        });
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendRequestDialog.dismiss();
 
-                if (AppBoiler.isInternetConnected(ViewPropertyTenantActivity.this)) {
-                     sendRequestToLandlord();
+                if(!Validation.isStringEmpty(viewPropertyTenantViewModel.getDate())){
+                    sendRequestDialog.dismiss();
+
+                    if (AppBoiler.isInternetConnected(ViewPropertyTenantActivity.this)) {
+                        sendRequestToLandlord();
+                    } else {
+                        AppBoiler.showSnackBarForInternet(ViewPropertyTenantActivity.this,binding.rootLayoutOfViewProperty);
+                    }
                 } else {
-                    AppBoiler.showSnackBarForInternet(ViewPropertyTenantActivity.this,binding.rootLayoutOfViewProperty);
-                }
+                    selectDateTextInputLayout.setError("Please select date");
+                 }
+
 
             }
         });
@@ -162,7 +200,7 @@ public class ViewPropertyTenantActivity extends AppCompatActivity {
     private void sendRequestToLandlord(){
 
         progressDialog = AppBoiler.setProgressDialog(this);
-        PropertyRequestModel propertyRequestModel = new PropertyRequestModel(null,description);
+        PropertyRequestModel propertyRequestModel = new PropertyRequestModel(null,description, viewPropertyTenantViewModel.getDate());
 
         LiveData<String> responseLiveData = viewPropertyTenantViewModel.sendRequestToLandlord(propertyRequestModel) ; //sendRequest(,model.getKey(),model.getUid());
 

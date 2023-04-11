@@ -8,15 +8,17 @@ public class MyRequestsModel {
     private String propertyName;
 
     private String propertyKey;
+    private String selectedDate;
 
     public MyRequestsModel() {
     }
 
-    public MyRequestsModel(String description, String uidOfTenant, String nameOfTenant, String propertyName) {
+    public MyRequestsModel(String description, String uidOfTenant, String nameOfTenant, String propertyName , String selectedDate) {
         this.description = description;
         this.uidOfTenant = uidOfTenant;
         this.nameOfTenant = nameOfTenant;
         this.propertyName = propertyName;
+        this.selectedDate = selectedDate;
     }
 
     public String getDescription() {
@@ -57,5 +59,13 @@ public class MyRequestsModel {
 
     public void setPropertyKey(String propertyKey) {
         this.propertyKey = propertyKey;
+    }
+
+    public String getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(String selectedDate) {
+        this.selectedDate = selectedDate;
     }
 }

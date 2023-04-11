@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 public class ViewPropertyTenantViewModel extends ViewModel {
 
+    private String date;
     private ViewPropertyTenantRepository repository;
 
     public ViewPropertyTenantViewModel(String propertyKey , String uidOfLandlord){
@@ -21,5 +22,13 @@ public class ViewPropertyTenantViewModel extends ViewModel {
 
     public MutableLiveData<String> storeRequestDataToServer(){
         return repository.setTenantRequestData();
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

@@ -2,14 +2,15 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/_270sdp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/_8sdp"
     android:layout_margin="@dimen/_4sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background_drawable">
 
         <TextView
             android:id="@+id/SendRequestTextView"
@@ -19,7 +20,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:fontFamily="@font/montserrat_semibold"
             android:textSize="@dimen/_16ssp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,27 +50,55 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/selectDateTextInputLayout"
+            style="@style/TextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+
+            android:layout_margin="@dimen/_8sdp"
+            android:hint="Select Date"
+            app:helperText="Please select date from which you need a property for rent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/selectDateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+                android:textAppearance="@style/InputTextAppearance"
+                android:textColor="@color/black_text_secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sendRequestBtn"
             android:layout_width="0dp"
             android:layout_height="@dimen/_46sdp"
-            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:backgroundTint="@color/white"
+
             android:fontFamily="@font/montserrat_semibold"
             android:text="Send Request"
             android:textAllCaps="false"
-
             android:textAppearance="@style/InputTextAppearance"
-            app:cornerRadius="@dimen/_6sdp"
             android:textColor="@color/indigo_600"
-            android:backgroundTint="@color/white"
-            android:layout_marginRight="@dimen/_8sdp"
-            app:strokeColor="@color/indigo_600"
-            app:strokeWidth="@dimen/_1sdp"
-            app:rippleColor="@color/black_text_disabled"
-
+            app:cornerRadius="@dimen/_6sdp"
             app:layout_constraintBottom_toTopOf="@+id/guideline_bottom_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionTextInputLayout" />
+
+            app:layout_constraintTop_toBottomOf="@+id/selectDateTextInputLayout"
+            app:rippleColor="@color/black_text_disabled"
+            app:strokeColor="@color/indigo_600"
+            app:strokeWidth="@dimen/_1sdp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_bottom_horizontal"

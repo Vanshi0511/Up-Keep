@@ -78,7 +78,8 @@ public class MyRequestFragment extends Fragment {
                             .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                                    progressDialog.show();
+                                    acceptProperty(position);
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -123,12 +124,16 @@ public class MyRequestFragment extends Fragment {
             @Override
             public void onChanged(List<MyRequestsModel> myRequestsModels) {
 
-                if(myRequestsModels!=null){
+                if(myRequestsModels.size()>0){
+                    binding.noRequestTextView.setVisibility(View.GONE);
                     myRequestsModelList = (ArrayList<MyRequestsModel>) myRequestsModels;
                     getProfileDataFromServer();
                 }
                 else {
+                    progressDialog.dismiss();
                     System.out.println("+============ No data found ===================");
+                    adapter.clearList();
+                    binding.noRequestTextView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -186,6 +191,57 @@ public class MyRequestFragment extends Fragment {
                         }
                     });
                 }
+            }
+        });
+    }
+
+    private void acceptProperty(int position){
+        //todo accept property of user -> delete all requests + update bookingStatus
+        LiveData<String> deleteAllRequest = myRequestViewModel.deleteAllRequest(myRequestsModelList.get(position).getPropertyKey());
+
+        deleteAllRequest.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                progressDialog.dismiss();
+                if(s.equals(AppConstants.SUCCESS)){
+                    // todo update booking status
+                    updateBookingStatusOfProperty(myRequestsModelList.get(position));
+                } else {
+                    responseDialog = AppBoiler.customDialogWithBtn(getContext(), s, R.drawable.ic_error, new DialogListener() {
+                        @Override
+                        public void onClick() {
+                            responseDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void updateBookingStatusOfProperty(MyRequestsModel model){
+
+        LiveData<String> updateBookingLiveData = myRequestViewModel.updateBooking(model);
+        updateBookingLiveData.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                progressDialog.dismiss();
+               if(s.equals(AppConstants.SUCCESS)){
+
+                   responseDialog = AppBoiler.customDialogWithBtn(getContext(),"Request Accepted", R.drawable.ic_done, new DialogListener() {
+                       @Override
+                       public void onClick() {
+                           responseDialog.dismiss();
+                       }
+                   });
+
+               } else {
+                   responseDialog = AppBoiler.customDialogWithBtn(getContext(), s, R.drawable.ic_error, new DialogListener() {
+                       @Override
+                       public void onClick() {
+                           responseDialog.dismiss();
+                       }
+                   });
+               }
             }
         });
     }

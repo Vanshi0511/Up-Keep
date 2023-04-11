@@ -24,4 +24,12 @@ public class MyRequestViewModel extends ViewModel {
         return repository.deleteRequestFromProperty(uidOfTenant,propertyKey);
     }
 
+    public LiveData<String> deleteAllRequest(String propertyKey){
+        return repository.deleteAllRequests(propertyKey);
+    }
+
+    public LiveData<String> updateBooking(MyRequestsModel model){
+        return repository.updateBookingStatus(model);
+    }
+
 }
