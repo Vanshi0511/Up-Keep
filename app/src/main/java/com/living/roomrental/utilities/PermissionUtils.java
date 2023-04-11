@@ -12,7 +12,8 @@ import androidx.core.content.ContextCompat;
 
 public class PermissionUtils {
 
-    public static final int REQUEST_CODE = 102;
+    public static final int MAP_REQUEST_CODE = 102;
+    public static final int CALL_REQUEST_CODE = 103;
 
 
     public static boolean isPermissionGranted(String[] grantPermissions, int[] grantResults){
@@ -31,7 +32,7 @@ public class PermissionUtils {
 
             ActivityCompat.requestPermissions(context,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_CODE);
+                    MAP_REQUEST_CODE);
 
             return false;
         }else{
@@ -40,5 +41,19 @@ public class PermissionUtils {
         }
     }
 
+    public static boolean isPermissionGrantedForCall(Context context){
 
+        if (ContextCompat.checkSelfPermission(context,android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        } else {
+             // else block means user has already accepted.And make your phone call here.
+            return true;
+        }
+    }
+
+    public static void requestForCall(Activity context){
+        ActivityCompat.requestPermissions(context,
+                new String[]{android.Manifest.permission.CALL_PHONE},
+                CALL_REQUEST_CODE);
+    }
 }

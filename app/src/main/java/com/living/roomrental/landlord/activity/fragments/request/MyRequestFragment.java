@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.living.roomrental.ContactListener;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.auth.register.RegisterActivity;
@@ -24,6 +25,7 @@ import com.living.roomrental.databinding.FragmentRequestBinding;
 import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
+import com.living.roomrental.utilities.ImplicitUtils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -67,6 +69,13 @@ public class MyRequestFragment extends Fragment {
             adapter = new MyRequestAdapter(getContext());
         adapter.setRequestList(myRequestsModelList);
         adapter.setProfileList(profileModelArrayList);
+
+        adapter.initContactInterface(new ContactListener() {
+            @Override
+            public void onClickContact(String contactNo) {
+                ImplicitUtils.intentForCall(getActivity(),contactNo);
+            }
+        });
         adapter.initConfirmationInterface(new MyRequestAdapter.ConfirmationListener() {
             @Override
             public void onClickAccept(String tenantName , int position) {

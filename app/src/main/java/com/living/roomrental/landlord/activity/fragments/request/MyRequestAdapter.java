@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.living.roomrental.ContactListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyDataModel;
@@ -32,6 +33,7 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
     private ArrayList<ProfileModel> profileModelArrayList;
 
     private ConfirmationListener confirmationListener;
+    private ContactListener contactListener;
     public MyRequestAdapter(Context context ) {
         this.context = context;
     }
@@ -49,6 +51,9 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
     }
     public void initConfirmationInterface(ConfirmationListener confirmationListener){
         this.confirmationListener = confirmationListener;
+    }
+    public void initContactInterface(ContactListener contactListener){
+        this.contactListener = contactListener;
     }
     @NonNull
     @Override
@@ -68,7 +73,7 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
         holder.viewProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppBoiler.showProfileDialog(context,profileModelArrayList.get(position));
+                AppBoiler.showProfileDialog(context,profileModelArrayList.get(position) ,contactListener);
             }
         });
 

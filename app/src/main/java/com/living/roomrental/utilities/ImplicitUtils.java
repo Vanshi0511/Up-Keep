@@ -1,6 +1,9 @@
 package com.living.roomrental.utilities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 
 public class ImplicitUtils {
@@ -26,4 +29,15 @@ public class ImplicitUtils {
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         return intent;
     }
+
+    public static void intentForCall(Context context , String number) {
+
+        if(PermissionUtils.isPermissionGrantedForCall(context)){
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+            context.startActivity(intent);
+        } else {
+            PermissionUtils.requestForCall((Activity) context);
+        }
+    }
+
 }

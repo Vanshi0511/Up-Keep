@@ -1,6 +1,6 @@
 package com.living.roomrental.landlord.activity;
 
-import static com.living.roomrental.utilities.PermissionUtils.REQUEST_CODE;
+import static com.living.roomrental.utilities.PermissionUtils.MAP_REQUEST_CODE;
 
 import android.Manifest;
 import android.app.Activity;
@@ -84,7 +84,7 @@ public class PropertyMapActivity extends FragmentActivity implements OnMapReadyC
                                            @NonNull int[] grantResults) {
         //If the request code does not match
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode != REQUEST_CODE) {
+        if (requestCode != MAP_REQUEST_CODE) {
             return;
         }
         if (PermissionUtils.isPermissionGranted(new String[]{
@@ -104,7 +104,7 @@ public class PropertyMapActivity extends FragmentActivity implements OnMapReadyC
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_CODE);
+                    MAP_REQUEST_CODE);
 
             System.out.println("========= PERMISSION NOT GRANTED ===============");
         }

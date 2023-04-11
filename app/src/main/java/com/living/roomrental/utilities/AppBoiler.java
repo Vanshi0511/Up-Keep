@@ -23,10 +23,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.AlertDialogListener;
+import com.living.roomrental.ContactListener;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.ImagePickerDialogListener;
@@ -155,10 +157,11 @@ public class AppBoiler {
         return dialog;
     }
 
-    public static void showProfileDialog(Context context , ProfileModel model){
+    public static void showProfileDialog(Context context , ProfileModel model , ContactListener listener){
 
         TextView name, address , about , contact , email;
         CircleImageView profileImageView;
+        MaterialCardView contactCardView;
 
         Dialog dialog =new Dialog(context);
         dialog.setContentView(R.layout.layout_view_profile_dialog);
@@ -170,6 +173,7 @@ public class AppBoiler {
         contact = dialog.findViewById(R.id.contactTextView);
         email = dialog.findViewById(R.id.emailTextView);
         profileImageView = dialog.findViewById(R.id.profileImage);
+        contactCardView = dialog.findViewById(R.id.contactCardView);
 
         name.setText(model.getName()+" ("+model.getOccupation()+")");
         address.setText(model.getAddress());
@@ -179,6 +183,13 @@ public class AppBoiler {
 
         if(!Validation.isStringEmpty(model.getImageUrl()))
                 Glide.with(context).load(model.getImageUrl()).into(profileImageView);
+
+        contactCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickContact(model.getContactNo());
+            }
+        });
 
         Window window = dialog.getWindow();
         ColorDrawable back = new ColorDrawable(Color.TRANSPARENT);

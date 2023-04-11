@@ -14,7 +14,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gradient_background_drawable">
+            android:background="@drawable/gradient_background_drawable_light">
+
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImage"
@@ -38,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_end="@dimen/_8sdp" />
+                app:layout_constraintGuide_percent="0.9657321" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_start_vertical"
@@ -142,10 +143,34 @@
                 android:text="I am Android Developer"
                 android:textColor="@color/black_text_secondary"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom_horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
                 app:layout_constraintTop_toBottomOf="@+id/aboutLabelTextView" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/contactCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="@dimen/_6sdp"
+                app:cardCornerRadius="@dimen/_4sdp"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom_horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/aboutTextView">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_call"
+                    android:drawablePadding="@dimen/_4sdp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Contact"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
+
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
