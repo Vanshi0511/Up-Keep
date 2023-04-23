@@ -42,4 +42,8 @@ public class SharedPreferenceStorage {
     public static String getWhoIsUser(SharedPreferences preferences){
         return preferences.getString("whoIsUser",null);
     }
+
+    public static void clearAllDataFromLocal(SharedPreferences preferences){
+        preferences.edit().clear().apply();
+    }
 }

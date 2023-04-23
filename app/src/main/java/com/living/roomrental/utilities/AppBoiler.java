@@ -11,11 +11,15 @@ import android.graphics.drawable.InsetDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Layout;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -32,6 +36,7 @@ import com.living.roomrental.ContactListener;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.ImagePickerDialogListener;
+import com.living.roomrental.PopupWindowsMenuListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.create.CreateProfileActivity;
 import com.living.roomrental.activity.profile.edit.EditProfileActivity;
@@ -225,6 +230,47 @@ public class AppBoiler {
                     }
                 })
                 .show();
+    }
+
+    public static void showMenuPopupWindow(Context context ,View container, PopupWindowsMenuListener listener){
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.layout_menu_popup_window,null,false);
+
+        view.findViewById(R.id.logOutCardView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickLogOut();
+            }
+        });
+        view.findViewById(R.id.deactivateCardView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickDeactivate();
+            }
+        });
+        view.findViewById(R.id.helpCardView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickHelp();
+            }
+        });
+        view.findViewById(R.id.aboutCardView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickAbout();
+            }
+        });
+
+        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,true);
+        popupWindow.setFocusable(true);
+        popupWindow.setTouchable(true);
+        popupWindow.setOutsideTouchable(true);
+
+        System.out.println("============ popup=======");
+        //popupWindow.showAsDropDown(container,0,0);
+        popupWindow.showAtLocation(container , Gravity.CENTER, 0, 0);
+        //return popupWindow;
     }
 
 }

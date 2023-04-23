@@ -233,6 +233,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("======= Google req code ======== "+resultCode);
         if (requestCode == AppConstants.GOOGLE_REQ_CODE) {
             googleLogin.activityResult(requestCode, resultCode, data, Activity.RESULT_OK);
         }

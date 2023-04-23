@@ -51,6 +51,15 @@
             app:layout_constraintStart_toStartOf="@+id/headerWelcome"
             app:layout_constraintTop_toBottomOf="@+id/headerWelcome" />
 
+        <ImageView
+            android:id="@+id/moreImageView"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:src="@drawable/ic_more"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

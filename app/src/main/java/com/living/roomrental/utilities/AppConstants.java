@@ -18,4 +18,8 @@ public class AppConstants {
     public static final String PROPERTY_IMAGES = "PropertyImages";
     public static final String LANDLORD = "Landlord";
     public static final String TENANT = "Tenant";
+
+    public static final int SENDER_TYPE = 1;
+    public static final int RECEIVER_TYPE = 2;
+
 }

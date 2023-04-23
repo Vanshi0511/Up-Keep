@@ -92,6 +92,19 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/_8sdp" />
 
+        <com.library.labelview.LabelView
+            android:id="@+id/bookingStatusLabelView"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            app:lv_text="Vacant"
+            app:lv_gravity="TOP_LEFT"
+            app:lv_text_color="@color/white"
+            app:lv_text_all_caps="false"
+            app:lv_text_size="@dimen/_8ssp"
+            app:lv_background_color="@color/yellow_800"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

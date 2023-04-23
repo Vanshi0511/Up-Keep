@@ -5,12 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.living.roomrental.PopupWindowsMenuListener;
 import com.living.roomrental.R;
+import com.living.roomrental.activity.auth.login.LoginActivity;
 import com.living.roomrental.activity.profile.view.ViewProfileBottomSheet;
 import com.living.roomrental.databinding.ActivityLandlordMainBinding;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyActivity;
@@ -21,6 +27,7 @@ import com.living.roomrental.landlord.activity.fragments.request.MyRequestFragme
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.utilities.AppBoiler;
+import com.living.roomrental.utilities.MenuOperation;
 import com.living.roomrental.utilities.Validation;
 
 import java.util.ArrayList;
@@ -107,6 +114,36 @@ public class LandlordMainActivity extends AppCompatActivity {
 
             }
         });
+
+        binding.header.moreImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupWindow menuPopupWindow;
+                AppBoiler.showMenuPopupWindow(LandlordMainActivity.this,binding.header.moreImageView, new PopupWindowsMenuListener() {
+                    @Override
+                    public void onClickHelp() {
+
+                    }
+
+                    @Override
+                    public void onClickAbout() {
+
+                    }
+
+                    @Override
+                    public void onClickLogOut() {
+                        MenuOperation.logOutUser(LandlordMainActivity.this);
+                    }
+
+                    @Override
+                    public void onClickDeactivate() {
+
+                    }
+                });
+                System.out.println("====== popup");
+                //menuPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            }
+        });
     }
 
     @Override
@@ -117,4 +154,5 @@ public class LandlordMainActivity extends AppCompatActivity {
             bottomSheet.dismiss();
         }
     }
+
 }

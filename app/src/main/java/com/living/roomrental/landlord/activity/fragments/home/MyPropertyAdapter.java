@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
+import com.library.labelview.LabelView;
 import com.living.roomrental.R;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyDataModel;
 import com.living.roomrental.landlord.activity.view_property.ViewPropertyLandlordActivity;
@@ -51,6 +52,12 @@ public class MyPropertyAdapter extends RecyclerView.Adapter<MyPropertyAdapter.Vi
         holder.propertyType.setText(model.getType());
         holder.propertyRent.setText(model.getRent());
 
+        if(model.getBookingStatus().equals("full")){
+            System.out.println("-------------- FULL -------------------");
+            holder.bookingStatusLabelView.setText("Booked");
+            holder.bookingStatusLabelView.setBgColor(context.getColor(R.color.green_700));
+        }
+
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +78,7 @@ public class MyPropertyAdapter extends RecyclerView.Adapter<MyPropertyAdapter.Vi
         private TextView propertyName , propertyAddress , propertyRent , propertyType ;
         private ImageView propertyImage;
 
+        private LabelView bookingStatusLabelView;
         private MaterialCardView itemLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +89,7 @@ public class MyPropertyAdapter extends RecyclerView.Adapter<MyPropertyAdapter.Vi
             propertyRent = itemView.findViewById(R.id.propertyRent);
             propertyType = itemView.findViewById(R.id.propertyType);
             itemLayout = itemView.findViewById(R.id.itemLayout);
+            bookingStatusLabelView = itemView.findViewById(R.id.bookingStatusLabelView);
         }
     }
 
