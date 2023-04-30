@@ -5,23 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.PopupWindowsMenuListener;
 import com.living.roomrental.R;
-import com.living.roomrental.activity.auth.login.LoginActivity;
 import com.living.roomrental.activity.profile.view.ViewProfileBottomSheet;
 import com.living.roomrental.databinding.ActivityLandlordMainBinding;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyActivity;
 import com.living.roomrental.landlord.activity.fragments.FragmentController;
-import com.living.roomrental.landlord.activity.fragments.chat.ChatFragment;
+import com.living.roomrental.landlord.activity.fragments.chat.ChatLandlordFragment;
 import com.living.roomrental.landlord.activity.fragments.home.MyPropertyFragment;
 import com.living.roomrental.landlord.activity.fragments.request.MyRequestFragment;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
@@ -98,7 +94,7 @@ public class LandlordMainActivity extends AppCompatActivity {
                          controller.replaceFragment(new MyRequestFragment(),R.id.fragmentContainer);
                         break;
                     case R.id.myChats:
-                        controller.replaceFragment(new ChatFragment(),R.id.fragmentContainer);
+                        controller.replaceFragment(new ChatLandlordFragment(),R.id.fragmentContainer);
                         break;
                     case R.id.myProfile:
                         break;

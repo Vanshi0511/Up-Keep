@@ -13,15 +13,11 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.view.ViewProfileBottomSheet;
 import com.living.roomrental.databinding.ActivityTenantMainBinding;
-import com.living.roomrental.landlord.activity.create_property.CreatePropertyActivity;
 import com.living.roomrental.landlord.activity.fragments.FragmentController;
-import com.living.roomrental.landlord.activity.fragments.chat.ChatFragment;
-import com.living.roomrental.landlord.activity.fragments.home.MyPropertyFragment;
-import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
+import com.living.roomrental.landlord.activity.fragments.chat.ChatLandlordFragment;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.tenant.activity.fragments.home.AllPropertyFragment;
-import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.Validation;
 
 import java.util.ArrayList;
@@ -81,7 +77,7 @@ public class TenantMainActivity extends AppCompatActivity {
 
                         break;
                     case R.id.myChats:
-                        controller.replaceFragment(new ChatFragment(),R.id.fragmentContainer);
+                        controller.replaceFragment(new ChatLandlordFragment(),R.id.fragmentContainer);
                         break;
                     case R.id.myProfile:
                         break;

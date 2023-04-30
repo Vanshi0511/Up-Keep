@@ -2,6 +2,7 @@ package com.living.roomrental.comman.chat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -12,36 +13,46 @@ import com.google.firebase.database.DatabaseReference;
 
 import com.living.roomrental.FirebaseController;
 
-import java.util.List;
-
 public class ChatRepository {
 
-    private DatabaseReference databaseReference;
+    private DatabaseReference senderReference;
+    private DatabaseReference receiverReference;
 
     private String receiverKey ;
     private String senderKey;
-    private String key;
+
+    private String keyForSender;
+
+    private String keyForReceiver;
+
+    private MutableLiveData<ChatModel> chatModelMutableLiveData = new MutableLiveData<>();
 
     public ChatRepository(String receiverKey){
 
-       databaseReference = FirebaseController.getInstance().getDatabaseReference().child("Chat");
-       senderKey = FirebaseController.getInstance().getAuth().getUid();
-       this.receiverKey = receiverKey;
+        senderReference = FirebaseController.getInstance().getDatabaseReference().child("Chat");
+        receiverReference = FirebaseController.getInstance().getDatabaseReference().child("Chat");
 
-        key = senderKey+"_"+receiverKey;
+        senderKey = FirebaseController.getInstance().getAuth().getUid();
+        this.receiverKey = receiverKey;
 
-        System.out.println("============= KEYS ========= SENDER = "+senderKey+"  RECEIVER = "+receiverKey+" === FINAL KEY ==== "+key);
+        keyForSender = senderKey+"_"+receiverKey;
+        keyForReceiver = receiverKey+"_"+senderKey;
+
+        System.out.println("============= KEYS ========= SENDER = "+senderKey+"  RECEIVER = "+receiverKey+" === FINAL KEY ==== "+ keyForSender);
     }
 
-    public void getChatFromServer(){
+    public MutableLiveData<ChatModel> getChatFromServer(){
 
-        databaseReference.child(key).addChildEventListener(new ChildEventListener() {
+        senderReference.child(keyForSender).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 System.out.println("======= ON CHILD ADDED =========== "+previousChildName);
 
                 if(snapshot.exists()){
                     System.out.println("======== KEY ====== "+snapshot.getKey());
+
+                    ChatModel model = snapshot.getValue(ChatModel.class);
+                    chatModelMutableLiveData.setValue(model);
                 }
             }
 
@@ -65,15 +76,28 @@ public class ChatRepository {
                 System.out.println("======= ON CANCELLED =========== ");
             }
         });
-
+        return chatModelMutableLiveData;
     }
 
     public void sendChatToServer(ChatModel model){
 
-        databaseReference.child(key).push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+        senderReference.child(senderKey).child(keyForSender).push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                System.out.println("----------- SUCCESS ----------- ");
+                System.out.println("----------- SUCCESS ON SENDER SIDE----------- ");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("----------- Failed ----------- "+e.getMessage());
+            }
+        });
+
+
+        receiverReference.child(receiverKey).child(keyForReceiver).push().setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("----------- SUCCESS ON RECEIVER SIDE----------- ");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -9,22 +9,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.utilities.AppConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<ChatModel> chatModelList;
+    private String currentUserUid;
+    private List<ChatModel> chatModelList = new ArrayList<>();
 
     public ChatAdapter(Context context){
         this.context=context;
+        currentUserUid = FirebaseController.getInstance().getUser().getUid();
     }
-    public void setListData(List<ChatModel> chatModelList){
-        this.chatModelList = chatModelList;
+    public void setListData(ChatModel model){
+        this.chatModelList.add(model);
+        System.out.println("========= SIZE ============= "+chatModelList.size());
+        notifyItemChanged(chatModelList.size()-1);
     }
 
     @NonNull
@@ -63,18 +69,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if(chatModelList.get(position).getType()==AppConstants.SENDER_TYPE)
+        if(chatModelList.get(position).getSenderId().equals(currentUserUid))
             return AppConstants.SENDER_TYPE;
-        else if(chatModelList.get(position).getType()== AppConstants.RECEIVER_TYPE)
-            return AppConstants.RECEIVER_TYPE;
         else
-            return -1;
+            return AppConstants.RECEIVER_TYPE;
     }
 
     @Override
     public int getItemCount() {
         return chatModelList.size();
     }
+
     public class SenderViewHolder extends RecyclerView.ViewHolder {
         TextView message , time;
         public SenderViewHolder(@NonNull View itemView) {

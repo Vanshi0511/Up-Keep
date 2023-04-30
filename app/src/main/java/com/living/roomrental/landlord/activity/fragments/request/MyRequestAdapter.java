@@ -19,6 +19,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.living.roomrental.ContactListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.model.ProfileModel;
+import com.living.roomrental.comman.chat.ChatActivity;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyDataModel;
 import com.living.roomrental.landlord.activity.view_property.ViewPropertyLandlordActivity;
 import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
@@ -90,6 +91,15 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
             public void onClick(View view) {
                 //rejectConfirmationDialog(model.getNameOfTenant());
                 confirmationListener.onClickReject(model.getNameOfTenant() , position);
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("receiver_key", model.getUidOfTenant());
+                AppBoiler.navigateToActivity(context, ChatActivity.class,bundle);
             }
         });
 

@@ -4,12 +4,16 @@ public class ChatModel {
 
     private String time;
     private String message;
-    private int type;
 
-    public ChatModel(String time, String message, int type) {
+    private String senderId ;
+
+    public ChatModel() {
+    }
+
+    public ChatModel(String time, String message, String senderId) {
         this.time = time;
         this.message = message;
-        this.type = type;
+        this.senderId = senderId;
     }
 
     public String getTime() {
@@ -28,11 +32,11 @@ public class ChatModel {
         this.message = message;
     }
 
-    public int getType() {
-        return type;
+    public String getSenderId() {
+        return senderId;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 }
