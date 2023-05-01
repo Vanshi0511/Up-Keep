@@ -1,17 +1,9 @@
 package com.living.roomrental.landlord.activity.create_property;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-
-import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
-import com.living.roomrental.utilities.Validation;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CreatePropertyDataModel implements Parcelable {
 
@@ -22,8 +14,7 @@ public class CreatePropertyDataModel implements Parcelable {
 
     private String uid;
 
-    private CurrentBookingModel currentBookingModel;
-
+    private CurrentBookingModel currentBooking;
 
     private Double latitude , longitude ;
 
@@ -53,7 +44,7 @@ public class CreatePropertyDataModel implements Parcelable {
         this.propertyImagesUrl = propertyImagesUrl;
         this.facilities = facilities;
         this.bookingStatus = bookingStatus;
-        this.currentBookingModel = model;
+        this.currentBooking = model;
     }
 
 
@@ -74,11 +65,11 @@ public class CreatePropertyDataModel implements Parcelable {
     }
 
     public CurrentBookingModel getModel() {
-        return currentBookingModel;
+        return currentBooking;
     }
 
     public void setModel(CurrentBookingModel model) {
-        this.currentBookingModel = model;
+        this.currentBooking = model;
     }
 
 
@@ -231,7 +222,7 @@ public class CreatePropertyDataModel implements Parcelable {
         dest.writeString(this.furnishingDescription);
         dest.writeString(this.bookingStatus);
         dest.writeString(this.uid);
-        dest.writeParcelable(this.currentBookingModel, flags);
+        dest.writeParcelable(this.currentBooking, flags);
         dest.writeValue(this.latitude);
         dest.writeValue(this.longitude);
         dest.writeString(this.key);
@@ -253,7 +244,7 @@ public class CreatePropertyDataModel implements Parcelable {
         this.furnishingDescription = source.readString();
         this.bookingStatus = source.readString();
         this.uid = source.readString();
-        this.currentBookingModel = source.readParcelable(CurrentBookingModel.class.getClassLoader());
+        this.currentBooking = source.readParcelable(CurrentBookingModel.class.getClassLoader());
         this.latitude = (Double) source.readValue(Double.class.getClassLoader());
         this.longitude = (Double) source.readValue(Double.class.getClassLoader());
         this.key = source.readString();
@@ -275,12 +266,20 @@ public class CreatePropertyDataModel implements Parcelable {
         this.furnishingDescription = in.readString();
         this.bookingStatus = in.readString();
         this.uid = in.readString();
-        this.currentBookingModel = in.readParcelable(CurrentBookingModel.class.getClassLoader());
+        this.currentBooking = in.readParcelable(CurrentBookingModel.class.getClassLoader());
         this.latitude = (Double) in.readValue(Double.class.getClassLoader());
         this.longitude = (Double) in.readValue(Double.class.getClassLoader());
         this.key = in.readString();
         this.propertyImagesUrl = in.createStringArrayList();
         this.facilities = in.createStringArrayList();
+    }
+
+    public CurrentBookingModel getCurrentBooking() {
+        return currentBooking;
+    }
+
+    public void setCurrentBooking(CurrentBookingModel currentBooking) {
+        this.currentBooking = currentBooking;
     }
 
     public static final Creator<CreatePropertyDataModel> CREATOR = new Creator<CreatePropertyDataModel>() {
@@ -311,7 +310,7 @@ public class CreatePropertyDataModel implements Parcelable {
                 ", furnishingDescription='" + furnishingDescription + '\'' +
                 ", bookingStatus='" + bookingStatus + '\'' +
                 ", uid='" + uid + '\'' +
-                ", currentBookingModel=" + currentBookingModel +
+                ", currentBookingModel=" + currentBooking +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", key='" + key + '\'' +

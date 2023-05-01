@@ -14,6 +14,8 @@ import com.living.roomrental.FirebaseController;
 import com.living.roomrental.utilities.AppConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreatePropertyRepository {
 

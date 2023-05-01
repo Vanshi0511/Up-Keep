@@ -1,6 +1,9 @@
 package com.living.roomrental.landlord.activity.fragments.chat;
 
-public class ChatLandlordModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ChatLandlordModel implements Parcelable {
 
     private String name;
     private String occupation;
@@ -50,4 +53,44 @@ public class ChatLandlordModel {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.occupation);
+        dest.writeString(this.imageUrl);
+        dest.writeString(this.receiverKey);
+    }
+
+    public void readFromParcel(Parcel source) {
+        this.name = source.readString();
+        this.occupation = source.readString();
+        this.imageUrl = source.readString();
+        this.receiverKey = source.readString();
+    }
+
+    protected ChatLandlordModel(Parcel in) {
+        this.name = in.readString();
+        this.occupation = in.readString();
+        this.imageUrl = in.readString();
+        this.receiverKey = in.readString();
+    }
+
+    public static final Parcelable.Creator<ChatLandlordModel> CREATOR = new Parcelable.Creator<ChatLandlordModel>() {
+        @Override
+        public ChatLandlordModel createFromParcel(Parcel source) {
+            return new ChatLandlordModel(source);
+        }
+
+        @Override
+        public ChatLandlordModel[] newArray(int size) {
+            return new ChatLandlordModel[size];
+        }
+    };
 }

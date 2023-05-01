@@ -22,12 +22,18 @@ public class ChatLandlordAdapter extends RecyclerView.Adapter<ChatLandlordAdapte
     private Context context;
     private ArrayList<ChatLandlordModel> chatLandlordModelArrayList = new ArrayList<>();
 
+    private ChatUserListener listener;
+
     public ChatLandlordAdapter(Context context){
         this.context = context;
     }
 
     public void setList(ArrayList<ChatLandlordModel> chatLandlordModelArrayList){
         this.chatLandlordModelArrayList = chatLandlordModelArrayList;
+    }
+
+    public void initChatListener(ChatUserListener chatUserListener){
+        this.listener = chatUserListener;
     }
 
     @NonNull
@@ -47,6 +53,13 @@ public class ChatLandlordAdapter extends RecyclerView.Adapter<ChatLandlordAdapte
         if(!Validation.isStringEmpty(model.getImageUrl())){
             Glide.with(context).load(model.getImageUrl()).into(holder.profileImageView);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickChat(model);
+            }
+        });
     }
 
     @Override
@@ -66,5 +79,9 @@ public class ChatLandlordAdapter extends RecyclerView.Adapter<ChatLandlordAdapte
             occupationTextView = itemView.findViewById(R.id.occupationTextView);
             profileImageView = itemView.findViewById(R.id.profileImageView);
         }
+    }
+
+    public interface ChatUserListener{
+        void onClickChat(ChatLandlordModel model);
     }
 }

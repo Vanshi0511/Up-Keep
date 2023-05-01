@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.living.roomrental.R;
+import com.living.roomrental.comman.chat.ChatActivity;
 import com.living.roomrental.databinding.FragmentChatLandlordBinding;
 import com.living.roomrental.utilities.AppBoiler;
 
@@ -31,7 +32,7 @@ public class ChatLandlordFragment extends Fragment {
 
     private Dialog progressDialog;
 
-    private ChatLandlordAdapter adapter;
+    private ChatLandlordAdapter adapter ;
 
     public static ChatLandlordFragment newInstance() {
         ChatLandlordFragment fragment = new ChatLandlordFragment();
@@ -44,7 +45,7 @@ public class ChatLandlordFragment extends Fragment {
         // Inflate the layout for this fragment
 
         chatLandlordViewModel = new ViewModelProvider(this).get(ChatLandlordViewModel.class);
-
+        adapter =  new ChatLandlordAdapter(getContext());
         initListener();
 
         binding = FragmentChatLandlordBinding.inflate(inflater,container,false);
@@ -53,6 +54,17 @@ public class ChatLandlordFragment extends Fragment {
 
 
     private void initListener() {
+
+        adapter.initChatListener(new ChatLandlordAdapter.ChatUserListener() {
+            @Override
+            public void onClickChat(ChatLandlordModel model) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString("name", model.getName());
+                bundle.putString("receiver_key",model.getReceiverKey());
+                AppBoiler.navigateToActivity(getActivity(), ChatActivity.class,bundle);
+            }
+        });
     }
 
     @Override
@@ -113,7 +125,6 @@ public class ChatLandlordFragment extends Fragment {
 
     private void setAdapter(ArrayList<ChatLandlordModel> chatLandlordModels) {
 
-        ChatLandlordAdapter adapter = new ChatLandlordAdapter(getContext());
         adapter.setList(chatLandlordModels);
         binding.chatsRecyclerView.setAdapter(adapter);
     }

@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.databinding.ActivityChatBinding;
+import com.living.roomrental.landlord.activity.fragments.chat.ChatLandlordModel;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.Validation;
@@ -24,6 +26,8 @@ public class ChatActivity extends AppCompatActivity {
     private  String currentUserUid;
     private ChatAdapter adapter;
 
+    private Dialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +35,8 @@ public class ChatActivity extends AppCompatActivity {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        chatViewModel = new ViewModelProvider(this, new ChatViewModelFactory(getBundles())).get(ChatViewModel.class);
+        String receiverKey = getBundles();
+        chatViewModel = new ViewModelProvider(this, new ChatViewModelFactory(receiverKey)).get(ChatViewModel.class);
         currentUserUid = FirebaseController.getInstance().getUser().getUid();
 
         binding.header.headerTitle.setText("Chat");

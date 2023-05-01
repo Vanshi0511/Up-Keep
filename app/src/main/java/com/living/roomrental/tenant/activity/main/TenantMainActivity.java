@@ -79,7 +79,7 @@ public class TenantMainActivity extends AppCompatActivity {
                     case R.id.myChats:
                         controller.replaceFragment(new ChatLandlordFragment(),R.id.fragmentContainer);
                         break;
-                    case R.id.myProfile:
+                    case R.id.myMore:
                         break;
                     default:
                 }

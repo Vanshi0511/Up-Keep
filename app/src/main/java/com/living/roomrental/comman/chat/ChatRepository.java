@@ -43,7 +43,7 @@ public class ChatRepository {
 
     public MutableLiveData<ChatModel> getChatFromServer(){
 
-        senderReference.child(keyForSender).addChildEventListener(new ChildEventListener() {
+        senderReference.child(senderKey).child(keyForSender).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 System.out.println("======= ON CHILD ADDED =========== "+previousChildName);

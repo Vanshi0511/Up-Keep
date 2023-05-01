@@ -149,24 +149,52 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/contactCardView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
                 app:cardBackgroundColor="@color/white"
                 app:cardElevation="@dimen/_6sdp"
+                android:layout_marginRight="@dimen/_4sdp"
                 app:cardCornerRadius="@dimen/_4sdp"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom_horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/chatCardView"
                 app:layout_constraintTop_toBottomOf="@+id/aboutTextView">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_call"
                     android:drawablePadding="@dimen/_4sdp"
                     android:fontFamily="@font/montserrat_medium"
                     android:padding="@dimen/_8sdp"
                     android:text="Contact"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/chatCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="@dimen/_6sdp"
+                app:cardCornerRadius="@dimen/_4sdp"
+                android:layout_marginLeft="@dimen/_4sdp"
+                app:layout_constraintStart_toEndOf="@+id/contactCardView"
+                app:layout_constraintBottom_toBottomOf="@+id/contactCardView"
+                app:layout_constraintEnd_toEndOf="@+id/guideline_end_vertical"
+                app:layout_constraintTop_toTopOf="@+id/contactCardView">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_call"
+                    android:drawablePadding="@dimen/_4sdp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:padding="@dimen/_8sdp"
+                    android:text="Chat"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14ssp" />
 

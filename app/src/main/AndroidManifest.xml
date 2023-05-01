@@ -24,11 +24,17 @@
         android:theme="@style/Theme.RoomRental"
         tools:targetApi="31">
         <activity
+            android:name=".comman.help.HelpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".comman.about.AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".comman.more.MoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".comman.chat.ChatActivity"
-            android:exported="true" >
-
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".tenant.activity.view.ViewPropertyTenantActivity"
             android:exported="false" />
@@ -73,13 +79,11 @@
             android:name=".activity.general.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activity.auth.forgotpassword.ForgotPasswordActivity"

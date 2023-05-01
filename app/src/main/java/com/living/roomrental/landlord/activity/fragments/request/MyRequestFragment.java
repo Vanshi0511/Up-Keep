@@ -16,18 +16,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.living.roomrental.ContactListener;
+import com.living.roomrental.ViewProfileListener;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
-import com.living.roomrental.activity.auth.register.RegisterActivity;
 import com.living.roomrental.activity.profile.model.ProfileModel;
+import com.living.roomrental.comman.chat.ChatActivity;
 import com.living.roomrental.databinding.FragmentRequestBinding;
-import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.ImplicitUtils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,10 +68,17 @@ public class MyRequestFragment extends Fragment {
         adapter.setRequestList(myRequestsModelList);
         adapter.setProfileList(profileModelArrayList);
 
-        adapter.initContactInterface(new ContactListener() {
+        adapter.initContactInterface(new ViewProfileListener() {
             @Override
             public void onClickContact(String contactNo) {
                 ImplicitUtils.intentForCall(getActivity(),contactNo);
+            }
+
+            @Override
+            public void onClickChat(String receiverKey) {
+                Bundle bundle = new Bundle();
+                bundle.putString("receiver_key",receiverKey);
+                AppBoiler.navigateToActivity(getContext(), ChatActivity.class,bundle);
             }
         });
         adapter.initConfirmationInterface(new MyRequestAdapter.ConfirmationListener() {
@@ -206,7 +211,8 @@ public class MyRequestFragment extends Fragment {
 
     private void acceptProperty(int position){
         //todo accept property of user -> delete all requests + update bookingStatus
-        LiveData<String> deleteAllRequest = myRequestViewModel.deleteAllRequest(myRequestsModelList.get(position).getPropertyKey());
+        MyRequestsModel currentRequestModel = myRequestsModelList.get(position);
+        LiveData<String> deleteAllRequest = myRequestViewModel.deleteAllRequest(currentRequestModel.getPropertyKey());
 
         deleteAllRequest.observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -214,7 +220,7 @@ public class MyRequestFragment extends Fragment {
                 progressDialog.dismiss();
                 if(s.equals(AppConstants.SUCCESS)){
                     // todo update booking status
-                    updateBookingStatusOfProperty(myRequestsModelList.get(position));
+                    updateBookingStatusOfProperty(currentRequestModel);
                 } else {
                     responseDialog = AppBoiler.customDialogWithBtn(getContext(), s, R.drawable.ic_error, new DialogListener() {
                         @Override

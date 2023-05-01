@@ -1,8 +1,6 @@
 package com.living.roomrental.landlord.activity.fragments.request;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.living.roomrental.ContactListener;
+import com.living.roomrental.ViewProfileListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.comman.chat.ChatActivity;
-import com.living.roomrental.landlord.activity.create_property.CreatePropertyDataModel;
-import com.living.roomrental.landlord.activity.view_property.ViewPropertyLandlordActivity;
-import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
 import com.living.roomrental.utilities.AppBoiler;
 
 import java.util.ArrayList;
@@ -34,7 +27,7 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
     private ArrayList<ProfileModel> profileModelArrayList;
 
     private ConfirmationListener confirmationListener;
-    private ContactListener contactListener;
+    private ViewProfileListener viewProfileListener;
     public MyRequestAdapter(Context context ) {
         this.context = context;
     }
@@ -53,8 +46,8 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
     public void initConfirmationInterface(ConfirmationListener confirmationListener){
         this.confirmationListener = confirmationListener;
     }
-    public void initContactInterface(ContactListener contactListener){
-        this.contactListener = contactListener;
+    public void initContactInterface(ViewProfileListener viewProfileListener){
+        this.viewProfileListener = viewProfileListener;
     }
     @NonNull
     @Override
@@ -74,7 +67,7 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
         holder.viewProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppBoiler.showProfileDialog(context,profileModelArrayList.get(position) ,contactListener);
+                AppBoiler.showProfileDialog(context,profileModelArrayList.get(position) , viewProfileListener, model.getUidOfTenant());
             }
         });
 
@@ -91,15 +84,6 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.View
             public void onClick(View view) {
                 //rejectConfirmationDialog(model.getNameOfTenant());
                 confirmationListener.onClickReject(model.getNameOfTenant() , position);
-            }
-        });
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("receiver_key", model.getUidOfTenant());
-                AppBoiler.navigateToActivity(context, ChatActivity.class,bundle);
             }
         });
 

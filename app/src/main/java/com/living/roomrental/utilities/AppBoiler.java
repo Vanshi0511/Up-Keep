@@ -10,13 +10,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -24,15 +22,13 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.AlertDialogListener;
-import com.living.roomrental.ContactListener;
+import com.living.roomrental.ViewProfileListener;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.ImagePickerDialogListener;
@@ -162,11 +158,11 @@ public class AppBoiler {
         return dialog;
     }
 
-    public static void showProfileDialog(Context context , ProfileModel model , ContactListener listener){
+    public static void showProfileDialog(Context context , ProfileModel model , ViewProfileListener listener , String receiverKey){
 
         TextView name, address , about , contact , email;
         CircleImageView profileImageView;
-        MaterialCardView contactCardView;
+        MaterialCardView contactCardView , chatCardView;
 
         Dialog dialog =new Dialog(context);
         dialog.setContentView(R.layout.layout_view_profile_dialog);
@@ -179,6 +175,7 @@ public class AppBoiler {
         email = dialog.findViewById(R.id.emailTextView);
         profileImageView = dialog.findViewById(R.id.profileImage);
         contactCardView = dialog.findViewById(R.id.contactCardView);
+        chatCardView = dialog.findViewById(R.id.chatCardView);
 
         name.setText(model.getName()+" ("+model.getOccupation()+")");
         address.setText(model.getAddress());
@@ -195,6 +192,14 @@ public class AppBoiler {
                 listener.onClickContact(model.getContactNo());
             }
         });
+
+        chatCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickChat(receiverKey);
+            }
+        });
+
 
         Window window = dialog.getWindow();
         ColorDrawable back = new ColorDrawable(Color.TRANSPARENT);
@@ -234,42 +239,42 @@ public class AppBoiler {
 
     public static void showMenuPopupWindow(Context context ,View container, PopupWindowsMenuListener listener){
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.layout_menu_popup_window,null,false);
 
-        view.findViewById(R.id.logOutCardView).setOnClickListener(new View.OnClickListener() {
+        View popupView = LayoutInflater.from(context).inflate(R.layout.layout_menu_popup_window,null,false);
+
+        popupView.findViewById(R.id.logOutCardView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onClickLogOut();
             }
         });
-        view.findViewById(R.id.deactivateCardView).setOnClickListener(new View.OnClickListener() {
+        popupView.findViewById(R.id.deactivateCardView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onClickDeactivate();
             }
         });
-        view.findViewById(R.id.helpCardView).setOnClickListener(new View.OnClickListener() {
+        popupView.findViewById(R.id.helpCardView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onClickHelp();
             }
         });
-        view.findViewById(R.id.aboutCardView).setOnClickListener(new View.OnClickListener() {
+        popupView.findViewById(R.id.aboutCardView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onClickAbout();
             }
         });
 
-        PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,true);
+        PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,true);
         popupWindow.setFocusable(true);
         popupWindow.setTouchable(true);
         popupWindow.setOutsideTouchable(true);
 
         System.out.println("============ popup=======");
-        //popupWindow.showAsDropDown(container,0,0);
-        popupWindow.showAtLocation(container , Gravity.CENTER, 0, 0);
+        popupWindow.showAsDropDown(container,0,0);
+        //popupWindow.showAtLocation(container , Gravity.CENTER, 0, 0);
         //return popupWindow;
     }
 

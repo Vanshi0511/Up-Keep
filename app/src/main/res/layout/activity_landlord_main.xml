@@ -44,7 +44,7 @@
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@android:color/transparent"
                 app:menu="@menu/bottom_navigation_menu_items"
-
+                app:labelVisibilityMode="labeled"
                 app:itemTextAppearanceActive="@style/BottomNavigationView"
                 app:itemTextAppearanceInactive="@style/BottomNavigationView"
                 app:itemIconSize="@dimen/_22sdp"/>

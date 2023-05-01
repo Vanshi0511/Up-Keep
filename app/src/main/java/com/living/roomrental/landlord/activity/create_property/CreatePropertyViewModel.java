@@ -112,8 +112,9 @@ public class CreatePropertyViewModel extends ViewModel {
                 '}';
     }
 
+    private CreatePropertyRepository repository = new CreatePropertyRepository();
+
     public LiveData<String> setDataOfPropertyToServer(CreatePropertyDataModel model){
-        CreatePropertyRepository repository = new CreatePropertyRepository();
 
         if(propertyImages.size()>0){
             return repository.setDataToServer(model,propertyImages);

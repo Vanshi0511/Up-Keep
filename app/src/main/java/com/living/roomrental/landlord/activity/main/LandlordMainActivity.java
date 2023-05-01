@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +15,9 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.living.roomrental.PopupWindowsMenuListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.view.ViewProfileBottomSheet;
+import com.living.roomrental.comman.about.AboutActivity;
+import com.living.roomrental.comman.help.HelpActivity;
+import com.living.roomrental.comman.more.MoreActivity;
 import com.living.roomrental.databinding.ActivityLandlordMainBinding;
 import com.living.roomrental.landlord.activity.create_property.CreatePropertyActivity;
 import com.living.roomrental.landlord.activity.fragments.FragmentController;
@@ -34,7 +38,8 @@ public class LandlordMainActivity extends AppCompatActivity {
 
     private ViewProfileBottomSheet bottomSheet;
 
-    private FragmentController controller  = new FragmentController(this);;
+    private FragmentController controller  = new FragmentController(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +101,8 @@ public class LandlordMainActivity extends AppCompatActivity {
                     case R.id.myChats:
                         controller.replaceFragment(new ChatLandlordFragment(),R.id.fragmentContainer);
                         break;
-                    case R.id.myProfile:
+                    case R.id.myMore:
+                        AppBoiler.navigateToActivity(LandlordMainActivity.this, MoreActivity.class,null);
                         break;
                     default:
                 }
@@ -114,30 +120,55 @@ public class LandlordMainActivity extends AppCompatActivity {
         binding.header.moreImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupWindow menuPopupWindow;
-                AppBoiler.showMenuPopupWindow(LandlordMainActivity.this,binding.header.moreImageView, new PopupWindowsMenuListener() {
+
+//                AppBoiler.showMenuPopupWindow(LandlordMainActivity.this,binding.header.moreImageView, new PopupWindowsMenuListener() {
+//                    @Override
+//                    public void onClickHelp() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onClickAbout() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onClickLogOut() {
+//                        MenuOperation.logOutUser(LandlordMainActivity.this);
+//                    }
+//
+//                    @Override
+//                    public void onClickDeactivate() {
+//
+//                    }
+//                });
+//                System.out.println("====== popup");
+                //menuPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                PopupMenu popupMenu = new PopupMenu(LandlordMainActivity.this,binding.header.moreImageView);
+                popupMenu.getMenuInflater().inflate(R.menu.landlord_popup_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
-                    public void onClickHelp() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
 
-                    }
+                        switch (menuItem.getItemId()){
+                            case R.id.helpMenu:
+                                AppBoiler.navigateToActivity(LandlordMainActivity.this, HelpActivity.class,null);
+                                break;
+                            case R.id.aboutMenu:
+                                AppBoiler.navigateToActivity(LandlordMainActivity.this, AboutActivity.class,null);
+                                break;
+                            case R.id.logOutMenu:
+                                MenuOperation.logOutUser(LandlordMainActivity.this);
+                                break;
+                            case R.id.deactivateMenu:
 
-                    @Override
-                    public void onClickAbout() {
-
-                    }
-
-                    @Override
-                    public void onClickLogOut() {
-                        MenuOperation.logOutUser(LandlordMainActivity.this);
-                    }
-
-                    @Override
-                    public void onClickDeactivate() {
-
+                        }
+                        return true;
                     }
                 });
-                System.out.println("====== popup");
-                //menuPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                // Showing the popup menu
+                popupMenu.show();
             }
         });
     }
