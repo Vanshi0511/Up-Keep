@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.AlertDialogListener;
 import com.living.roomrental.ViewProfileListener;
 import com.living.roomrental.DialogListener;
@@ -181,7 +182,7 @@ public class AppBoiler {
         address.setText(model.getAddress());
         about.setText(model.getBio());
         contact.setText(model.getContactNo());
-        email.setText(FirebaseController.getInstance().getUser().getEmail());
+        email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         if(!Validation.isStringEmpty(model.getImageUrl()))
                 Glide.with(context).load(model.getImageUrl()).into(profileImageView);

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.R;
 import com.living.roomrental.utilities.AppConstants;
@@ -25,7 +26,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public ChatAdapter(Context context){
         this.context=context;
-        currentUserUid = FirebaseController.getInstance().getUser().getUid();
+        currentUserUid = FirebaseAuth.getInstance().getUid();
     }
     public void setListData(ChatModel model){
         this.chatModelList.add(model);

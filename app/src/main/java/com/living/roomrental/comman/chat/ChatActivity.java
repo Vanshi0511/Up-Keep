@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.databinding.ActivityChatBinding;
 import com.living.roomrental.landlord.activity.fragments.chat.ChatLandlordModel;
@@ -37,7 +38,7 @@ public class ChatActivity extends AppCompatActivity {
 
         String receiverKey = getBundles();
         chatViewModel = new ViewModelProvider(this, new ChatViewModelFactory(receiverKey)).get(ChatViewModel.class);
-        currentUserUid = FirebaseController.getInstance().getUser().getUid();
+        currentUserUid = FirebaseAuth.getInstance().getUid();
 
         binding.header.headerTitle.setText("Chat");
         initListener();

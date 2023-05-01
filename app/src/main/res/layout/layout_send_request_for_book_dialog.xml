@@ -9,8 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/gradient_background_drawable">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/SendRequestTextView"
@@ -20,7 +19,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:fontFamily="@font/montserrat_semibold"
             android:textSize="@dimen/_16ssp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

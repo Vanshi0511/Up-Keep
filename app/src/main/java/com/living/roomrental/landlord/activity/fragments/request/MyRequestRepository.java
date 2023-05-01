@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +38,7 @@ public class MyRequestRepository {
 
     public MutableLiveData<List<MyRequestsModel>> getRequestFromServer(){
 
-        String uid = FirebaseController.getInstance().getUser().getUid();
+        String uid = FirebaseAuth.getInstance().getUid();
         DatabaseReference reference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.LANDLORD_PROPERTY).child(uid);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -128,7 +129,7 @@ public class MyRequestRepository {
 
     public MutableLiveData<String> deleteRequestFromProperty(String uidOfTenant ,  String propertyKey){
 
-        String uid = FirebaseController.getInstance().getUser().getUid();
+        String uid = FirebaseAuth.getInstance().getUid();
         DatabaseReference databaseReference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.LANDLORD_PROPERTY)
                 .child(uid)
                 .child(propertyKey)
@@ -152,7 +153,7 @@ public class MyRequestRepository {
 
     public MutableLiveData<String> deleteAllRequests(String propertyKey){
 
-        String uid = FirebaseController.getInstance().getUser().getUid();
+        String uid = FirebaseAuth.getInstance().getUid();
         DatabaseReference databaseReference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.LANDLORD_PROPERTY)
                 .child(uid)
                 .child(propertyKey)
@@ -175,7 +176,7 @@ public class MyRequestRepository {
 
     public MutableLiveData<String> updateBookingStatus(MyRequestsModel myRequestsModel){
 
-        String uid = FirebaseController.getInstance().getUser().getUid();
+        String uid = FirebaseAuth.getInstance().getUid();
         DatabaseReference databaseReference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.LANDLORD_PROPERTY)
                 .child(uid)
                 .child(myRequestsModel.getPropertyKey());

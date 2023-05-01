@@ -121,30 +121,6 @@ public class LandlordMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                AppBoiler.showMenuPopupWindow(LandlordMainActivity.this,binding.header.moreImageView, new PopupWindowsMenuListener() {
-//                    @Override
-//                    public void onClickHelp() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onClickAbout() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onClickLogOut() {
-//                        MenuOperation.logOutUser(LandlordMainActivity.this);
-//                    }
-//
-//                    @Override
-//                    public void onClickDeactivate() {
-//
-//                    }
-//                });
-//                System.out.println("====== popup");
-                //menuPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
                 PopupMenu popupMenu = new PopupMenu(LandlordMainActivity.this,binding.header.moreImageView);
                 popupMenu.getMenuInflater().inflate(R.menu.landlord_popup_menu, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

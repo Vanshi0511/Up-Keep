@@ -3,6 +3,7 @@ package com.living.roomrental.landlord.activity.fragments.chat;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +29,7 @@ public class ChatLandlordRepository {
 
     public MutableLiveData<ArrayList<String>> getAllUsersChat(){
 
-        String currentUserUid = FirebaseController.getInstance().getUser().getUid();
+        String currentUserUid = FirebaseAuth.getInstance().getUid();
         int lengthOfUid = currentUserUid.length();
 
         ArrayList<String> receiverKeyList = new ArrayList<>();

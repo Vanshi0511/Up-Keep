@@ -4,4 +4,17 @@
     <item android:id="@+id/myProperty"
         android:title="Home"
         android:icon="@drawable/ic_home"/>
+
+    <item android:id="@+id/myBookings"
+        android:title="Bookings"
+        android:icon="@drawable/ic_pin"/>
+
+    <item android:id="@+id/myChats"
+        android:title="Chat"
+        android:icon="@drawable/ic_chat"/>
+
+    <item android:id="@+id/myMore"
+        android:title="More"
+        android:icon="@drawable/ic_dehaze"/>
+
 </menu>

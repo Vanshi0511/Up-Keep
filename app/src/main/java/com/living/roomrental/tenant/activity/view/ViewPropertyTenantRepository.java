@@ -32,7 +32,7 @@ public class ViewPropertyTenantRepository {
         this.propertyKey = propertyKey;
         this.uidOfLandlord = uidOfLandlord;
 
-        uidOfCurrentUser = FirebaseController.getInstance().getUser().getUid();
+        uidOfCurrentUser = FirebaseAuth.getInstance().getUid();
         databaseReference = FirebaseController.getInstance().getDatabaseReference();
     }
 

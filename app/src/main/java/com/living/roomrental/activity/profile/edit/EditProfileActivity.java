@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.ImagePickerDialogListener;
@@ -53,8 +54,8 @@ public class EditProfileActivity extends AppCompatActivity {
         editProfileViewModel = new ViewModelProvider(this).get(EditProfileViewModel.class);
 
         binding.header.headerTitle.setText("Update Profile");
-        System.out.println("==================== data "+FirebaseController.getInstance().getUser().getEmail());
-        binding.emailEditText.setText(FirebaseController.getInstance().getUser().getEmail());
+        System.out.println("==================== data "+ FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        binding.emailEditText.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         initListeners();
         getBundleData();
         getDataFromViewModel();
