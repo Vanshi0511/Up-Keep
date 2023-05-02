@@ -15,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.activity.profile.model.ProfileModel;
 import com.living.roomrental.landlord.activity.create_property.CurrentBookingModel;
+import com.living.roomrental.tenant.activity.fragments.request.MyRequestTenantModel;
 import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
 import com.living.roomrental.utilities.AppConstants;
 import com.living.roomrental.utilities.DateTimeFormatter;
@@ -130,6 +131,7 @@ public class MyRequestRepository {
     public MutableLiveData<String> deleteRequestFromProperty(String uidOfTenant ,  String propertyKey){
 
         String uid = FirebaseAuth.getInstance().getUid();
+
         DatabaseReference databaseReference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.LANDLORD_PROPERTY)
                 .child(uid)
                 .child(propertyKey)
@@ -202,5 +204,36 @@ public class MyRequestRepository {
             }
         });
         return updateBookingStatusMutableData;
+    }
+
+    public void updateUserRequestStatus(String tenantId , String propertyKey , String status){
+
+        DatabaseReference reference = FirebaseController.getInstance().getDatabaseReference().child("UserRequests").child(tenantId);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+
+                    for(DataSnapshot keySnapshot : snapshot.getChildren()){
+
+                        MyRequestTenantModel model = keySnapshot.getValue(MyRequestTenantModel.class);
+                        if(model.getPropertyKey().equals(propertyKey)){
+
+                            Map<String , Object> map = new HashMap<>();
+                            map.put("status",status);
+
+                            reference.child(keySnapshot.getKey()).updateChildren(map);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("=========== ERROR ============= "+error.getMessage());
+            }
+        });
     }
 }

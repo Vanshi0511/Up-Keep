@@ -35,7 +35,7 @@ public class PermissionUtils {
                     MAP_REQUEST_CODE);
 
             return false;
-        }else{
+        } else{
             //permission given
             return true;
         }

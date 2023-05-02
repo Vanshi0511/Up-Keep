@@ -23,6 +23,7 @@ import com.living.roomrental.landlord.activity.main.LandlordMainActivity;
 import com.living.roomrental.repository.local.SharedPreferenceStorage;
 import com.living.roomrental.repository.local.SharedPreferencesController;
 import com.living.roomrental.tenant.activity.fragments.home.AllPropertyFragment;
+import com.living.roomrental.tenant.activity.fragments.request.MyRequestTenantFragment;
 import com.living.roomrental.utilities.AppBoiler;
 import com.living.roomrental.utilities.MenuOperation;
 import com.living.roomrental.utilities.Validation;
@@ -80,8 +81,8 @@ public class TenantMainActivity extends AppCompatActivity {
                     case R.id.myProperty :
                         controller.replaceFragment(new AllPropertyFragment(),R.id.fragmentContainer);
                         break;
-                    case R.id.myBookings:
-
+                    case R.id.myRequest:
+                        controller.replaceFragment(new MyRequestTenantFragment() , R.id.fragmentContainer);
                         break;
                     case R.id.myChats:
                         controller.replaceFragment(new ChatLandlordFragment(),R.id.fragmentContainer);

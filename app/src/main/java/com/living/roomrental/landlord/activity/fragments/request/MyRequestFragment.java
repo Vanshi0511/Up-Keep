@@ -195,6 +195,7 @@ public class MyRequestFragment extends Fragment {
                         @Override
                         public void onClick() {
                             responseDialog.dismiss();
+                            myRequestViewModel.updateStatusOfTenant(myRequestsModelList.get(position).getUidOfTenant(), myRequestsModelList.get(position).getPropertyKey() ,"Rejected");
                         }
                     });
                 } else {
@@ -246,6 +247,7 @@ public class MyRequestFragment extends Fragment {
                        @Override
                        public void onClick() {
                            responseDialog.dismiss();
+                           myRequestViewModel.updateStatusOfTenant(model.getUidOfTenant(), model.getPropertyKey(), "Accepted");
                        }
                    });
 

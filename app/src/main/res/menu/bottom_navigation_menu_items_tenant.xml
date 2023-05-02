@@ -5,8 +5,8 @@
         android:title="Home"
         android:icon="@drawable/ic_home"/>
 
-    <item android:id="@+id/myBookings"
-        android:title="Bookings"
+    <item android:id="@+id/myRequest"
+        android:title="Requests"
         android:icon="@drawable/ic_pin"/>
 
     <item android:id="@+id/myChats"

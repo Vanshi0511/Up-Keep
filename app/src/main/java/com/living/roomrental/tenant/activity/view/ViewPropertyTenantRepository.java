@@ -13,6 +13,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.living.roomrental.FirebaseController;
 import com.living.roomrental.utilities.AppConstants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ViewPropertyTenantRepository {
 
     private MutableLiveData<String> responseMutableDataForStore = new MutableLiveData<>();
@@ -39,6 +42,7 @@ public class ViewPropertyTenantRepository {
     public MutableLiveData<String> sendRequest(PropertyRequestModel model){
 
         //model.setUidOfUser(uidOfCurrentUser);
+
         databaseReference.child(AppConstants.LANDLORD_PROPERTY).child(uidOfLandlord).child(propertyKey).child("propertyRequests")
                 .child(uidOfCurrentUser).setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -57,7 +61,12 @@ public class ViewPropertyTenantRepository {
 
     public MutableLiveData<String> setTenantRequestData(){
 
-        databaseReference.child("UserRequests").child(uidOfCurrentUser).push().setValue(propertyKey).addOnSuccessListener(new OnSuccessListener<Void>() {
+        Map<String , Object> map = new HashMap<>();
+        map.put("propertyKey",propertyKey);
+        map.put("uidOfLandlord",uidOfLandlord);
+        map.put("status","Pending");
+
+        databaseReference.child("UserRequests").child(uidOfCurrentUser).push().setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 responseMutableDataForStore.setValue(AppConstants.SUCCESS);

@@ -32,4 +32,8 @@ public class MyRequestViewModel extends ViewModel {
         return repository.updateBookingStatus(model);
     }
 
+    public void updateStatusOfTenant(String tenantId , String propertyKey , String status){
+        repository.updateUserRequestStatus(tenantId,propertyKey,status);
+    }
+
 }
