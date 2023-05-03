@@ -16,8 +16,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.living.roomrental.R;
+import com.living.roomrental.ViewProfileListener;
+import com.living.roomrental.activity.profile.model.ProfileModel;
+import com.living.roomrental.comman.chat.ChatActivity;
 import com.living.roomrental.databinding.FragmentMyRequestTenantBinding;
 import com.living.roomrental.utilities.AppBoiler;
+import com.living.roomrental.utilities.ImplicitUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +89,6 @@ public class MyRequestTenantFragment extends Fragment {
             @Override
             public void onChanged(List<MyRequestTenantPropertyModel> myRequestTenantPropertyModels) {
 
-                progressDialog.dismiss();
                 if(myRequestTenantPropertyModels==null){
                     Toast.makeText(getContext(), "Failed to load", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
@@ -103,5 +106,34 @@ public class MyRequestTenantFragment extends Fragment {
 
         MyRequestTenantAdapter adapter = new MyRequestTenantAdapter(getContext(),myRequestTenantPropertyModels);
         binding.myRequestRecyclerView.setAdapter(adapter);
+
+        LiveData<List<ProfileModel>> profileListLiveData = myRequestTenantViewModel.getProfileListFromRepository(myRequestTenantPropertyModels);
+        profileListLiveData.observe(this, new Observer<List<ProfileModel>>() {
+            @Override
+            public void onChanged(List<ProfileModel> profileModels) {
+
+                progressDialog.dismiss();
+                if(profileModels == null){
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                }else{
+                    adapter.setProfileList(profileModels);
+                }
+
+            }
+        });
+
+        adapter.initContactInterface(new ViewProfileListener() {
+            @Override
+            public void onClickContact(String contact) {
+                ImplicitUtils.intentForCall(getActivity(),contact);
+            }
+
+            @Override
+            public void onClickChat(String receiverKey) {
+                Bundle bundle = new Bundle();
+                bundle.putString("receiver_key",receiverKey);
+                AppBoiler.navigateToActivity(getContext(), ChatActivity.class,bundle);
+            }
+        });
     }
 }

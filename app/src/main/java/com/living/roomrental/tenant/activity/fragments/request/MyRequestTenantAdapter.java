@@ -11,17 +11,30 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.living.roomrental.R;
+import com.living.roomrental.ViewProfileListener;
+import com.living.roomrental.activity.profile.model.ProfileModel;
+import com.living.roomrental.utilities.AppBoiler;
 
 import java.util.List;
 
 public class MyRequestTenantAdapter extends RecyclerView.Adapter<MyRequestTenantAdapter.MyRequestTenantViewHolder>{
 
     private Context context;
+    private ViewProfileListener viewProfileListener;
     private List<MyRequestTenantPropertyModel> myRequestTenantPropertyModelList;
+
+    private List<ProfileModel> profileModelList ;
 
     public MyRequestTenantAdapter(Context context , List<MyRequestTenantPropertyModel> myRequestTenantPropertyModelList){
         this.context = context;
         this.myRequestTenantPropertyModelList = myRequestTenantPropertyModelList;
+    }
+
+    public void setProfileList(List<ProfileModel> profileModelList){
+        this.profileModelList = profileModelList;
+    }
+    public void initContactInterface(ViewProfileListener viewProfileListener){
+        this.viewProfileListener = viewProfileListener;
     }
 
     @NonNull
@@ -49,10 +62,14 @@ public class MyRequestTenantAdapter extends RecyclerView.Adapter<MyRequestTenant
         String status = model.getStatus();
         if(status.equals("Pending")){
             holder.statusImageView.setImageResource(R.drawable.ic_pending);
+            holder.propertyStatus.setTextColor(context.getColor(R.color.yellow_800));
+
         }else if(status.equals("Accepted")){
             holder.statusImageView.setImageResource(R.drawable.ic_done);
+            holder.propertyStatus.setTextColor(context.getColor(R.color.green_600));
         } else {
             holder.statusImageView.setImageResource(R.drawable.ic_rejected);
+            holder.propertyStatus.setTextColor(context.getColor(R.color.red_400));
         }
         holder.propertyStatus.setText(status);
 
@@ -60,7 +77,7 @@ public class MyRequestTenantAdapter extends RecyclerView.Adapter<MyRequestTenant
         holder.viewProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AppBoiler.showProfileDialog(context,profileModelList.get(position) , viewProfileListener, model.getLandlordId());
             }
         });
     }

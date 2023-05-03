@@ -29,6 +29,8 @@ public class MyRequestTenantPropertyModel implements Parcelable {
 
     private PropertyRequestModel propertyRequests;
 
+    private String landlordId;
+
     public MyRequestTenantPropertyModel() {
     }
 
@@ -211,6 +213,14 @@ public class MyRequestTenantPropertyModel implements Parcelable {
 
     public void setPropertyRequests(PropertyRequestModel propertyRequests) {
         this.propertyRequests = propertyRequests;
+    }
+
+    public String getLandlordId() {
+        return landlordId;
+    }
+
+    public void setLandlordId(String landlordId) {
+        this.landlordId = landlordId;
     }
 
     @Override

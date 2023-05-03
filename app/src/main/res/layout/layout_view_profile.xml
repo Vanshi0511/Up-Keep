@@ -65,7 +65,7 @@
         android:id="@+id/nameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Sanskar Patidar (Education)"
+
         android:textColor="@color/black_text_secondary"
         android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/montserrat_medium"
@@ -90,7 +90,7 @@
         android:id="@+id/contactTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="+91 7224890928"
+
         android:textColor="@color/black_text_secondary"
         android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/montserrat_medium"
@@ -115,7 +115,7 @@
         android:id="@+id/emailTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="user@gmail.com"
+
         android:textColor="@color/black_text_secondary"
         android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/montserrat_medium"
@@ -139,7 +139,6 @@
         android:id="@+id/addressTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="51 shanti nagar , Bhawarkuan square , indore 454332 , Madhya Pradesh"
         android:textColor="@color/black_text_secondary"
         android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/montserrat_medium"
@@ -165,7 +164,6 @@
         android:id="@+id/aboutTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="I am Android Developer"
         android:textColor="@color/black_text_secondary"
         android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/montserrat_medium"

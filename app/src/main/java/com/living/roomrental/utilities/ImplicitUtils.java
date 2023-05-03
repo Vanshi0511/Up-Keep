@@ -40,4 +40,14 @@ public class ImplicitUtils {
         }
     }
 
+    public static void intentForMail(Context context ,String message){
+
+        Intent iMail=new Intent(Intent.ACTION_SEND);
+        iMail.setType("message/rfc822");
+        iMail.putExtra(Intent.EXTRA_EMAIL,new String[]{"sanskarpatidar14@gmail.com"});
+        iMail.putExtra(Intent.EXTRA_SUBJECT,"Issue about app");
+        iMail.putExtra(Intent.EXTRA_TEXT,message);
+        context.startActivity(Intent.createChooser(iMail,"Email via"));
+    }
+
 }

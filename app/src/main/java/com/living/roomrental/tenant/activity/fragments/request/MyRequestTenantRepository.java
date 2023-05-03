@@ -1,5 +1,7 @@
 package com.living.roomrental.tenant.activity.fragments.request;
 
+import android.provider.ContactsContract;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -9,6 +11,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.living.roomrental.FirebaseController;
+import com.living.roomrental.activity.profile.model.ProfileModel;
+import com.living.roomrental.landlord.activity.fragments.request.MyRequestsModel;
 import com.living.roomrental.tenant.activity.view.PropertyRequestModel;
 import com.living.roomrental.utilities.AppConstants;
 
@@ -23,6 +27,8 @@ public class MyRequestTenantRepository {
     private MutableLiveData<List<MyRequestTenantModel>> myRequestTenantMutableLiveData = new MutableLiveData<>();
 
     private MutableLiveData<List<MyRequestTenantPropertyModel>> myRequestTenantPropertyMutableLiveData = new MutableLiveData<>();
+
+    private MutableLiveData<List<ProfileModel>> profileModelMutableLiveData = new MutableLiveData<>();
 
     public MyRequestTenantRepository(){
         databaseReference = FirebaseController.getInstance().getDatabaseReference();
@@ -79,6 +85,7 @@ public class MyRequestTenantRepository {
                         MyRequestTenantPropertyModel model1 = snapshot.getValue(MyRequestTenantPropertyModel.class);
                         model1.setPropertyRequests(snapshot.child("propertyRequests").child(uid).getValue(PropertyRequestModel.class));
                         model1.setStatus(model.getStatus());
+                        model1.setLandlordId(model.getUidOfLandlord());
                         modelArrayList.add(model1);
                     } else {
                         System.out.println("============= NO SNAPSHOT ============ "+modelArrayList.size());
@@ -100,5 +107,45 @@ public class MyRequestTenantRepository {
             });
         }
        return myRequestTenantPropertyMutableLiveData;
+    }
+
+
+    public MutableLiveData<List<ProfileModel>> getProfileDataFromServer(List<MyRequestTenantPropertyModel> myRequestTenantPropertyModels) {
+
+        DatabaseReference databaseReference = FirebaseController.getInstance().getDatabaseReference().child(AppConstants.USER_PROFILE);
+
+        List<ProfileModel> profileModels = new ArrayList<>();
+        for( int i=0 ; i< myRequestTenantPropertyModels.size() ; i++) {
+
+            databaseReference.child(myRequestTenantPropertyModels.get(i).getLandlordId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+
+                        ProfileModel model = snapshot.getValue(ProfileModel.class);
+                        System.out.println("================== 112"+model.toString());
+                        profileModels.add(model);
+
+                        System.out.println("================== 112"+profileModels.size()+"   "+myRequestTenantPropertyModels.size());
+                        if(profileModels.size() == myRequestTenantPropertyModels.size()){
+                            System.out.println("==================hhhhhhhhhhhh");
+                            profileModelMutableLiveData.setValue(profileModels);
+                        }
+
+                        System.out.println("model size"+profileModels.size());
+                    } else {
+                        System.out.println("================== 221");
+                        profileModelMutableLiveData.setValue(null);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    System.out.println("=========== Error ================" + error.getMessage());
+                }
+            });
+        }
+
+        return profileModelMutableLiveData;
     }
 }

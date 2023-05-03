@@ -28,8 +28,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Room Rental"
-                android:textSize="@dimen/_12ssp"
+                android:layout_margin="@dimen/_16sdp"
+                android:text="This project is to provide user an application which can be useful for both Landlord and Tenant as Landlord can add the property which is available for him to put on rent and tenant can search for all the property added by each landlord in particular area .This app can connect landlord to tenant and vice versa without requirement of broker for searching the rooms .Tenant can book rooms as per desired convenience "
+                android:textSize="@dimen/_14ssp"
                 android:textAlignment="center"
                 android:fontFamily="@font/montserrat_medium"/>
 

@@ -21,19 +21,67 @@
         app:layout_constraintTop_toBottomOf="@+id/header"
         app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/aa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Any query regarding the app then send us your problem via mail."
+                android:textAlignment="center"
+                android:textColor="@color/black_text_secondary"
+                android:textSize="17sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="We will resolve your query and contact you soon."
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/bb"
+                android:textColor="@color/black_text_secondary"
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_below="@+id/aa"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/queryMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Room Rental"
-                android:textSize="@dimen/_12ssp"
-                android:textAlignment="center"
-                android:fontFamily="@font/montserrat_medium"/>
+                android:layout_below="@+id/bb"
+                android:layout_marginStart="@dimen/_32sdp"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:layout_marginEnd="@dimen/_32sdp"
+                android:layout_marginBottom="@dimen/_32sdp"
+                android:drawableLeft="@drawable/ic_chat"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:hint="Write a message"
+                android:textColor="@color/black" />
 
-        </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sendBtn"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_52sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Send"
+                android:textAllCaps="false"
+                android:layout_below="@+id/queryMessage"
+                android:layout_centerHorizontal="true"
+                android:textAppearance="@style/InputTextAppearance"
+                app:cornerRadius="@dimen/_24sdp"
+                android:textColor="@color/indigo_600"
+                android:backgroundTint="@color/white"
+                app:strokeColor="@color/indigo_600"
+                app:strokeWidth="@dimen/_1sdp"
+                app:rippleColor="@color/black_text_disabled" />
+
+        </RelativeLayout>
 
     </ScrollView>
 

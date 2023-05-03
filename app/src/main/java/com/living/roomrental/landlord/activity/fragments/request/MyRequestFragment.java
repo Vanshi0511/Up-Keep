@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.living.roomrental.ViewProfileListener;
 import com.living.roomrental.DialogListener;
@@ -138,7 +139,10 @@ public class MyRequestFragment extends Fragment {
             @Override
             public void onChanged(List<MyRequestsModel> myRequestsModels) {
 
-                if(myRequestsModels.size()>0){
+                if(myRequestsModels == null){
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+
+                } else if(myRequestsModels.size()>0){
                     binding.noRequestTextView.setVisibility(View.GONE);
                     myRequestsModelList = (ArrayList<MyRequestsModel>) myRequestsModels;
                     getProfileDataFromServer();
@@ -184,6 +188,7 @@ public class MyRequestFragment extends Fragment {
 
     private void rejectProperty(int position){
         //todo delete request from property
+        MyRequestsModel model = myRequestsModelList.get(position);
         LiveData<String> deleteLiveData = myRequestViewModel.removePropertyRequest(myRequestsModelList.get(position).getUidOfTenant() ,  myRequestsModelList.get(position).getPropertyKey());
         deleteLiveData.observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -195,7 +200,7 @@ public class MyRequestFragment extends Fragment {
                         @Override
                         public void onClick() {
                             responseDialog.dismiss();
-                            myRequestViewModel.updateStatusOfTenant(myRequestsModelList.get(position).getUidOfTenant(), myRequestsModelList.get(position).getPropertyKey() ,"Rejected");
+                            myRequestViewModel.updateStatusOfTenant(model.getUidOfTenant(), model.getPropertyKey() ,"Rejected");
                         }
                     });
                 } else {
