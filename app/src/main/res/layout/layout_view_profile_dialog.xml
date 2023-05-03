@@ -89,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="user@gmail.com"
+                android:visibility="gone"
                 android:textColor="@color/black_text_secondary"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintBottom_toTopOf="@+id/addressLabelTextView"

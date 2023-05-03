@@ -14,6 +14,8 @@ public class ProfileModel implements Parcelable {
     private String whoIsUser;
     private String imageUrl;
 
+    private String email;
+
     public ProfileModel() {
     }
 
@@ -35,6 +37,14 @@ public class ProfileModel implements Parcelable {
         occupation = in.readString();
         imageUrl = in.readString();
         whoIsUser = in.readString();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getImageUrl() {

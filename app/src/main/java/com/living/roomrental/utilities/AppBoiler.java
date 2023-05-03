@@ -182,7 +182,7 @@ public class AppBoiler {
         address.setText(model.getAddress());
         about.setText(model.getBio());
         contact.setText(model.getContactNo());
-        email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        //email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         if(!Validation.isStringEmpty(model.getImageUrl()))
                 Glide.with(context).load(model.getImageUrl()).into(profileImageView);
