@@ -502,11 +502,11 @@
             android:text="Delete"
             android:textAllCaps="false"
             android:textAppearance="@style/InputTextAppearance"
-            android:textColor="@color/indigo_600"
+            android:textColor="@color/app_default_color"
             app:cornerRadius="@dimen/_8sdp"
 
             app:rippleColor="@color/black_text_disabled"
-            app:strokeColor="@color/indigo_600"
+            app:strokeColor="@color/app_default_color"
             app:strokeWidth="@dimen/_1sdp" />
 
     </LinearLayout>

@@ -148,7 +148,7 @@
                     android:text=" Login"
                     android:textStyle="bold"
                     android:textAppearance="@style/InputTextAppearance"
-                    android:textColor="@color/indigo_600" />
+                    android:textColor="@color/app_default_color" />
 
             </LinearLayout>
 

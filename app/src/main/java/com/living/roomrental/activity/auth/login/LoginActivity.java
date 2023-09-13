@@ -225,7 +225,8 @@ public class LoginActivity extends AppCompatActivity {
 //                    });
                 }
             }
-        });
+        });  UserChoiceBottomSheet bottomSheet = new UserChoiceBottomSheet();
+        bottomSheet.show(getSupportFragmentManager(), "ChoiceBottomSheet");
     }
 
 

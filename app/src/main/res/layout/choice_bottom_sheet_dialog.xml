@@ -9,7 +9,7 @@
         android:id="@+id/iAmTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hey, Room Rental "
+        android:text="Hey, Up Keep "
         android:textSize="@dimen/_14ssp"
         android:fontFamily="@font/montserrat_medium"
         android:layout_margin="@dimen/_8sdp"
@@ -30,7 +30,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16sdp"
-
         android:clickable="true"
         android:focusable="true"
         app:cardCornerRadius="@dimen/_8sdp"

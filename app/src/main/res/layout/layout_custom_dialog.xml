@@ -61,7 +61,7 @@
                 android:textAlignment="center"
                 android:layout_margin="@dimen/_8sdp"
                 android:text="Ok"
-                android:textColor="@color/indigo_600"
+                android:textColor="@color/app_default_color"
                 android:textAppearance="@style/HintTextAppearance"
                 app:layout_constraintEnd_toEndOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="@+id/imageView"

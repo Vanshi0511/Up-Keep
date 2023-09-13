@@ -33,7 +33,7 @@
                 android:textSize="@dimen/_12ssp"
                 android:textAlignment="center"
                 android:fontFamily="@font/montserrat_semibold"
-                android:text="Create your profile for activating your services of Room Rental."
+                android:text="Create your profile for activating your services of Up Keep."
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
                 app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal"/>

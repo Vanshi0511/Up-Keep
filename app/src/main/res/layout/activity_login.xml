@@ -5,7 +5,6 @@
     android:id="@+id/rootLayoutOfLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background_drawable"
     tools:context=".activity.auth.login.LoginActivity">
 
     <ScrollView
@@ -25,24 +24,26 @@
                 android:id="@+id/signInTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
                 android:fontFamily="@font/montserrat_semibold"
+                android:text="Sign In"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_20ssp"
-                android:textColor="@color/black_text_secondary"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal"/>
+                app:layout_constraintTop_toBottomOf="@+id/guideline_top_horizontal" />
 
             <TextView
                 android:id="@+id/toContinueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="to continue Room Rental"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:fontFamily="@font/montserrat_semibold"
-                android:textSize="@dimen/_12ssp"
+                android:text="to continue Up Keep"
                 android:textColor="@color/black_text_secondary"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_end_vertical"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/signInTextView"/>
+                app:layout_constraintTop_toBottomOf="@+id/signInTextView" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailTextInputLayout"
@@ -118,9 +119,9 @@
 
                 android:textAppearance="@style/InputTextAppearance"
                 app:cornerRadius="@dimen/_24sdp"
-                android:textColor="@color/indigo_600"
+                android:textColor="@color/orange_500"
                 android:backgroundTint="@color/white"
-                app:strokeColor="@color/indigo_600"
+                app:strokeColor="@color/orange_500"
                 app:strokeWidth="@dimen/_1sdp"
                 app:rippleColor="@color/black_text_disabled"
 
@@ -183,7 +184,7 @@
                     android:text=" Register"
                     android:textStyle="bold"
                     android:textAppearance="@style/InputTextAppearance"
-                    android:textColor="@color/indigo_600" />
+                    android:textColor="@color/orange_500" />
 
             </LinearLayout>
 

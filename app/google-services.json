@@ -1,33 +1,63 @@
 {
   "project_info": {
-    "project_number": "743704305334",
-    "project_id": "room-rental-21m23",
-    "storage_bucket": "room-rental-21m23.appspot.com"
+    "project_number": "1027204043627",
+    "firebase_url": "https://upkeep-84163-default-rtdb.firebaseio.com",
+    "project_id": "upkeep-84163",
+    "storage_bucket": "upkeep-84163.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:743704305334:android:f139beffef7d3a04505017",
+        "mobilesdk_app_id": "1:1027204043627:android:7f310900c655d7c393722e",
         "android_client_info": {
-          "package_name": "com.living.roomrental"
+          "package_name": "com.example.upkeep"
         }
       },
       "oauth_client": [
         {
-          "client_id": "743704305334-p84ql9dartv9l86lm8qc7ha2q37re25s.apps.googleusercontent.com",
+          "client_id": "1027204043627-amruod49dvvn078mkk0qc0k516ig7ipk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDYWAes2jsIpP0kT8NnHm8R4omvJYbUP-Y"
+          "current_key": "AIzaSyBydpxP2FvdOWvo_BceVv04BivE2mVNRZM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "743704305334-p84ql9dartv9l86lm8qc7ha2q37re25s.apps.googleusercontent.com",
+              "client_id": "1027204043627-amruod49dvvn078mkk0qc0k516ig7ipk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027204043627:android:038250abdc24ac0f93722e",
+        "android_client_info": {
+          "package_name": "com.living.roomrental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027204043627-amruod49dvvn078mkk0qc0k516ig7ipk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBydpxP2FvdOWvo_BceVv04BivE2mVNRZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027204043627-amruod49dvvn078mkk0qc0k516ig7ipk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
