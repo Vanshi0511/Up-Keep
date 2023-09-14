@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding true
     }
     buildTypes {
@@ -69,7 +69,7 @@ dependencies {
     //google authentication
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
-    
+
     // Circular image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
@@ -80,4 +80,10 @@ dependencies {
     //Map - fused location API
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    //circle otpview
+    implementation 'io.github.chaosleung:pinview:1.4.4'
+
+    implementation 'com.dafruits:webrtc:106.0.0'
+
 }

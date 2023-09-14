@@ -17,6 +17,8 @@
           android:icon="@drawable/ic_deactivate"
           android:title="Deactivate"/>
 
-
+    <item android:id="@+id/webCalling"
+        android:icon="@drawable/ic_about"
+        android:title="Web Calling"/>
 
 </menu>

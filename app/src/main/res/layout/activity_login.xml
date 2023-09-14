@@ -160,6 +160,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ORTextView" />
 
             <LinearLayout
+                android:id="@+id/llLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -187,6 +188,21 @@
                     android:textColor="@color/orange_500" />
 
             </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submitButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_46sdp"
+                android:layout_margin="@dimen/_20sdp"
+                android:background="@drawable/corner_rounded"
+                android:backgroundTint="@color/orange_500"
+                android:fontFamily="@font/montserrat_medium"
+                android:letterSpacing="0"
+                android:text="Verify OTP"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end_vertical"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_vertical"
+                app:layout_constraintTop_toBottomOf="@id/llLayout" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_top_horizontal"

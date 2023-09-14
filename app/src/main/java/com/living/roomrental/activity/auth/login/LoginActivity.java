@@ -18,6 +18,7 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 import com.living.roomrental.DialogListener;
 import com.living.roomrental.R;
+import com.living.roomrental.activity.auth.VerifyOtpActivity;
 import com.living.roomrental.activity.auth.forgotpassword.ForgotPasswordActivity;
 import com.living.roomrental.activity.auth.register.RegisterActivity;
 import com.living.roomrental.activity.general.UserChoiceBottomSheet;
@@ -133,6 +134,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        binding.submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppBoiler.navigateToActivityWithFinish(LoginActivity.this, VerifyOtpActivity.class, null);
+            }
+        });
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

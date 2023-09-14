@@ -15,6 +15,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.living.roomrental.PopupWindowsMenuListener;
 import com.living.roomrental.R;
 import com.living.roomrental.activity.profile.view.ViewProfileBottomSheet;
+import com.living.roomrental.comman.WebCallingActivity;
 import com.living.roomrental.comman.about.AboutActivity;
 import com.living.roomrental.comman.help.HelpActivity;
 import com.living.roomrental.comman.more.MoreActivity;
@@ -136,6 +137,9 @@ public class LandlordMainActivity extends AppCompatActivity {
                                 break;
                             case R.id.logOutMenu:
                                 MenuOperation.logOutUser(LandlordMainActivity.this);
+                                break;
+                            case R.id.webCalling:
+                                AppBoiler.navigateToActivity(LandlordMainActivity.this, WebCallingActivity.class,null);
                                 break;
                             case R.id.deactivateMenu:
 
